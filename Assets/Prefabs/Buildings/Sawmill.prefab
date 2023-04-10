@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8624392791890969088}
   - component: {fileID: 3244944682662217720}
+  - component: {fileID: -6890040010664876067}
   m_Layer: 0
   m_Name: Sawmill
   m_TagString: Untagged
@@ -50,3 +51,18 @@ MonoBehaviour:
       value: 10
   constructionDuration: 3
   buildingCanBeDeconstructed: 1
+--- !u!114 &-6890040010664876067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421782755691153293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b7ed6d2963abb04d9f4b7cf984d1f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 0
+  amount: 5
+  produceResourceAtStartOfphase: 1

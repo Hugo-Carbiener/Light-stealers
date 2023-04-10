@@ -39,7 +39,7 @@ public class ProductionManager : MonoBehaviour
             buildingsAmount.Add(building, 0);
         }
 
-        InvokeRepeating("GenerateResources", resourceCooldown, resourceCooldown);
+        //InvokeRepeating("GenerateResources", resourceCooldown, resourceCooldown);
     }
 
     //ResourcePopUp.Create(building.getWorldCoordinates(), amount, resource);

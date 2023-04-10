@@ -16,6 +16,7 @@ public class Building : MonoBehaviour
     [Header("Construction")]
     [SerializeField] private float constructionDuration;
     private float constructionTimer = 0;
+    public bool isConstructed { private set; get; } = false;
     public UnityEvent OnConstructionFInished { private set; get; }
 
     [Header("Deconstruction")]
@@ -39,6 +40,7 @@ public class Building : MonoBehaviour
             constructionTimer += Time.deltaTime;
             yield return null;
         }
+        isConstructed = true;
         OnConstructionFInished.Invoke();
     }
 
