@@ -71,8 +71,8 @@ public class BuildingFactory : MonoBehaviour
         Building building;
         if (instantiatedBuilding.TryGetComponent(out building)) {
             building.setCoordinates(selectedCell.coordinates);
-            building.OnConstructionFInished.AddListener(notifyProductionManager);
-            building.OnConstructionFInished.AddListener(notifyTilemapManager);
+            building.OnConstructionFinished.AddListener(notifyProductionManager);
+            building.OnConstructionFinished.AddListener(notifyTilemapManager);
         }
 
         // TODO 

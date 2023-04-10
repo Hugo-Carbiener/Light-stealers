@@ -17,17 +17,27 @@ public class Building : MonoBehaviour
     [SerializeField] private float constructionDuration;
     private float constructionTimer = 0;
     public bool isConstructed { private set; get; } = false;
-    public UnityEvent OnConstructionFInished { private set; get; }
+    public UnityEvent OnConstructionFinished { private set; get; }
 
     [Header("Deconstruction")]
     [SerializeField] private bool buildingCanBeDeconstructed;
 
+    [Header("Daily Consumption")]
+    [SerializeField] private DayNightCyclePhases consumeResourceAtStartOfPhase;
+    [SerializeField] private ResourceTypes resourceConsummed;
+    [SerializeField] private int amountConsummed;
     private void Awake()
     {
         Assert.AreNotEqual(costs.Count(), 0);
-        OnConstructionFInished = new UnityEvent();
+        OnConstructionFinished = new UnityEvent();
     }
-    
+
+    private void Start()
+    {
+        // programm the init to take place when the building is constructed
+        OnConstructionFinished.AddListener(linkConsumptionToCycle);
+    }
+
     public void startConstruction()
     {
         StartCoroutine(startConstructionCoroutine());
@@ -41,7 +51,22 @@ public class Building : MonoBehaviour
             yield return null;
         }
         isConstructed = true;
-        OnConstructionFInished.Invoke();
+        OnConstructionFinished.Invoke();
+    }
+
+    // Link the production of resources to the day night cycle
+    private void linkConsumptionToCycle()
+    {
+        Debug.Log(name + " is constructed. Linking to the resource consumption.");
+        DayNightCycleManager.OnCyclePhaseStart += consumeResources;
+    }
+
+    private void consumeResources(DayNightCyclePhases phaseToConsumeResources)
+    {
+        if (phaseToConsumeResources == consumeResourceAtStartOfPhase)
+        {
+            ResourceManager.Instance.ModifyResources(resourceConsummed, -amountConsummed);
+        }
     }
 
     public Vector3Int getCoordinates() { return coordinates; }

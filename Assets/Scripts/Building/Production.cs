@@ -14,7 +14,7 @@ public class Production : MonoBehaviour
         Building building = GetComponent<Building>();
 
         // programm the init to take place when the building is constructed
-        building.OnConstructionFInished.AddListener(linkProductionToCycle);
+        building.OnConstructionFinished.AddListener(linkProductionToCycle);
     }
 
     // Link the production of resources to the day night cycle
