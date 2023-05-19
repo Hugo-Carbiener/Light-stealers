@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Production : MonoBehaviour
+class ProductionModule : MonoBehaviour
 {
     [Header("Production")]
     [SerializeField] private ResourceTypes resourceType;
     [SerializeField] private int amount;
     [SerializeField] private DayNightCyclePhases produceResourceAtStartOfphase;
+    Building building;
 
-    private void Start()
+    private void Awake()
     {
-        Building building = GetComponent<Building>();
-
+        building = GetComponent<Building>();
         // programm the init to take place when the building is constructed
         building.OnConstructionFinished.AddListener(linkProductionToCycle);
     }
@@ -21,14 +21,17 @@ public class Production : MonoBehaviour
     private void linkProductionToCycle()
     {
         Debug.Log(name + " is constructed. Linking to the resource production.");
-        DayNightCycleManager.OnCyclePhaseStart += gainResources;
+        DayNightCycleManager.OnCyclePhaseStart += executeTask;
     }
 
-    private void gainResources(DayNightCyclePhases phaseToReceiveResources)
+    private void executeTask(DayNightCyclePhases phaseToReceiveResources)
     {
-        if (phaseToReceiveResources == produceResourceAtStartOfphase)
+        if (phaseToReceiveResources == produceResourceAtStartOfphase && building.activated)
         {
-            ResourceManager.Instance.ModifyResources(resourceType, amount);
+            ResourceManager.Instance.modifyResources(resourceType, amount);
         }
     }
+
+    public ResourceTypes getResource() { return resourceType; }
+    public int getAmount() { return amount; }
 }
