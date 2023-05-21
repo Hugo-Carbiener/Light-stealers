@@ -31,7 +31,7 @@ public class ResourceManager : MonoBehaviour
     private Text woodProdText;
     private Text stoneProdText;
 
-    private void Start()
+    private void Awake()
     {
         resources = new Dictionary<ResourceTypes, int>();
         resourceProductions = new Dictionary<ResourceTypes, int>();
@@ -40,7 +40,7 @@ public class ResourceManager : MonoBehaviour
             resources.Add(resource, 50);
             resourceProductions.Add(resource, 0);
         }
-       // resources[ResourceTypes.Food] = 0;
+        // resources[ResourceTypes.Food] = 0;
 
         Text[] texts = resourceValuesContainer.GetComponentsInChildren<Text>();
         foodText = texts[0];
@@ -50,7 +50,10 @@ public class ResourceManager : MonoBehaviour
         foodProdText = prodTexts[0];
         woodProdText = prodTexts[1];
         stoneProdText = prodTexts[2];
+    }
 
+    private void Start()
+    {
         UpdateUI();
     }
 

@@ -11,5 +11,6 @@ public class Troop : MonoBehaviour
     private void die(Troop troop)
     {
         troop.gameObject.SetActive(false);
+        ArmyManager.Instance.armySize--;
     }
 }

@@ -24,19 +24,28 @@ public class ArmyManager : MonoBehaviour
     [Header("Housing variables")]
     [SerializeField] private int initialHousingSize;
     public int housingSize { private set; get; }
-    public int armySize { private set; get; } 
+    public int armySize { set; get; } 
 
     [Header("Army variables")]
     [SerializeField] private GameObject basicTroopPrefab;
+    [SerializeField] private DayNightCyclePhases createTroopsAtStartOfPhase;
+    [SerializeField] private Vector3 startingPos; // will be bound to the building generation troops in the future
 
     // pool variables
-    private List<Troop> armyTroopPool;
+    private List<Troop> armyTroopPool;      // all troops, active and inactive
+    private List<Troop> armyTroops;         // active troops
 
     private void Awake()
     {
         armySize = 0;
         housingSize = initialHousingSize;
         armyTroopPool = new List<Troop>();
+        initArmyPool();
+    }
+
+    private void Start()
+    {
+        DayNightCycleManager.OnCyclePhaseStart += dailyArmyUpdate;
     }
 
     private void initArmyPool()
@@ -82,5 +91,29 @@ public class ArmyManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void wakeTroop(Troop troop)
+    {
+        if (troop.gameObject.activeInHierarchy) return;
+
+        troop.gameObject.SetActive(true);
+        troop.transform.position = startingPos;
+        armyTroops.Add(troop);
+        armySize++;
+    }
+
+    /**
+     * Temporary while troops appear each day
+     */
+    private void dailyArmyUpdate(DayNightCyclePhases phaseToInstanciateArmy)
+    {
+        if (phaseToInstanciateArmy == createTroopsAtStartOfPhase)
+        {
+            if (armySize > housingSize)
+            {
+
+            }
+        }
     }
 }
