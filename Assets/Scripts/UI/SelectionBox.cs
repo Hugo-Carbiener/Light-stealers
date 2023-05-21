@@ -15,6 +15,7 @@ public class SelectionBox : MonoBehaviour
     [SerializeField] private Text tileCoordinatesText;
     [SerializeField] private Text tileEnvironmentText;
     [SerializeField] private Text buildingProductionText;
+    [SerializeField] private Text buildingStatusText;
     [SerializeField] private Image tileImage;
     [SerializeField] private Image buildingImage;
 
@@ -56,12 +57,13 @@ public class SelectionBox : MonoBehaviour
         tileEnvironmentText.text = "Environment: " + cellData.environment.ToString();
         tileCoordinatesText.text = "Coordinates: " + cellData.coordinates.x + ", " + cellData.coordinates.y;
 
-        if (cellData.building == null)
+        if (cellData.buildingType == null)
         {
             buildingContainer.SetActive(false);
         } else {
-            buildingProductionText.text = "Building produces " + ProductionManager.Instance.getBuildingsProductionAmounts().At((BuildingTypes)cellData.building)
-                + "units of " + ProductionManager.Instance.getBuildingsProductions().At((BuildingTypes)cellData.building);
+            buildingProductionText.text = "Building produces " + ProductionManager.Instance.getBuildingsProductionAmounts().At((BuildingTypes)cellData.buildingType)
+                + "units of " + ProductionManager.Instance.getBuildingsProductions().At((BuildingTypes)cellData.buildingType);
+            buildingStatusText.text = "Building status : " + cellData.building.activated.ToString();
             buildingContainer.SetActive(true);
         }
 
@@ -78,7 +80,7 @@ public class SelectionBox : MonoBehaviour
                 break;
         }
 
-        switch(cellData.building)
+        switch(cellData.buildingType)
         {
             case BuildingTypes.Sawmill:
                 buildingImage.sprite = GameAssets.i.sawmill;

@@ -51,6 +51,10 @@ MonoBehaviour:
       value: 10
   constructionDuration: 3
   buildingCanBeDeconstructed: 1
+  doesConsumeFood: 1
+  consumeResourceAtStartOfPhase: 0
+  resourceConsummed: 2
+  amountConsummed: 1
 --- !u!114 &-6890040010664876067
 MonoBehaviour:
   m_ObjectHideFlags: 0

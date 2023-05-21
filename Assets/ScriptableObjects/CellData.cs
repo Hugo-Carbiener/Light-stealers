@@ -4,7 +4,8 @@ public class CellData : Object
 {
     public Vector3Int coordinates { get; private set; }
     public environments environment { get; set; }
-    public BuildingTypes? building { get; set; }
+    public Building? building { get; set; }
+    public BuildingTypes? buildingType { get; set; }
     public TileBase groundTile { get; set; } = null;
     public TileBase buildingTile { get; set; } = null;
     public TileBase waterTile { get; set; } = null;

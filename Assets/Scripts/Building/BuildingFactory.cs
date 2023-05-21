@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 public class BuildingFactory : MonoBehaviour
@@ -23,15 +24,20 @@ public class BuildingFactory : MonoBehaviour
     [Header("Maps")]
     [SerializeField] private SerializableDictionary<BuildingTypes, GameObject> buildingsPrefabs;
     public event Action updateBuildingTilemapEvent;
-
     private TilemapManager tilemapManager;
-    private List<Building> buildingsConstructed;
+    
+    public List<Building> buildingsConstructed { get; private set; }
 
     private BuildingTypes previouslyBuiltType;
+
+    private void Awake()
+    {
+        buildingsConstructed = new List<Building>();
+    }
+
     private void Start()
     {
         tilemapManager = TilemapManager.Instance;
-        buildingsConstructed = new List<Building>();
     }
     
     /**
@@ -64,16 +70,18 @@ public class BuildingFactory : MonoBehaviour
         previouslyBuiltType = buildingType;
 
         // instantiate the building prefab and store building information in cell data
-        selectedCell.building = buildingType;
-        GameObject instantiatedBuilding = Instantiate(buildingsPrefabs.At(buildingType));
-        buildingsConstructed.Add(instantiatedBuilding.GetComponent<Building>());
+        GameObject instantiatedBuilding = Instantiate(buildingsPrefabs.At(buildingType));        
 
         Building building;
         if (instantiatedBuilding.TryGetComponent(out building)) {
             building.setCoordinates(selectedCell.coordinates);
-            building.OnConstructionFInished.AddListener(notifyProductionManager);
-            building.OnConstructionFInished.AddListener(notifyTilemapManager);
+            building.OnConstructionFinished.AddListener(notifyProductionManager);
+            building.OnConstructionFinished.AddListener(notifyTilemapManager);
         }
+
+        selectedCell.buildingType = buildingType;
+        selectedCell.building = building;
+        buildingsConstructed.Add(building);
 
         // TODO 
         // add building in construction sprite update
@@ -81,11 +89,10 @@ public class BuildingFactory : MonoBehaviour
         building.startConstruction();
     }
 
-
     private void notifyProductionManager()
     {
         // we store the information we built a new 
-        ProductionManager.Instance.CreateBuilding(previouslyBuiltType);
+        ProductionManager.Instance.AddBuilding(previouslyBuiltType);
     }
 
     private void notifyTilemapManager()
@@ -110,7 +117,7 @@ public class BuildingFactory : MonoBehaviour
         {
             int cost = prefabBuilding.getCost(resourceType);
             int resource = resourceManager.getResource(resourceType);
-            resourceManager.ModifyResources(resourceType, -cost);
+            resourceManager.modifyResources(resourceType, -cost);
         }
     }
 
@@ -135,10 +142,10 @@ public class BuildingFactory : MonoBehaviour
 
                     // update production data
                     Dictionary<BuildingTypes, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
-                    buildingsAmount[(BuildingTypes)targetCell.building] -= 1;
+                    buildingsAmount[(BuildingTypes)targetCell.buildingType] -= 1;
 
                     // update cell data
-                    targetCell.building = null;
+                    targetCell.buildingType = null;
                     targetCell.buildingTile = null;
 
                     // update scene

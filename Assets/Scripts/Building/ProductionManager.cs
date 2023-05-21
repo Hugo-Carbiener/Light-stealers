@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+/**
+ * Deprecated, not used anymore
+ */
 public class ProductionManager : MonoBehaviour
 {
     private static ProductionManager _instance;
@@ -50,7 +53,7 @@ public class ProductionManager : MonoBehaviour
 
     public Dictionary<BuildingTypes, int> getBuildingAmount() { return buildingsAmount; }
 
-    public void CreateBuilding(BuildingTypes building)
+    public void AddBuilding(BuildingTypes building)
     {
         int buildingAmount;
         if (buildingsAmount.TryGetValue(building, out buildingAmount)) {
@@ -77,7 +80,7 @@ public class ProductionManager : MonoBehaviour
             ResourceTypes resourceToModify = buildingsProductions.At(buildingTypes);
             int amountToAdd = buildingsAmount[buildingTypes] * buildingsProductionAmounts.At(buildingTypes);
 
-            ResourceManager.Instance.ModifyResources(resourceToModify, amountToAdd);
+            ResourceManager.Instance.modifyResources(resourceToModify, amountToAdd);
         }
     }
 }
