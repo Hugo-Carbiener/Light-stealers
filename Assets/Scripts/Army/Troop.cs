@@ -8,4 +8,8 @@ using UnityEngine;
 public class Troop : MonoBehaviour
 {
 
+    private void die(Troop troop)
+    {
+        troop.gameObject.SetActive(false);
+    }
 }

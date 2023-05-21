@@ -47,6 +47,15 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+    private void updateArmyPool()
+    {
+        if (armyTroopPool.Count >= housingSize) return;
+        for (int i = armyTroopPool.Count; i < housingSize; i++)
+        {
+            instantiateNewBasicTroopInPool();
+        }
+    }
+
     private void instantiateNewBasicTroopInPool()
     {
         if (armyTroopPool.Count >= housingSize) return;
@@ -57,6 +66,9 @@ public class ArmyManager : MonoBehaviour
         Troop troop;
         if (instantiatedObject.TryGetComponent<Troop>(out troop)) {
             armyTroopPool.Add(troop);
+        } else
+        {
+            Debug.LogError("Troop does not have Troop component.");
         }
     }
 
@@ -70,10 +82,5 @@ public class ArmyManager : MonoBehaviour
             }
         }
         return null;
-    }
-
-    private void deactivateTroop(Troop troop)
-    {
-        troop.gameObject.SetActive(false);
     }
 }
