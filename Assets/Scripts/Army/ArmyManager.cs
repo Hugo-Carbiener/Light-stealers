@@ -33,7 +33,7 @@ public class ArmyManager : MonoBehaviour
 
     // pool variables
     private List<Troop> armyTroopPool;      // all troops, active and inactive
-    private List<Troop> armyTroops;         // active troops
+    public List<Troop> armyTroops { get; private set; }         // active troops
 
     private void Awake()
     {
@@ -48,6 +48,10 @@ public class ArmyManager : MonoBehaviour
         DayNightCycleManager.OnCyclePhaseStart += dailyArmyUpdate;
     }
 
+
+    /**
+     * Init pool
+     */
     private void initArmyPool()
     {
         for (int i = 0; i < housingSize; i++)
@@ -56,6 +60,9 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+    /**
+     * Add troops to the pool according to the housing manager
+     */
     private void updateArmyPool()
     {
         if (armyTroopPool.Count >= housingSize) return;
@@ -65,6 +72,9 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+    /**
+     * Init a troop in the pool
+     */
     private void instantiateNewBasicTroopInPool()
     {
         if (armyTroopPool.Count >= housingSize) return;
@@ -81,6 +91,9 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+    /**
+     * Army pool getter
+     */
     private Troop? getFirstAvailableTroop()
     {
         foreach (Troop troop in armyTroopPool)
@@ -93,6 +106,9 @@ public class ArmyManager : MonoBehaviour
         return null;
     }
 
+    /**
+     * instantiate a troop
+     */
     private void wakeTroop(Troop troop)
     {
         if (troop.gameObject.activeInHierarchy) return;
@@ -104,16 +120,50 @@ public class ArmyManager : MonoBehaviour
     }
 
     /**
+     * Goes through the troops and apply their food consumption. If there is not enough food, the troop dies
+     */
+    private void armyConsumption()
+    {
+        foreach (Troop troop in armyTroops)
+        {
+            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, troop.getFoodConsummed()))
+            {
+                troop.die();
+            }
+        }
+    }
+
+    /**
      * Temporary while troops appear each day
      */
     private void dailyArmyUpdate(DayNightCyclePhases phaseToInstanciateArmy)
     {
         if (phaseToInstanciateArmy == createTroopsAtStartOfPhase)
         {
+            // army cannot be housed, house must have been destroyed during the day
             if (armySize > housingSize)
             {
-
+                int i = 0;
+                while (i < armySize - housingSize)
+                {
+                    Troop troop = armyTroops[0];
+                    troop.die();
+                    i++;
+                }
+            } else if (armySize < housingSize)
+            {
+                while (armySize < housingSize)
+                {
+                    Troop troop = getFirstAvailableTroop();
+                    if (troop == null)
+                    {
+                        Debug.LogError("Could not find active troop, pool is not big enough.");
+                        return;
+                    }
+                    wakeTroop(getFirstAvailableTroop());
+                }
             }
+            armyConsumption()
         }
     }
 }

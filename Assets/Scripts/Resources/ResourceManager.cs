@@ -70,13 +70,19 @@ public class ResourceManager : MonoBehaviour
     /**
      * Add the amount of given resources. Amount can be negative 
      */
-    public void modifyResources(ResourceTypes resourceType, int amount)
+    public bool modifyResources(ResourceTypes resourceType, int amount)
     {
         int resourceAmount;
         if (resources.TryGetValue(resourceType, out resourceAmount))
         {
             resources[resourceType] = resourceAmount + amount;
+            if (resources[resourceType] < 0)
+            {
+                resources[resourceType] = resourceAmount;
+                return false;
+            }
         }
+        return true;
         UpdateValues();
     }
 
