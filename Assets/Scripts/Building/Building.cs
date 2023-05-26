@@ -78,9 +78,8 @@ public class Building : MonoBehaviour
     {
         if (phaseToConsumeResources == consumeResourceAtStartOfPhase)
         {
-            bool resourceIsAvailable = ResourceManager.Instance.resourceIsAvailable(resourceConsummed, amountConsummed);
+            bool resourceIsAvailable = ResourceManager.Instance.modifyResources(resourceConsummed, -amountConsummed);
             updateActivationStatus(resourceIsAvailable);
-            if (resourceIsAvailable) ResourceManager.Instance.modifyResources(resourceConsummed, -amountConsummed);
         }
     }
 

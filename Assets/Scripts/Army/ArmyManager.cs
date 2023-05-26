@@ -163,7 +163,7 @@ public class ArmyManager : MonoBehaviour
                     wakeTroop(getFirstAvailableTroop());
                 }
             }
-            armyConsumption()
+            armyConsumption();
         }
     }
 }
