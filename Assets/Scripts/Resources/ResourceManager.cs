@@ -24,12 +24,6 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private GameObject resourceProductionsContainer;
     private Dictionary<ResourceTypes, int> resources;
     private Dictionary<ResourceTypes, int> resourceProductions;
-    private Text foodText;
-    private Text woodText;
-    private Text stoneText; 
-    private Text foodProdText;
-    private Text woodProdText;
-    private Text stoneProdText;
 
     private void Awake()
     {
@@ -54,7 +48,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI();
+        ResourceUIManager.Instance.updateUIComponent();
     }
 
     public int getResource(ResourceTypes resourceType) { return resources[resourceType]; }
@@ -83,7 +77,7 @@ public class ResourceManager : MonoBehaviour
             }
         }
         return true;
-        UpdateValues();
+        ResourceUIManager.Instance.updateUIComponent();
     }
 
     /**
@@ -109,27 +103,6 @@ public class ResourceManager : MonoBehaviour
                 resourceProductions[resourceType] += productionModule.getAmount();
             }
         }
-    }
-
-    private void UpdateValues()
-    {
-        foodText.text = resources[ResourceTypes.Food].ToString();
-        woodText.text = resources[ResourceTypes.Wood].ToString();
-        stoneText.text = resources[ResourceTypes.Stone].ToString();
-    }
-
-    public void UpdateProductions()
-    {
-        computeProductions();
-        foodProdText.text = resourceProductions[ResourceTypes.Food].ToString();
-        woodProdText.text = resourceProductions[ResourceTypes.Wood].ToString();
-        stoneProdText.text = resourceProductions[ResourceTypes.Stone].ToString();
-    }
-
-    private void UpdateUI()
-    {
-        UpdateValues();
-        UpdateProductions();
     }
 }
 
