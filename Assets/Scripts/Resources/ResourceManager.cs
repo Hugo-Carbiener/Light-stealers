@@ -20,8 +20,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject resourceValuesContainer;
-    [SerializeField] private GameObject resourceProductionsContainer;
     private Dictionary<ResourceTypes, int> resources;
     private Dictionary<ResourceTypes, int> resourceProductions;
 
@@ -35,15 +33,6 @@ public class ResourceManager : MonoBehaviour
             resourceProductions.Add(resource, 0);
         }
         // resources[ResourceTypes.Food] = 0;
-
-        Text[] texts = resourceValuesContainer.GetComponentsInChildren<Text>();
-        foodText = texts[0];
-        woodText = texts[1];
-        stoneText = texts[2];
-        Text[] prodTexts = resourceProductionsContainer.GetComponentsInChildren<Text>();
-        foodProdText = prodTexts[0];
-        woodProdText = prodTexts[1];
-        stoneProdText = prodTexts[2];
     }
 
     private void Start()
@@ -52,7 +41,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     public int getResource(ResourceTypes resourceType) { return resources[resourceType]; }
-
+    public int getResourceProduction(ResourceTypes resourceType) { return resourceProductions[resourceType]; }
     /**
      * Return whether the given amount of resource is available
      */
@@ -81,9 +70,9 @@ public class ResourceManager : MonoBehaviour
     }
 
     /**
-     * Compute the production rates from the list of buildings stored in BuildingFactory
-     */
-    private void computeProductions()
+  * Compute the production rates from the list of buildings stored in BuildingFactory
+  */
+    public void computeProductions()
     {
         List<Building> buildings = BuildingFactory.Instance.buildingsConstructed;
 
@@ -104,5 +93,6 @@ public class ResourceManager : MonoBehaviour
             }
         }
     }
+
 }
 

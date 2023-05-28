@@ -29,8 +29,8 @@ public class ResourceUIManager : UIManager
         int foodAmount = ResourceManager.Instance.getResource(ResourceTypes.Food);
         int woodAmount = ResourceManager.Instance.getResource(ResourceTypes.Wood);
         int stoneAmount = ResourceManager.Instance.getResource(ResourceTypes.Stone);
-        foodText.text = foodAmount.ToString();
-        woodText.text = woodAmount.ToString();
-        stoneText.text = stoneAmount.ToString();
+        updateText(foodText, foodAmount.ToString());
+        updateText(woodText, woodAmount.ToString());
+        updateText(stoneText, stoneAmount.ToString());
     }
 }

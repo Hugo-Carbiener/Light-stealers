@@ -43,6 +43,7 @@ public class Building : MonoBehaviour
         if (doesConsumeFood)
         {
             OnConstructionFinished.AddListener(linkConsumptionToCycle);
+            OnConstructionFinished.AddListener(ProductionUIManager.Instance.updateUIComponent);
         }
     }
  
@@ -89,6 +90,7 @@ public class Building : MonoBehaviour
     public void updateActivationStatus(bool targetStatus)
     {
         activated = targetStatus;
+        ProductionUIManager.Instance.updateUIComponent();
     }
 
     public Vector3Int getCoordinates() { return coordinates; }
