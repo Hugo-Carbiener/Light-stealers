@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class ProductionUIManager : UIManager
 {
-    private static UIManager _instance;
-    public static UIManager Instance
+    private static ProductionUIManager _instance;
+    public static ProductionUIManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = new ProductionUIManager();
+                _instance = GameObject.FindObjectOfType<ProductionUIManager>();
             }
 
             return _instance;
@@ -20,15 +20,21 @@ public class ProductionUIManager : UIManager
     }
 
     [Header("Texts")]
-    [SerializeField] private Text foodProdext;
-    [SerializeField] private Text woodProdext;
-    [SerializeField] private Text stonProdText
+    [SerializeField] private Text foodProdText;
+    [SerializeField] private Text woodProdText;
+    [SerializeField] private Text stonProdText;
   
     public override void updateUIComponent()
     {
         ResourceManager.Instance.computeProductions();
-        updateText(foodProdext, ResourceManager.Instance.getResourceProduction(ResourceTypes.Food).ToString());
-        updateText(woodProdext, ResourceManager.Instance.getResourceProduction(ResourceTypes.Wood).ToString());
+        updateText(foodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Food).ToString());
+        updateText(woodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Wood).ToString());
         updateText(stonProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Stone).ToString());
+    }
+    public void updateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
+    {
+        updateText(foodProdText, foodAmount.ToString());
+        updateText(woodProdText, woodAmount.ToString());
+        updateText(stonProdText, stoneAmount.ToString());
     }
 }

@@ -37,7 +37,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Start()
     {
-        ResourceUIManager.Instance.updateUIComponent();
+        ResourceUIManager.Instance.updateUIComponent(resources[ResourceTypes.Food], resources[ResourceTypes.Wood], resources[ResourceTypes.Stone]);
     }
 
     public int getResource(ResourceTypes resourceType) { return resources[resourceType]; }
@@ -65,8 +65,8 @@ public class ResourceManager : MonoBehaviour
                 return false;
             }
         }
-        return true;
         ResourceUIManager.Instance.updateUIComponent();
+        return true;
     }
 
     /**
@@ -86,7 +86,7 @@ public class ResourceManager : MonoBehaviour
         foreach (Building building in buildings)
         {
             ProductionModule productionModule;
-            if (TryGetComponent(out productionModule))
+            if (building.TryGetComponent(out productionModule))
             {
                 ResourceTypes resourceType = productionModule.getResource();
                 resourceProductions[resourceType] += productionModule.getAmount();

@@ -21,6 +21,9 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+    [Header("Components")]
+    [SerializeField] private Transform ArmyPoolContainer;
+
     [Header("Housing variables")]
     [SerializeField] private int initialHousingSize;
     public int housingSize { private set; get; }
@@ -40,6 +43,7 @@ public class ArmyManager : MonoBehaviour
         armySize = 0;
         housingSize = initialHousingSize;
         armyTroopPool = new List<Troop>();
+        armyTroops = new List<Troop>();
         initArmyPool();
         HousingUIManager.Instance.updateUIComponent();
     }
@@ -80,7 +84,7 @@ public class ArmyManager : MonoBehaviour
     {
         if (armyTroopPool.Count >= housingSize) return;
 
-        GameObject instantiatedObject = Instantiate(basicTroopPrefab);
+        GameObject instantiatedObject = Instantiate(basicTroopPrefab, ArmyPoolContainer);
         instantiatedObject.SetActive(false);
         
         Troop troop;
@@ -128,7 +132,7 @@ public class ArmyManager : MonoBehaviour
     {
         foreach (Troop troop in armyTroops)
         {
-            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, troop.getFoodConsummed()))
+            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -troop.getFoodConsummed()))
             {
                 troop.die();
             }
@@ -162,7 +166,7 @@ public class ArmyManager : MonoBehaviour
                         Debug.LogError("Could not find active troop, pool is not big enough.");
                         return;
                     }
-                    wakeTroop(getFirstAvailableTroop());
+                    wakeTroop(troop);
                 }
             }
             armyConsumption();

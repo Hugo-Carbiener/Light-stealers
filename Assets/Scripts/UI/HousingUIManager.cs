@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class HousingUIManager : UIManager
 {
-    private static UIManager _instance;
-    public static UIManager Instance
+    private static HousingUIManager _instance;
+    public static HousingUIManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = new HousingUIManager();
+                _instance = GameObject.FindObjectOfType<HousingUIManager>();
             }
 
             return _instance;

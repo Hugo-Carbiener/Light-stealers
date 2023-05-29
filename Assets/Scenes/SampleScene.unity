@@ -752,7 +752,7 @@ GameObject:
   - component: {fileID: 233315566}
   - component: {fileID: 233315565}
   m_Layer: 5
-  m_Name: Food Text
+  m_Name: Army Size Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2612,6 +2612,7 @@ Transform:
   - {fileID: 732722165}
   - {fileID: 1654056687}
   - {fileID: 742458655}
+  - {fileID: 1974943857}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3665,8 +3666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f7c09efd0e9944284cee5326bd9a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceValuesContainer: {fileID: 797959478}
-  resourceProductionsContainer: {fileID: 1562103203}
 --- !u!4 &956734263
 Transform:
   m_ObjectHideFlags: 0
@@ -3735,7 +3734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: -100
+    m_Left: -140
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -3760,7 +3759,7 @@ GameObject:
   - component: {fileID: 998404224}
   - component: {fileID: 998404223}
   m_Layer: 5
-  m_Name: Wood Text
+  m_Name: Army Capacity Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4008,6 +4007,9 @@ GameObject:
   - component: {fileID: 1061918441}
   - component: {fileID: 1061918440}
   - component: {fileID: 1061918443}
+  - component: {fileID: 1061918446}
+  - component: {fileID: 1061918445}
+  - component: {fileID: 1061918444}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: UI
@@ -4120,6 +4122,50 @@ MonoBehaviour:
   buildingStatusText: {fileID: 63767811}
   tileImage: {fileID: 534430297}
   buildingImage: {fileID: 1634615580}
+--- !u!114 &1061918444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061918438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61141e2eec3d870428e127bb65be9a29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armySizeText: {fileID: 233315565}
+  housingCapacityText: {fileID: 998404223}
+--- !u!114 &1061918445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061918438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bbfdf3459751a4bbaf326788f6d296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodProdText: {fileID: 2007594025}
+  woodProdText: {fileID: 1565930255}
+  stonProdText: {fileID: 1015664101}
+--- !u!114 &1061918446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061918438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1da30693e26dfef4280a93ce3f41cae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodText: {fileID: 269104081}
+  woodText: {fileID: 1824920035}
+  stoneText: {fileID: 415729440}
 --- !u!1 &1069420443
 GameObject:
   m_ObjectHideFlags: 0
@@ -6181,6 +6227,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904002543}
   m_CullTransparentMesh: 1
+--- !u!1 &1974943856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1974943857}
+  - component: {fileID: 1974943858}
+  m_Layer: 0
+  m_Name: ArmyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1974943857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974943856}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691929620}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1974943858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974943856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d45834c5d935644a825a87a2133adb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialHousingSize: 10
+  basicTroopPrefab: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
+  createTroopsAtStartOfPhase: 0
+  startingPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1985455004
 GameObject:
   m_ObjectHideFlags: 0

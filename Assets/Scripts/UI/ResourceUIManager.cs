@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class ResourceUIManager : UIManager
 {
-    private static UIManager _instance;
-    public static UIManager Instance
+    private static ResourceUIManager _instance;
+    public static ResourceUIManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = new ResourceUIManager();
+                _instance = GameObject.FindObjectOfType<ResourceUIManager>();
             }
 
             return _instance;
@@ -29,6 +29,13 @@ public class ResourceUIManager : UIManager
         int foodAmount = ResourceManager.Instance.getResource(ResourceTypes.Food);
         int woodAmount = ResourceManager.Instance.getResource(ResourceTypes.Wood);
         int stoneAmount = ResourceManager.Instance.getResource(ResourceTypes.Stone);
+        updateText(foodText, foodAmount.ToString());
+        updateText(woodText, woodAmount.ToString());
+        updateText(stoneText, stoneAmount.ToString());
+    }
+
+    public void updateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
+    {
         updateText(foodText, foodAmount.ToString());
         updateText(woodText, woodAmount.ToString());
         updateText(stoneText, stoneAmount.ToString());
