@@ -20,18 +20,10 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject resourceValuesContainer;
-    [SerializeField] private GameObject resourceProductionsContainer;
     private Dictionary<ResourceTypes, int> resources;
     private Dictionary<ResourceTypes, int> resourceProductions;
-    private Text foodText;
-    private Text woodText;
-    private Text stoneText; 
-    private Text foodProdText;
-    private Text woodProdText;
-    private Text stoneProdText;
 
-    private void Start()
+    private void Awake()
     {
         resources = new Dictionary<ResourceTypes, int>();
         resourceProductions = new Dictionary<ResourceTypes, int>();
@@ -40,22 +32,16 @@ public class ResourceManager : MonoBehaviour
             resources.Add(resource, 50);
             resourceProductions.Add(resource, 0);
         }
-       // resources[ResourceTypes.Food] = 0;
+        // resources[ResourceTypes.Food] = 0;
+    }
 
-        Text[] texts = resourceValuesContainer.GetComponentsInChildren<Text>();
-        foodText = texts[0];
-        woodText = texts[1];
-        stoneText = texts[2];
-        Text[] prodTexts = resourceProductionsContainer.GetComponentsInChildren<Text>();
-        foodProdText = prodTexts[0];
-        woodProdText = prodTexts[1];
-        stoneProdText = prodTexts[2];
-
-        UpdateUI();
+    private void Start()
+    {
+        ResourceUIManager.Instance.updateUIComponent(resources[ResourceTypes.Food], resources[ResourceTypes.Wood], resources[ResourceTypes.Stone]);
     }
 
     public int getResource(ResourceTypes resourceType) { return resources[resourceType]; }
-
+    public int getResourceProduction(ResourceTypes resourceType) { return resourceProductions[resourceType]; }
     /**
      * Return whether the given amount of resource is available
      */
@@ -67,20 +53,26 @@ public class ResourceManager : MonoBehaviour
     /**
      * Add the amount of given resources. Amount can be negative 
      */
-    public void modifyResources(ResourceTypes resourceType, int amount)
+    public bool modifyResources(ResourceTypes resourceType, int amount)
     {
         int resourceAmount;
         if (resources.TryGetValue(resourceType, out resourceAmount))
         {
             resources[resourceType] = resourceAmount + amount;
+            if (resources[resourceType] < 0)
+            {
+                resources[resourceType] = resourceAmount;
+                return false;
+            }
         }
-        UpdateValues();
+        ResourceUIManager.Instance.updateUIComponent();
+        return true;
     }
 
     /**
-     * Compute the production rates from the list of buildings stored in BuildingFactory
-     */
-    private void computeProductions()
+  * Compute the production rates from the list of buildings stored in BuildingFactory
+  */
+    public void computeProductions()
     {
         List<Building> buildings = BuildingFactory.Instance.buildingsConstructed;
 
@@ -94,7 +86,7 @@ public class ResourceManager : MonoBehaviour
         foreach (Building building in buildings)
         {
             ProductionModule productionModule;
-            if (TryGetComponent(out productionModule))
+            if (building.TryGetComponent(out productionModule))
             {
                 ResourceTypes resourceType = productionModule.getResource();
                 resourceProductions[resourceType] += productionModule.getAmount();
@@ -102,25 +94,5 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    private void UpdateValues()
-    {
-        foodText.text = resources[ResourceTypes.Food].ToString();
-        woodText.text = resources[ResourceTypes.Wood].ToString();
-        stoneText.text = resources[ResourceTypes.Stone].ToString();
-    }
-
-    public void UpdateProductions()
-    {
-        computeProductions();
-        foodProdText.text = resourceProductions[ResourceTypes.Food].ToString();
-        woodProdText.text = resourceProductions[ResourceTypes.Wood].ToString();
-        stoneProdText.text = resourceProductions[ResourceTypes.Stone].ToString();
-    }
-
-    private void UpdateUI()
-    {
-        UpdateValues();
-        UpdateProductions();
-    }
 }
 

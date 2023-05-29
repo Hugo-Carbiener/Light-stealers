@@ -85,9 +85,6 @@ public class DayNightCycleManager : MonoBehaviour
             yield return null;
         }
 
-        // invoke the phase end event
-        OnCyclePhaseEnd.Invoke(phase);
-
         DayNightCyclePhases nextPhase = phase.Next();
 
         start(nextPhase);

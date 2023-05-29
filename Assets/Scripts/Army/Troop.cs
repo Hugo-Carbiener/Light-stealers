@@ -7,5 +7,16 @@ using UnityEngine;
  */
 public class Troop : MonoBehaviour
 {
+    [Header("Consumption")]
+    [SerializeField] private int foodAmount;
 
+    public void die()
+    {
+        gameObject.SetActive(false);
+        ArmyManager.Instance.armySize--;
+        ArmyManager.Instance.armyTroops.Remove(this);
+        HousingUIManager.Instance.updateUIComponent();
+    }
+
+    public int getFoodConsummed() { return foodAmount; }
 }

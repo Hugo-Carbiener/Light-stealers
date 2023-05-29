@@ -52,7 +52,7 @@ MonoBehaviour:
   constructionDuration: 3
   buildingCanBeDeconstructed: 1
   doesConsumeFood: 0
-  consumeResourceAtStartOfPhase: 0
+  consumeResourceAtStartOfPhase: 1
   resourceConsummed: 2
   amountConsummed: 1
 --- !u!114 &2760587689436357825

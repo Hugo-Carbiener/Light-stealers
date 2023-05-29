@@ -8,7 +8,7 @@ public class SelectionBox : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private TilemapManager tilemapManager;
-    [SerializeField] private GameObject tileContainer;
+    [SerializeField] private GameObject selectionBoxContainer;
     [SerializeField] private GameObject buildingContainer;
 
     [Header("Components to update")]
@@ -25,9 +25,8 @@ public class SelectionBox : MonoBehaviour
     private void Start()
     {
         tilemapManager = TilemapManager.Instance;
-        if (!tileContainer) tileContainer = transform.GetChild(0).gameObject;
         if (!buildingContainer) buildingContainer = transform.GetChild(1).gameObject;
-        tileContainer.SetActive(false);
+        selectionBoxContainer.SetActive(false);
         buildingContainer.SetActive(false);
 
         cellData = tilemapManager.getSelectedCellData();
@@ -41,12 +40,11 @@ public class SelectionBox : MonoBehaviour
         if (selectionIsDisplayed)
         {
             updateData();
-            tileContainer.SetActive(true);
+            selectionBoxContainer.SetActive(true);
         }
         else
         {
-            tileContainer.SetActive(false);
-            buildingContainer.SetActive(false);
+            selectionBoxContainer.SetActive(false);
         }        
     }
 

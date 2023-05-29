@@ -43,6 +43,7 @@ public class Building : MonoBehaviour
         if (doesConsumeFood)
         {
             OnConstructionFinished.AddListener(linkConsumptionToCycle);
+            OnConstructionFinished.AddListener(ProductionUIManager.Instance.updateUIComponent);
         }
     }
  
@@ -78,9 +79,8 @@ public class Building : MonoBehaviour
     {
         if (phaseToConsumeResources == consumeResourceAtStartOfPhase)
         {
-            bool resourceIsAvailable = ResourceManager.Instance.resourceIsAvailable(resourceConsummed, amountConsummed);
+            bool resourceIsAvailable = ResourceManager.Instance.modifyResources(resourceConsummed, -amountConsummed);
             updateActivationStatus(resourceIsAvailable);
-            if (resourceIsAvailable) ResourceManager.Instance.modifyResources(resourceConsummed, -amountConsummed);
         }
     }
 
@@ -90,6 +90,7 @@ public class Building : MonoBehaviour
     public void updateActivationStatus(bool targetStatus)
     {
         activated = targetStatus;
+        ProductionUIManager.Instance.updateUIComponent();
     }
 
     public Vector3Int getCoordinates() { return coordinates; }
