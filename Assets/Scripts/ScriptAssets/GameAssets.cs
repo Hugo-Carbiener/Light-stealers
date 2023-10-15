@@ -19,6 +19,11 @@ public class GameAssets : MonoBehaviour
     }
 
     [Header("Tiles")]
+    public Tile plainTile;
+    public Tile forestTile;
+    public Tile mountainTile;
+    public Tile waterTile;
+    public Tile cityTile;
     public List<Tile> plainTiles;
     public List<Tile> forestTiles;
     public List<Tile> mountainTiles;

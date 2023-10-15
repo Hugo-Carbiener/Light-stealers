@@ -38,7 +38,7 @@ public class TilemapManager : MonoBehaviour
         selectionTilemap = grid.transform.Find("SelectionTilemap").GetComponent<Tilemap>();
 
         // event to refresh tiles
-        BuildingFactory.Instance.updateBuildingTilemapEvent += UpdateBuildingTilemap;
+        BuildingFactory.Instance.updateBuildingTilemapEvent += DispatchBuildingTilemap;
         
         // create tile list
         tiles = new List<Tile>();
@@ -78,7 +78,7 @@ public class TilemapManager : MonoBehaviour
         {
         removeIsolatedCells();
         }
-        mergeTiles();
+        //mergeTiles();
         generateCastle();
 
         // --------------
@@ -87,7 +87,7 @@ public class TilemapManager : MonoBehaviour
 
     private void Update()
     {
-        updateSelectionTilemap();
+        DispatchSelectionTilemap();
     }
 
     public int? getCell(Vector3Int coordinates)
@@ -416,7 +416,7 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void updateSelectionTilemap()
+    public void DispatchSelectionTilemap()
     {
         selectionTilemap.ClearAllTiles();
         if(displaySelection)
@@ -425,7 +425,7 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    private void UpdateBuildingTilemap()
+    private void DispatchBuildingTilemap()
     {
         foreach (CellData cell in cells)
         {
@@ -436,7 +436,7 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void UpdateTile(Vector3Int coordinates)
+    public void DispatchTile(Vector3Int coordinates)
     {
         CellData data = getCellData(coordinates);
         groundTilemap.SetTile(coordinates, data.groundTile);
