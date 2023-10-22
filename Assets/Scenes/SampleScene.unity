@@ -1825,7 +1825,7 @@ MonoBehaviour:
   - {fileID: 1904002543}
   - {fileID: 96516527}
   - {fileID: 577001592}
-  selectionTilemap: {fileID: 0}
+  selectionTilemap: {fileID: 1054654675}
 --- !u!1 &486791681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5774,30 +5774,6 @@ PrefabInstance:
       propertyPath: selectionTilemap
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3e1a8dddff2ac1b4c9264ada8afb8756, type: 2}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 013d9f1b4095b1a4698b44c21cb20d09, type: 2}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8e450a493e3f2164ab1ea1bd72a3692f, type: 2}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 698ada0f4e16c8141ab26e35f038d270, type: 2}
-    - target: {fileID: 5656554718940374722, guid: 26887dbbd052242438aaac1341610358, type: 3}
-      propertyPath: buildingTiles.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: c91ae5e44f88c3043842391c1fb7cf00, type: 2}
     - target: {fileID: 6535539031342034644, guid: 26887dbbd052242438aaac1341610358, type: 3}
       propertyPath: m_Name
       value: GameAssets
