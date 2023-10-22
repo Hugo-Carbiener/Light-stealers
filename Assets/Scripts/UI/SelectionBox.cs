@@ -59,31 +59,31 @@ public class SelectionBox : MonoBehaviour
         {
             buildingContainer.SetActive(false);
         } else {
-            buildingProductionText.text = "Building produces " + ProductionManager.Instance.getBuildingsProductionAmounts().At((BuildingTypes)cellData.buildingType)
-                + "units of " + ProductionManager.Instance.getBuildingsProductions().At((BuildingTypes)cellData.buildingType);
+            buildingProductionText.text = "Building produces " + ProductionManager.Instance.getBuildingsProductionAmounts().At((BuildingType)cellData.buildingType)
+                + "units of " + ProductionManager.Instance.getBuildingsProductions().At((BuildingType)cellData.buildingType);
             buildingStatusText.text = "Building status : " + cellData.building.activated.ToString();
             buildingContainer.SetActive(true);
         }
 
         switch (cellData.environment)
         {
-            case environments.plain:
+            case Environment.plain:
                 tileImage.sprite = GameAssets.i.plainTileSprite;
                 break;
-            case environments.forest:
+            case Environment.forest:
                 tileImage.sprite = GameAssets.i.forestTileSprite;
                 break;
-            case environments.mountain:
+            case Environment.mountain:
                 tileImage.sprite = GameAssets.i.mountainTileSprite;
                 break;
         }
 
         switch(cellData.buildingType)
         {
-            case BuildingTypes.Sawmill:
+            case BuildingType.Sawmill:
                 buildingImage.sprite = GameAssets.i.sawmill;
                 break;
-            case BuildingTypes.Farm:
+            case BuildingType.Farm:
                 buildingImage.sprite = GameAssets.i.farm;
                 break;
         }

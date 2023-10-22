@@ -7,10 +7,13 @@ using UnityEngine.Assertions;
 
 public class Building : MonoBehaviour
 {
+
     private Vector2Int coordinates;
 
     private Vector2 worldCoordinates;
 
+    [Header("General")]
+    public readonly BuildingType type;
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
     [Header("Construction")]

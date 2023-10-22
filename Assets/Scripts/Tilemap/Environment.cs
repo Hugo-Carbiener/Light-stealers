@@ -1,4 +1,4 @@
-public enum environments { 
+public enum Environment { 
     plain,
     forest,
     mountain

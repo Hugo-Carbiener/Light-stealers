@@ -22,13 +22,13 @@ public class BuildingFactory : MonoBehaviour
     }
 
     [Header("Maps")]
-    [SerializeField] private SerializableDictionary<BuildingTypes, GameObject> buildingsPrefabs;
+    [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingsPrefabs;
     public event Action updateBuildingTilemapEvent;
     private TilemapManager tilemapManager;
     
     public List<Building> buildingsConstructed { get; private set; }
 
-    private BuildingTypes previouslyBuiltType;
+    private BuildingType previouslyBuiltType;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class BuildingFactory : MonoBehaviour
     /**
      * Method called by the radial menu to build a building of given type
      */
-    public void build(BuildingTypes buildingType)
+    public void build(BuildingType buildingType)
     {
         CellData selectedCell = tilemapManager.getSelectedCellData();
         
@@ -109,7 +109,7 @@ public class BuildingFactory : MonoBehaviour
         tilemapManager.DispatchTile(selectedCell.coordinates);
     }
     
-    private void payBuild(BuildingTypes buildingType)
+    private void payBuild(BuildingType buildingType)
     {
         ResourceManager resourceManager = ResourceManager.Instance;
         Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
@@ -141,8 +141,8 @@ public class BuildingFactory : MonoBehaviour
                     CellData targetCell = tilemapManager.getCellData(targetCoordinates);
 
                     // update production data
-                    Dictionary<BuildingTypes, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
-                    buildingsAmount[(BuildingTypes)targetCell.buildingType] -= 1;
+                    Dictionary<BuildingType, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
+                    buildingsAmount[(BuildingType)targetCell.buildingType] -= 1;
 
                     // update cell data
                     targetCell.buildingType = null;
