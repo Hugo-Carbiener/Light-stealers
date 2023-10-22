@@ -5,5 +5,5 @@ using UnityEngine;
 public enum BuildingTypes
 {
     Sawmill,
-    Windmill
+    Farm
 }

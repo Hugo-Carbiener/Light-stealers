@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class TileSelectionManager : MonoBehaviour
 {
-    private Vector3Int frameSelect = new Vector3Int(0, 0, 0);
+    private Vector2Int frameSelect = new Vector2Int(0, 0);
 
     [SerializeField] private TilemapManager tilemapManager;
     [SerializeField] private Tilemap selectionTilemap;
@@ -25,11 +25,11 @@ public class TileSelectionManager : MonoBehaviour
 
     private void updateFrameSelect(Vector2 mousePosition)
     {
-        Vector3Int oldFrameSelect = new Vector3Int(0, 0, 0);
+        Vector2Int oldFrameSelect = new Vector2Int(0, 0);
         if (!radialMenu.MenuIsOpened()) { 
         // Cell cannot be unselected or reselected selected if menu is opened on a selected cell
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3Int tilePos = selectionTilemap.WorldToCell(worldPos);
+        Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
         oldFrameSelect = frameSelect;
         frameSelect = tilePos;
 

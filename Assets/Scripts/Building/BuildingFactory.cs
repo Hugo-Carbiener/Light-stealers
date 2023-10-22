@@ -106,7 +106,7 @@ public class BuildingFactory : MonoBehaviour
                 selectedCell.buildingTile = tile;
             }
         }
-        tilemapManager.UpdateTile(selectedCell.coordinates);
+        tilemapManager.DispatchTile(selectedCell.coordinates);
     }
     
     private void payBuild(BuildingTypes buildingType)
@@ -130,7 +130,7 @@ public class BuildingFactory : MonoBehaviour
     /**
      * Deconstructs a specific building at specified coordinates
      */
-    public void deconstructBuilding(Vector3Int targetCoordinates)
+    public void deconstructBuilding(Vector2Int targetCoordinates)
     {
         foreach (Building building in buildingsConstructed)
         {
@@ -151,7 +151,7 @@ public class BuildingFactory : MonoBehaviour
                     // update scene
                     Destroy(building.gameObject);
 
-                    tilemapManager.UpdateTile(targetCoordinates);
+                    tilemapManager.DispatchTile(targetCoordinates);
 
                     return;
                 } else

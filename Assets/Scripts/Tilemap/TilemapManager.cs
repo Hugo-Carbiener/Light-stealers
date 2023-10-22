@@ -19,14 +19,12 @@ public class TilemapManager : MonoBehaviour
     private bool displaySelection = false;
     // true when the value of selectedCell just changed
     private CellData selectedCell;
-    // field may be defined by previously selected cell
-    private List<Tile> tiles;
 
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
 
-    private List<Vector3Int> evenNeighborCoordinates = new List<Vector3Int>() { new Vector3Int(1, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(-1, 1, 0), new Vector3Int(-1, 0, 0), new Vector3Int(-1, -1, 0), new Vector3Int(0, -1, 0), };
-    private List<Vector3Int> oddNeighborCoordinates = new List<Vector3Int>() { new Vector3Int(1, 0, 0), new Vector3Int(1, 1, 0), new Vector3Int(0, 1, 0), new Vector3Int(-1, 0, 0), new Vector3Int(0, -1, 0), new Vector3Int(1, -1, 0), };
+    private List<Vector2Int> evenNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(-1, 1), new Vector2Int(-1, 0), new Vector2Int(-1, -1), new Vector2Int(0, -1), };
+    private List<Vector2Int> oddNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(1, 1), new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, -1), };
 
     private void Awake()
     {
@@ -38,22 +36,7 @@ public class TilemapManager : MonoBehaviour
         selectionTilemap = grid.transform.Find("SelectionTilemap").GetComponent<Tilemap>();
 
         // event to refresh tiles
-        BuildingFactory.Instance.updateBuildingTilemapEvent += UpdateBuildingTilemap;
-        
-        // create tile list
-        tiles = new List<Tile>();
-        foreach (Tile tile in GameAssets.i.plainTiles)
-        {
-            tiles.Add(tile);
-        }
-        foreach (Tile tile in GameAssets.i.forestTiles)
-        {
-            tiles.Add(tile);
-        }
-        foreach (Tile tile in GameAssets.i.mountainTiles)
-        {
-            tiles.Add(tile);
-        }
+        BuildingFactory.Instance.updateBuildingTilemapEvent += DispatchBuildingTilemap;
 
         // create instance of tilemapManager
         if (Instance == null)
@@ -78,8 +61,7 @@ public class TilemapManager : MonoBehaviour
         {
         removeIsolatedCells();
         }
-        mergeTiles();
-        generateCastle();
+        //generateCastle();
 
         // --------------
         initialPaintTilemap();
@@ -87,10 +69,10 @@ public class TilemapManager : MonoBehaviour
 
     private void Update()
     {
-        updateSelectionTilemap();
+        DispatchSelectionTilemap();
     }
 
-    public int? getCell(Vector3Int coordinates)
+    public int? getCell(Vector2Int coordinates)
     {
         for (int i = 0; i < cells.Count; i++)
         {
@@ -102,7 +84,7 @@ public class TilemapManager : MonoBehaviour
         return null;
     }
 
-    public CellData getCellData(Vector3Int coordinates)
+    public CellData getCellData(Vector2Int coordinates)
     {
         foreach (CellData data in cells)
         {
@@ -116,12 +98,9 @@ public class TilemapManager : MonoBehaviour
 
     public int getTilemapColumns() { return columns; }
     public int getTilemapRows() { return rows; }
-
     public bool selectionIsDisplayed() { return displaySelection; }
     public CellData getSelectedCellData() { return selectedCell; }
 
-    // ------------------------------------------------
-    // ------------------------------------------------
     public void generateGroundTilemap(int columns, int rows)
     {
         // Start on a blank grid
@@ -134,7 +113,7 @@ public class TilemapManager : MonoBehaviour
         {
             for (int y = 0; y < rows; y++)
             {
-                Vector3Int coordinates = new Vector3Int(x, y, 0);
+                Vector2Int coordinates = new Vector2Int(x, y);
                 CellData cell = new CellData(coordinates);
 
                 if (activateClustering)
@@ -149,7 +128,7 @@ public class TilemapManager : MonoBehaviour
             }
         }
     }
-    public void SelectCell(Vector3Int coordinates)
+    public void SelectCell(Vector2Int coordinates)
     {
         displaySelection = true;
         int? cellIndex = getCell(coordinates);
@@ -179,15 +158,15 @@ public class TilemapManager : MonoBehaviour
     }
     public void setCellToPlain(CellData data) {
         data.environment = environments.plain;
-        data.groundTile = GameAssets.i.basePlainTile;
+        data.groundTile = GameAssets.i.plainTile;
     }
     public void setCellToForest(CellData data) {
         data.environment = environments.forest;
-        data.groundTile = GameAssets.i.baseForestTile;
+        data.groundTile = GameAssets.i.forestTile;
     }
     public void setCellToMountain(CellData data) {
         data.environment = environments.mountain;
-        data.groundTile = GameAssets.i.baseMountainTile;
+        data.groundTile = GameAssets.i.mountainTile;
     }
 
     public void setTileToCellDependingOnNeighbor(CellData data)
@@ -197,7 +176,7 @@ public class TilemapManager : MonoBehaviour
         float mountainNeighbors = 0;
 
         // get neighbor coordinates depending on if the tile is even or odd
-        List<Vector3Int> neighborCoordinates;
+        List<Vector2Int> neighborCoordinates;
 
         if (data.coordinates.y % 2 == 0)
         {
@@ -208,7 +187,7 @@ public class TilemapManager : MonoBehaviour
             neighborCoordinates = oddNeighborCoordinates;
         }
         
-        foreach (Vector3Int neighbor in neighborCoordinates)
+        foreach (Vector2Int neighbor in neighborCoordinates)
         {   
             int? currentCellIndex = getCell(data.coordinates + neighbor);
             if (currentCellIndex != null)
@@ -246,7 +225,7 @@ public class TilemapManager : MonoBehaviour
 
     public void removeIsolatedCells()
     {
-        List<Vector3Int> neighborCoordinates;
+        List<Vector2Int> neighborCoordinates;
 
         // iterate on each cells
         for (int x = 0; x < columns; x++)
@@ -262,7 +241,7 @@ public class TilemapManager : MonoBehaviour
                 }
 
 
-                Vector3Int currentCellCoordinates = new Vector3Int(x, y, 0);
+                Vector2Int currentCellCoordinates = new Vector2Int(x, y);
                 int? currentCellIndex = getCell(currentCellCoordinates);
                 CellData currentCell = cells[(int)currentCellIndex];
                 environments currentCellEnvironment = cells[(int)currentCellIndex].environment;
@@ -277,7 +256,7 @@ public class TilemapManager : MonoBehaviour
                     neighborCoordinates = oddNeighborCoordinates;
                 }
 
-                foreach (Vector3Int coordinates in neighborCoordinates)
+                foreach (Vector2Int coordinates in neighborCoordinates)
                 {
                     int? neighborCellIndex = getCell(currentCellCoordinates + coordinates);
                     if (neighborCellIndex != null)
@@ -316,62 +295,13 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void mergeTiles()
-    {
-        string tileName;
-        List<Vector3Int> neighborCoordinates;
-
-        for (int x = 0; x < columns; x++)
-        {
-            for (int y = 0; y < rows; y++)
-            {
-                Vector3Int currentPosition = new Vector3Int(x, y, 0);
-                int? currentCellIndex = getCell(currentPosition);
-                environments currentCellEnvironment = cells[ (int) currentCellIndex].environment;
-                tileName = currentCellEnvironment.ToString() + "tile";
-
-                // get neighbor coordinates depending on if the tile is even or odd
-                if ( y % 2 == 0)
-                {
-                    neighborCoordinates = evenNeighborCoordinates;
-                } else
-                {
-                    neighborCoordinates = oddNeighborCoordinates;
-                }
-
-                for (int i = 0; i < 6; i++)
-                {
-                    int? neighborCellIndex = getCell(currentPosition + neighborCoordinates[i]);
-                    if (neighborCellIndex != null)
-                    {
-                        environments neighborCellEnvironment = cells[ (int) neighborCellIndex].environment;
-                        if (currentCellEnvironment == neighborCellEnvironment)
-                        {
-                            // if current tile and neighbor are from the same env, we add the current neighbor number (1 to 6) to the end of the tile name.
-                            tileName += i + 1;
-                        }
-                    }
-                }
-                
-            foreach(Tile tile in tiles)
-            {
-                //Debug.Log("merging : tile name is " + tile.name);
-                if(tile.name == tileName)
-                {
-                    cells[ (int) currentCellIndex].groundTile = (TileBase) tile;
-                }
-            }
-            }
-        }
-    }
-
     public void generateCastle()
     {
-        Vector3Int center = new Vector3Int(rows/2, columns/2, 0);
+        Vector2Int center = new Vector2Int(rows/2, columns/2);
         int? centerCellIndex = getCell(center);
         CellData centerCell = cells[(int)centerCellIndex];
-        centerCell.waterTile = GameAssets.i.waterTiles[7];
-        List<Vector3Int> neighborCoordinates;
+        //centerCell.waterTile = GameAssets.i.waterTiles[7];
+        List<Vector2Int> neighborCoordinates;
         int i = 0;
         
 
@@ -384,12 +314,12 @@ public class TilemapManager : MonoBehaviour
             neighborCoordinates = oddNeighborCoordinates;
         }
 
-        foreach (Vector3Int neighbor in neighborCoordinates)
+        foreach (Vector2Int neighbor in neighborCoordinates)
         {
             int? currentCellIndex = getCell(center + neighbor);
             CellData currentCell = cells[(int)currentCellIndex];
             i += 1;
-            currentCell.waterTile = GameAssets.i.waterTiles[i];
+            //currentCell.waterTile = GameAssets.i.waterTiles[i];
         }
     }
 
@@ -402,44 +332,44 @@ public class TilemapManager : MonoBehaviour
             {
                 if (cell.buildingTile != null)
                 {
-                    buildingsTilemap.SetTile(cell.coordinates, cell.buildingTile);
+                    buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
                 }
                 if (cell.groundTile != null)
                 {
-                    groundTilemap.SetTile(cell.coordinates, cell.groundTile);
+                    groundTilemap.SetTile(cell.GetVector3Coordinates(), cell.groundTile);
                 }
             }
             else
             {
-                waterTilemap.SetTile(cell.coordinates, cell.waterTile);
+                waterTilemap.SetTile(cell.GetVector3Coordinates(), cell.waterTile);
             }
         }
     }
 
-    public void updateSelectionTilemap()
+    public void DispatchSelectionTilemap()
     {
         selectionTilemap.ClearAllTiles();
         if(displaySelection)
         {
-            selectionTilemap.SetTile(selectedCell.coordinates, GameAssets.i.selectionTile); 
+            selectionTilemap.SetTile(selectedCell.GetVector3Coordinates(), GameAssets.i.selectionTile); 
         }
     }
 
-    private void UpdateBuildingTilemap()
+    private void DispatchBuildingTilemap()
     {
         foreach (CellData cell in cells)
         {
             if (cell.buildingTile)
             {
-                buildingsTilemap.SetTile(cell.coordinates, cell.buildingTile);
+                buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
             }
         }
     }
 
-    public void UpdateTile(Vector3Int coordinates)
+    public void DispatchTile(Vector2Int coordinates)
     {
         CellData data = getCellData(coordinates);
-        groundTilemap.SetTile(coordinates, data.groundTile);
-        buildingsTilemap.SetTile(coordinates, data.buildingTile);
+        groundTilemap.SetTile(data.GetVector3Coordinates(), data.groundTile);
+        buildingsTilemap.SetTile(data.GetVector3Coordinates(), data.buildingTile);
     }
 }

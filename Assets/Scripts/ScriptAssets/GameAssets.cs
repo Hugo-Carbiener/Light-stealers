@@ -1,3 +1,4 @@
+#pragma warning disable S1104 // Fields should not have public accessibility
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,28 +20,28 @@ public class GameAssets : MonoBehaviour
     }
 
     [Header("Tiles")]
-    public List<Tile> plainTiles;
-    public List<Tile> forestTiles;
-    public List<Tile> mountainTiles;
-    public List<Tile> waterTiles;
+    public Tile plainTile;
+    public Tile forestTile;
+    public Tile mountainTile;
+    public Tile waterTile;
+    public Tile cityTile;
     public List<Tile> buildingTiles;
     public TileBase selectionTile;
-    public Tile baseForestTile;
-    public Tile basePlainTile;
-    public Tile baseMountainTile;
 
     [Header("Sprites")]
     [Header("Ground Sprites")]
     public Sprite plainTileSprite;
     public Sprite forestTileSprite;
     public Sprite mountainTileSprite;
+
     [Header("Resources Sprites")]
     public Sprite foodIcon;
     public Sprite woodIcon;
     public Sprite stoneIcon;
+
     [Header("Building Sprites")]
     public Sprite sawmill;
-    public Sprite windmill;
+    public Sprite farm;
 
 }
 

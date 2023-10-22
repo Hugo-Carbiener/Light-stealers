@@ -83,8 +83,8 @@ public class SelectionBox : MonoBehaviour
             case BuildingTypes.Sawmill:
                 buildingImage.sprite = GameAssets.i.sawmill;
                 break;
-            case BuildingTypes.Windmill:
-                buildingImage.sprite = GameAssets.i.windmill;
+            case BuildingTypes.Farm:
+                buildingImage.sprite = GameAssets.i.farm;
                 break;
         }
     }

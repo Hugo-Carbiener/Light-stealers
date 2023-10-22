@@ -17,7 +17,7 @@ public class RadialMenuController : MonoBehaviour
     private Vector3[] overlayPositions = { new Vector3(-4.34f, -4.34f, 0), new Vector3(-4.34f, 4.34f, 0), new Vector3(4.34f, 4.34f, 0), new Vector3(4.34f, -4.34f, 0) };
     [SerializeField] private GameObject[] imageContainer;
     [SerializeField] private Tilemap selectionTilemap;
-    private Vector3Int fixedPosition;
+    private Vector2Int fixedPosition;
     private Vector2 moveInput;
     private int selectedOption;
     private bool menuIsOpened;
@@ -45,8 +45,8 @@ public class RadialMenuController : MonoBehaviour
     {
         if (menu.activeInHierarchy)
         {
-            moveInput.x = Input.mousePosition.x - (cam.WorldToScreenPoint(selectionTilemap.CellToWorld(fixedPosition)).x);
-            moveInput.y = Input.mousePosition.y - (cam.WorldToScreenPoint(selectionTilemap.CellToWorld(fixedPosition)).y);
+            moveInput.x = Input.mousePosition.x - (cam.WorldToScreenPoint(selectionTilemap.CellToWorld((Vector3Int) fixedPosition)).x);
+            moveInput.y = Input.mousePosition.y - (cam.WorldToScreenPoint(selectionTilemap.CellToWorld((Vector3Int) fixedPosition)).y);
 
             moveInput.Normalize();
 
@@ -65,7 +65,7 @@ public class RadialMenuController : MonoBehaviour
                     if (angle > i * 90 && angle < (i + 1) * 90)
                     {
                         selectedOption = i;
-                        overlay.position = selectionTilemap.CellToWorld(fixedPosition);
+                        overlay.position = selectionTilemap.CellToWorld((Vector3Int) fixedPosition);
                         overlay.localPosition += overlayPositions[i];
                     }
                 }
@@ -98,11 +98,11 @@ public class RadialMenuController : MonoBehaviour
         if (menu.activeInHierarchy)
         {
             UpdateScale();
-            transform.position = selectionTilemap.CellToWorld(fixedPosition);
+            transform.position = selectionTilemap.CellToWorld((Vector3Int) fixedPosition);
         }
     }
 
-    public void OpenMenu(Vector3Int pos, environments env)
+    public void OpenMenu(Vector2Int pos, environments env)
     {
         switch(env)
         {
@@ -118,7 +118,7 @@ public class RadialMenuController : MonoBehaviour
         }
         menuOptions = menu.GetComponent<RadialMenuOptions>();
         fixedPosition = pos;
-        transform.position = selectionTilemap.CellToWorld(fixedPosition);
+        transform.position = selectionTilemap.CellToWorld((Vector3Int) fixedPosition);
         menu.SetActive(true);
         overlay.gameObject.SetActive(true);
         menuIsOpened = true;
