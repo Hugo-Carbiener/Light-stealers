@@ -130,7 +130,7 @@ public class BuildingFactory : MonoBehaviour
     /**
      * Deconstructs a specific building at specified coordinates
      */
-    public void deconstructBuilding(Vector3Int targetCoordinates)
+    public void deconstructBuilding(Vector2Int targetCoordinates)
     {
         foreach (Building building in buildingsConstructed)
         {

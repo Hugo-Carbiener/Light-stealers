@@ -7,9 +7,9 @@ using UnityEngine.Assertions;
 
 public class Building : MonoBehaviour
 {
-    private Vector3Int coordinates;
+    private Vector2Int coordinates;
 
-    private Vector3 worldCoordinates;
+    private Vector2 worldCoordinates;
 
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
@@ -93,12 +93,12 @@ public class Building : MonoBehaviour
         ProductionUIManager.Instance.updateUIComponent();
     }
 
-    public Vector3Int getCoordinates() { return coordinates; }
+    public Vector2Int getCoordinates() { return coordinates; }
 
-    public void setCoordinates(Vector3Int coords)
+    public void setCoordinates(Vector2Int coords)
     {
         coordinates = coords;
-        worldCoordinates = TilemapManager.Instance.buildingsTilemap.CellToWorld(coordinates);
+        worldCoordinates = TilemapManager.Instance.buildingsTilemap.CellToWorld((Vector3Int) coordinates);
     }
 
     public int getCost(ResourceTypes resourceType) { return costs.At(resourceType); }

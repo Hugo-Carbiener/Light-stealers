@@ -44,6 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6574e7acb02e543b229775d0de4ac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plainTile: {fileID: 11400000, guid: 4287fbb1a9b64044c9e46b396dcc89a1, type: 2}
+  forestTile: {fileID: 11400000, guid: 801f4cb1cc2a3934ea1d8e266dcbb838, type: 2}
+  mountainTile: {fileID: 11400000, guid: bda5e0f800a70e741be37ced2d4caf08, type: 2}
+  waterTile: {fileID: 11400000, guid: 4702d019f6a3f8f498c7e9f9d4e06e1f, type: 2}
+  cityTile: {fileID: 11400000, guid: 53179c6370a1f2e4c97e61663802585f, type: 2}
   plainTiles:
   - {fileID: 11400000, guid: 445b47ae13102cb4f96a8998cce51294, type: 2}
   - {fileID: 11400000, guid: dec4dc61e1490b34a89f6031dd0b0d03, type: 2}
@@ -254,9 +259,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a056a98bd8189f34591a737ced16f890, type: 2}
   - {fileID: 11400000, guid: 6b4bfb584dd381c429b8a137a1bda3ad, type: 2}
   selectionTile: {fileID: 11400000, guid: 4a0a966d4002c92429b66eb1167ede32, type: 2}
-  baseForestTile: {fileID: 11400000, guid: 3faac2c2e89726a41abe3e8e9eb7cd6d, type: 2}
-  basePlainTile: {fileID: 11400000, guid: 445b47ae13102cb4f96a8998cce51294, type: 2}
-  baseMountainTile: {fileID: 11400000, guid: 9db6e7bcfd0be074b9b6cf010b52e40d, type: 2}
   plainTileSprite: {fileID: 21300000, guid: b8b6d021b40f94a428fdc37394092450, type: 3}
   forestTileSprite: {fileID: 21300000, guid: 74049dc7993f36b44a2b1391837fd139, type: 3}
   mountainTileSprite: {fileID: 21300000, guid: a8129d7e2422d754e95ff5e90c79c80a, type: 3}
