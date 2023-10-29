@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8624392791890969088}
   - component: {fileID: 3244944682662217720}
-  - component: {fileID: 2760587689436357825}
   m_Layer: 0
-  m_Name: Farm
+  m_Name: Fountain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 94818351213487189}
+  - {fileID: 1633081374406861732}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,33 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc8842900bb2214fa83506f74676b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 4
   costs:
-    elements:
-    - key: 0
-      value: 10
-  constructionDuration: 3
+    elements: []
+  constructionDuration: 0
   buildingCanBeDeconstructed: 1
   doesConsumeFood: 0
   consumeResourceAtStartOfPhase: 1
   resourceConsummed: 2
-  amountConsummed: 1
---- !u!114 &2760587689436357825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4421782755691153293}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b7ed6d2963abb04d9f4b7cf984d1f9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resourceType: 2
-  amount: 5
-  produceResourceAtStartOfphase: 1
---- !u!1 &5313718873028236191
+  amountConsummed: 0
+--- !u!1 &5941718714019086800
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,9 +62,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 94818351213487189}
-  - component: {fileID: 833420752762517208}
-  - component: {fileID: 899990563749856309}
+  - component: {fileID: 1633081374406861732}
+  - component: {fileID: 2662186960085966838}
+  - component: {fileID: 7053667552762632883}
+  - component: {fileID: 6578096671929055775}
   m_Layer: 0
   m_Name: Rules
   m_TagString: Untagged
@@ -90,13 +73,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &94818351213487189
+--- !u!4 &1633081374406861732
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5313718873028236191}
+  m_GameObject: {fileID: 5941718714019086800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -105,27 +88,41 @@ Transform:
   m_Father: {fileID: 8624392791890969088}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &833420752762517208
+--- !u!114 &2662186960085966838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5313718873028236191}
+  m_GameObject: {fileID: 5941718714019086800}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd0eb38961be0f643abcdbe5682ebe6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   comparator: 1
-  environment: 0
---- !u!114 &899990563749856309
+  environment: 3
+--- !u!114 &7053667552762632883
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5313718873028236191}
+  m_GameObject: {fileID: 5941718714019086800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e432121a04b38542bc85874103d03c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comparator: 4
+  amount: 1
+--- !u!114 &6578096671929055775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5941718714019086800}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd0eb38961be0f643abcdbe5682ebe6c, type: 3}

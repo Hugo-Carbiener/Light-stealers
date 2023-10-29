@@ -13,7 +13,7 @@ public class Building : MonoBehaviour
     private Vector2 worldCoordinates;
 
     [Header("General")]
-    public readonly BuildingType type;
+    public BuildingType type;
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
     [Header("Construction")]

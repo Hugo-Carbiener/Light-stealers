@@ -9,7 +9,7 @@ public class BuildingAmountRule : Rule
 
     [SerializeField] private int amount;
 
-    protected override bool IsValid(CellData cell, Building building)
+    public override bool IsValid(CellData cell, Building building)
     {
         base.ComparatorIsAuthorized();
 

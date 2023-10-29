@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class TileSelectionManager : MonoBehaviour
 {
@@ -41,5 +42,29 @@ public class TileSelectionManager : MonoBehaviour
             cellIsSelected = true;
             
         }
+    }
+
+    /**
+     * Generates the list of building types that are valid to be built on a given tile.
+     */
+    private List<BuildingType> GetValidBuildings(CellData cell)
+    {
+        List<BuildingType> validBuildings = new List<BuildingType>();
+        SerializableDictionary<BuildingType, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
+        Dictionary<BuildingType, GameObject> buildingPrefabsDictionnary = buildingPrefabs.ToDictionnary();
+
+        foreach(GameObject building in buildingPrefabsDictionnary.Values)
+        {
+            Building buildingComponent;
+            if (!TryGetComponent(out buildingComponent)) continue;
+
+            Rule[] buildingRules = building.GetComponentsInChildren<Rule>();
+            int invalidBuildingRuleAmount = buildingRules.Where(rule => !rule.IsValid(cell, buildingComponent)).Count();
+
+            if (invalidBuildingRuleAmount > 0) continue;
+            validBuildings.Add(buildingComponent.type);
+        }
+
+        return validBuildings;
     }
 }

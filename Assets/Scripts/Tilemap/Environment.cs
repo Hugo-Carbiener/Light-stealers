@@ -1,5 +1,7 @@
 public enum Environment { 
     plain,
     forest,
-    mountain
+    mountain,
+    city,
+    water
 }

@@ -11,7 +11,7 @@ public abstract class Rule : MonoBehaviour
 
     protected abstract List<Comparator> authorizedComparators { get; }
 
-    protected abstract bool IsValid(CellData cell, Building buildingType);
+    public abstract bool IsValid(CellData cell, Building buildingType);
 
     protected bool ComparatorIsAuthorized()
     {

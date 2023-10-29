@@ -23,7 +23,9 @@ public class BuildingFactory : MonoBehaviour
 
     [Header("Maps")]
     [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingsPrefabs;
+
     public event Action updateBuildingTilemapEvent;
+
     private TilemapManager tilemapManager;
     
     public List<Building> buildingsConstructed { get; private set; }
@@ -40,6 +42,8 @@ public class BuildingFactory : MonoBehaviour
         tilemapManager = TilemapManager.Instance;
     }
     
+
+
     /**
      * Method called by the radial menu to build a building of given type
      */
@@ -161,4 +165,6 @@ public class BuildingFactory : MonoBehaviour
             }
         }
     }
+
+    public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingsPrefabs; }
 }

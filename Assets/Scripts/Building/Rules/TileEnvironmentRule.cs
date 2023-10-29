@@ -11,7 +11,7 @@ public class TileEnvironmentRule : Rule
 
     protected override List<Comparator> authorizedComparators => new List<Comparator> { Comparator.EQUAL, Comparator.NOT_EQUAL };
 
-    protected override bool IsValid(CellData cell, Building buildingType)
+    public override bool IsValid(CellData cell, Building buildingType)
     {
         ComparatorIsAuthorized();
 
