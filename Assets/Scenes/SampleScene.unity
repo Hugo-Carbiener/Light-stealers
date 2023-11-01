@@ -1152,6 +1152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353966159}
   - component: {fileID: 353966160}
+  - component: {fileID: 353966161}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -1190,6 +1191,19 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 22d41409f5a61f944882301a4ffa02ac, type: 3}
   m_SortingOrder: 0
+--- !u!114 &353966161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353966158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1da30693e26dfef4280a93ce3f41cae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  document: {fileID: 353966160}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,7 +3710,6 @@ GameObject:
   - component: {fileID: 1061918441}
   - component: {fileID: 1061918440}
   - component: {fileID: 1061918443}
-  - component: {fileID: 1061918446}
   - component: {fileID: 1061918445}
   - component: {fileID: 1061918444}
   m_Layer: 5
@@ -3839,21 +3852,6 @@ MonoBehaviour:
   foodProdText: {fileID: 0}
   woodProdText: {fileID: 0}
   stonProdText: {fileID: 0}
---- !u!114 &1061918446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061918438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1da30693e26dfef4280a93ce3f41cae3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foodText: {fileID: 0}
-  woodText: {fileID: 0}
-  stoneText: {fileID: 0}
 --- !u!114 &1202629508
 MonoBehaviour:
   m_ObjectHideFlags: 0
