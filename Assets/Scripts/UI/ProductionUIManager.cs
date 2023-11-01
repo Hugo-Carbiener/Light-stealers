@@ -27,14 +27,14 @@ public class ProductionUIManager : UIManager
     public override void updateUIComponent()
     {
         ResourceManager.Instance.computeProductions();
-        updateText(foodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Food).ToString());
-        updateText(woodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Wood).ToString());
-        updateText(stonProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Stone).ToString());
+        //updateText(foodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Food).ToString());
+        //updateText(woodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Wood).ToString());
+        //updateText(stonProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Stone).ToString());
     }
     public void updateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
     {
-        updateText(foodProdText, foodAmount.ToString());
-        updateText(woodProdText, woodAmount.ToString());
-        updateText(stonProdText, stoneAmount.ToString());
+        //updateText(foodProdText, foodAmount.ToString());
+       // updateText(woodProdText, woodAmount.ToString());
+        //updateText(stonProdText, stoneAmount.ToString());
     }
 }

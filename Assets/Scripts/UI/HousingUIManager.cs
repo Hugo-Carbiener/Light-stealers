@@ -28,7 +28,7 @@ public class HousingUIManager : UIManager
     {
         int armySize = ArmyManager.Instance.armySize;
         int housingCapacity = ArmyManager.Instance.housingSize;
-        updateText(armySizeText, armySize.ToString());
-        updateText(housingCapacityText, housingCapacity.ToString());
+        //updateText(armySizeText, armySize.ToString());
+        //updateText(housingCapacityText, housingCapacity.ToString());
     }
 }
