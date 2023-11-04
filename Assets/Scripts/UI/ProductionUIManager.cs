@@ -24,7 +24,7 @@ public class ProductionUIManager : UIManager
     [SerializeField] private Text woodProdText;
     [SerializeField] private Text stonProdText;
   
-    public override void updateUIComponent()
+    public void updateUIComponent()
     {
         ResourceManager.Instance.computeProductions();
         //updateText(foodProdText, ResourceManager.Instance.getResourceProduction(ResourceTypes.Food).ToString());

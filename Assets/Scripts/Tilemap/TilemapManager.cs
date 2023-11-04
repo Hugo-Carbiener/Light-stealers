@@ -16,10 +16,6 @@ public class TilemapManager : MonoBehaviour
     [SerializeField] private int rows;
     private List<CellData> cells = new List<CellData>();
 
-    private bool displaySelection = false;
-    // true when the value of selectedCell just changed
-    private CellData selectedCell;
-
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
 
@@ -67,11 +63,6 @@ public class TilemapManager : MonoBehaviour
         initialPaintTilemap();
     }
 
-    private void Update()
-    {
-        DispatchSelectionTilemap();
-    }
-
     public int? getCell(Vector2Int coordinates)
     {
         for (int i = 0; i < cells.Count; i++)
@@ -98,8 +89,6 @@ public class TilemapManager : MonoBehaviour
 
     public int getTilemapColumns() { return columns; }
     public int getTilemapRows() { return rows; }
-    public bool selectionIsDisplayed() { return displaySelection; }
-    public CellData getSelectedCellData() { return selectedCell; }
 
     public void generateGroundTilemap(int columns, int rows)
     {
@@ -127,17 +116,6 @@ public class TilemapManager : MonoBehaviour
                 cells.Add(cell);
             }
         }
-    }
-    public void SelectCell(Vector2Int coordinates)
-    {
-        displaySelection = true;
-        int? cellIndex = getCell(coordinates);
-        selectedCell = cells[(int)cellIndex];
-    }
-
-    public void reSelectCell ()
-    {
-        displaySelection = !displaySelection;
     }
 
     public void setCellAtRandom(CellData data)
@@ -349,7 +327,8 @@ public class TilemapManager : MonoBehaviour
     public void DispatchSelectionTilemap()
     {
         selectionTilemap.ClearAllTiles();
-        if(displaySelection)
+        CellData selectedCell = TileSelectionManager.Instance.getSelectedCellData();
+        if (selectedCell != null)
         {
             selectionTilemap.SetTile(selectedCell.GetVector3Coordinates(), GameAssets.i.selectionTile); 
         }

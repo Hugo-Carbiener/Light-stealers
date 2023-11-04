@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class ResourceUIManager : UIManager
+public class ResourceUIManager : UIManager, PassiveUIInterface
 {
-    [SerializeField] private UIDocument document;
-    private VisualElement root;
     private Label foodLabel;
     private Label woodLabel;
     private Label stoneLabel;
@@ -34,7 +32,7 @@ public class ResourceUIManager : UIManager
         stoneLabel = root.Q<Label>("StoneLabel"); 
     }
 
-    public override void updateUIComponent()
+    public void UpdateUIComponent()
     {
         int foodAmount = ResourceManager.Instance.getResource(ResourceTypes.Food);
         int woodAmount = ResourceManager.Instance.getResource(ResourceTypes.Wood);

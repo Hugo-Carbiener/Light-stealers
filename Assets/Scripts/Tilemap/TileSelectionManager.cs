@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using UnityEngine.UIElements;
 
 public class TileSelectionManager : MonoBehaviour
 {
@@ -10,38 +11,81 @@ public class TileSelectionManager : MonoBehaviour
 
     [SerializeField] private TilemapManager tilemapManager;
     [SerializeField] private Tilemap selectionTilemap;
-    private bool cellIsSelected;
+    private CellData selectedCell;
+
+    private static TileSelectionManager _instance;
+    public static TileSelectionManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<TileSelectionManager>();
+            }
+
+            return _instance;
+        }
+    }
 
     private void Start()
     {
         tilemapManager = TilemapManager.Instance;
         selectionTilemap = tilemapManager.selectionTilemap;
-        InputManager.onSelectInput += updateFrameSelect;
-        cellIsSelected = false;
+        InputManager.onSelectInput += SelectCell;
     }
 
-    private void updateFrameSelect(Vector2 mousePosition)
+    private void SelectCell(Vector2 mousePosition)
     {
         Vector2Int oldFrameSelect = new Vector2Int(0, 0);
-
-        // Cell cannot be unselected or reselected selected if menu is opened on a selected cell
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
         oldFrameSelect = frameSelect;
         frameSelect = tilePos;
 
-        if (frameSelect == oldFrameSelect)
+        SetSelectCell(tilePos);
+        UpdateBuildingConstructionUI();
+    }
+
+    private void SetSelectCell(Vector2Int coordinates)
+    {
+        if (selectedCell && selectedCell.GetCoordinates() == coordinates)
         {
-            tilemapManager.reSelectCell();
-            cellIsSelected = false;
-        }
-        else
+            // unselect cell
+            selectedCell = null;
+            return;
+        } 
+
+        selectedCell = tilemapManager.getCellData(coordinates);
+    }
+
+    public CellData getSelectedCellData() { return selectedCell; }
+
+    private void UpdateBuildingConstructionUI()
+    {
+        if (!selectedCell)
         {
-            // generate newly selected cell coordinates
-            tilemapManager.SelectCell(tilePos);
-            cellIsSelected = true;
-            
+            CloseBuildingConstructionUI();
+            return;
         }
+
+        List<BuildingType> buildingsAvailable = GetValidBuildings(selectedCell);
+        if (buildingsAvailable.Count == 0)
+        {
+            CloseBuildingConstructionUI();
+            return;
+        }
+
+        BuildingConstructionUIManager buldingConstructionUI = BuildingConstructionUIManager.Instance;
+        buldingConstructionUI.UpdateUIComponent(buildingsAvailable);
+        buldingConstructionUI.setPosition(selectionTilemap.CellToWorld(selectedCell.GetVector3Coordinates()));
+        buldingConstructionUI.setVisibility(DisplayStyle.Flex);
+    }
+
+
+
+    private void CloseBuildingConstructionUI()
+    {
+        BuildingConstructionUIManager.Instance.setVisibility(DisplayStyle.None);
     }
 
     /**

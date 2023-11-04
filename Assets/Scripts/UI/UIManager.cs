@@ -5,10 +5,24 @@ using UnityEngine.UIElements;
 
 public abstract class UIManager : MonoBehaviour
 {
+    [SerializeField] protected UIDocument document;
+    protected VisualElement root;
+
     protected void updateText(Label text, string content)
     {
         text.text = content;
     }
 
-    public abstract void updateUIComponent();
+    public void setVisibility(DisplayStyle displayStyle)
+    {
+        root.style.display = displayStyle;
+    }
+
+    public void setPosition(Vector2 worldPosition)
+    {
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPosition);
+        var panelPos = RuntimePanelUtils.ScreenToPanel(root.panel, screenPoint);
+        root.style.top = Screen.height - panelPos.y;
+        root.style.left = panelPos.x;
+    }
 }

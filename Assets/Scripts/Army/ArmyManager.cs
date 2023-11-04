@@ -45,7 +45,7 @@ public class ArmyManager : MonoBehaviour
         armyTroopPool = new List<Troop>();
         armyTroops = new List<Troop>();
         initArmyPool();
-        HousingUIManager.Instance.updateUIComponent();
+        HousingUIManager.Instance.UpdateUIComponent();
     }
 
     private void Start()
@@ -122,7 +122,7 @@ public class ArmyManager : MonoBehaviour
         troop.transform.position = startingPos;
         armyTroops.Add(troop);
         armySize++;
-        HousingUIManager.Instance.updateUIComponent();
+        HousingUIManager.Instance.UpdateUIComponent();
     }
 
     /**

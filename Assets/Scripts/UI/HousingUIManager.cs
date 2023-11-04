@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HousingUIManager : UIManager
+public class HousingUIManager : UIManager, PassiveUIInterface
 {
     private static HousingUIManager _instance;
     public static HousingUIManager Instance
@@ -24,7 +24,7 @@ public class HousingUIManager : UIManager
     [SerializeField] private Text armySizeText;
     [SerializeField] private Text housingCapacityText;
 
-    public override void updateUIComponent()
+    public void UpdateUIComponent()
     {
         int armySize = ArmyManager.Instance.armySize;
         int housingCapacity = ArmyManager.Instance.housingSize;
