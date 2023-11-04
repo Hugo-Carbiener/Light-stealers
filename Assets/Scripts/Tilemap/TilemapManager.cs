@@ -77,14 +77,7 @@ public class TilemapManager : MonoBehaviour
 
     public CellData getCellData(Vector2Int coordinates)
     {
-        foreach (CellData data in cells)
-        {
-            if (data.coordinates == coordinates)
-            {
-                return data;
-            }
-        }
-        return null;
+        return cells[coordinates.y * columns + coordinates.x];
     }
 
     public int getTilemapColumns() { return columns; }
@@ -98,9 +91,9 @@ public class TilemapManager : MonoBehaviour
         waterTilemap.ClearAllTiles();
         selectionTilemap.ClearAllTiles();
 
-        for (int x = 0; x < columns; x++)
-        {
-            for (int y = 0; y < rows; y++)
+        for (int y = 0; y < rows; y++)
+        { 
+            for (int x = 0; x < columns; x++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
                 CellData cell = new CellData(coordinates);

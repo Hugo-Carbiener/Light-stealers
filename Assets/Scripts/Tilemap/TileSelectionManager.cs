@@ -43,12 +43,13 @@ public class TileSelectionManager : MonoBehaviour
         frameSelect = tilePos;
 
         SetSelectCell(tilePos);
+        tilemapManager.DispatchSelectionTilemap();
         UpdateBuildingConstructionUI();
     }
 
     private void SetSelectCell(Vector2Int coordinates)
     {
-        if (selectedCell && selectedCell.GetCoordinates() == coordinates)
+        if (selectedCell != null && selectedCell.GetCoordinates() == coordinates)
         {
             // unselect cell
             selectedCell = null;
@@ -62,7 +63,7 @@ public class TileSelectionManager : MonoBehaviour
 
     private void UpdateBuildingConstructionUI()
     {
-        if (!selectedCell)
+        if (selectedCell == null)
         {
             CloseBuildingConstructionUI();
             return;

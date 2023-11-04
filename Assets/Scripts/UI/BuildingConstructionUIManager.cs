@@ -42,7 +42,13 @@ public class BuildingConstructionUIManager : UIManager
     {
         TemplateContainer buttonToAdd = button.Instantiate();
         InitButton(buttonToAdd, buildingType);
-        root.Q<VisualElement>("BuildingsContainer").Add(buttonToAdd);
+        VisualElement buttonContainer = root.Q<VisualElement>("BuildingsContainer");
+        if (buttonContainer == null)
+        {
+            Debug.LogError("Could not find Visual element button container in Building construction panel");
+            return;
+        }
+        buttonContainer.Add(buttonToAdd);
     }
 
     private void InitButton(TemplateContainer button, BuildingType buildingType)

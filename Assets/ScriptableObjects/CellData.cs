@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class CellData : Object
+public class CellData
 {
     public Vector2Int coordinates { get; private set; }
     public Environment environment { get; set; }
