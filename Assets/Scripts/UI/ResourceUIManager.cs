@@ -37,15 +37,15 @@ public class ResourceUIManager : UIManager, PassiveUIInterface
         int foodAmount = ResourceManager.Instance.getResource(ResourceTypes.Food);
         int woodAmount = ResourceManager.Instance.getResource(ResourceTypes.Wood);
         int stoneAmount = ResourceManager.Instance.getResource(ResourceTypes.Stone);
-        updateText(foodLabel, foodAmount.ToString());
-        updateText(woodLabel, woodAmount.ToString());
-        updateText(stoneLabel, stoneAmount.ToString());
+        UpdateText(foodLabel, foodAmount.ToString());
+        UpdateText(woodLabel, woodAmount.ToString());
+        UpdateText(stoneLabel, stoneAmount.ToString());
     }
 
     public void updateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
     {
-        updateText(foodLabel, foodAmount.ToString());
-        updateText(woodLabel, woodAmount.ToString());
-        updateText(stoneLabel, stoneAmount.ToString());
+        UpdateText(foodLabel, foodAmount.ToString());
+        UpdateText(woodLabel, woodAmount.ToString());
+        UpdateText(stoneLabel, stoneAmount.ToString());
     }
 }

@@ -8,17 +8,17 @@ public abstract class UIManager : MonoBehaviour
     [SerializeField] protected UIDocument document;
     protected VisualElement root;
 
-    protected void updateText(Label text, string content)
+    protected void UpdateText(Label text, string content)
     {
         text.text = content;
     }
 
-    public void setVisibility(DisplayStyle displayStyle)
+    public void SetVisibility(DisplayStyle displayStyle)
     {
         root.style.display = displayStyle;
     }
 
-    public void setPosition(Vector2 worldPosition)
+    public void SetPosition(Vector2 worldPosition)
     {
         Vector2 screenPoint = RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, worldPosition, Camera.main);
         root.transform.position = screenPoint;

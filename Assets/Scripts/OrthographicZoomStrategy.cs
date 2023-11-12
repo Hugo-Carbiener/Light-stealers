@@ -11,13 +11,19 @@ public class OrthographicZoomStrategy : IZoomStrategy
     {
         if (cam.orthographicSize == nearZoomLimit) return;
         cam.orthographicSize = Mathf.Max(cam.orthographicSize - delta, nearZoomLimit);
-        BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+        if (TileSelectionManager.Instance.GetSelectedCellData() != null)
+        {
+            BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+        }
     }
 
     public void zoomOut(Camera cam, float delta, float farZoomLimit)
     {
         if (cam.orthographicSize == farZoomLimit) return;
         cam.orthographicSize = Mathf.Min(cam.orthographicSize + delta, farZoomLimit);
-        BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+        if (TileSelectionManager.Instance.GetSelectedCellData() != null)
+        {
+            BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+        }
     }
 }

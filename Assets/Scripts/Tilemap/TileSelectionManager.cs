@@ -69,34 +69,21 @@ public class TileSelectionManager : MonoBehaviour
      */
     private void UpdateBuildingConstructionUI()
     {
+        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
         if (selectedCell == null)
         {
-            CloseBuildingConstructionUI();
+            buildingConstructionUI.CloseBuildingConstructionUI();
             return;
         }
 
         List<BuildingType> buildingsAvailable = GetValidBuildings(selectedCell);
         if (buildingsAvailable.Count == 0)
         {
-            CloseBuildingConstructionUI();
+            buildingConstructionUI.CloseBuildingConstructionUI();
             return;
         }
 
-        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
-        buildingConstructionUI.ResetUIComponent();
-        buildingConstructionUI.UpdateUIComponent(buildingsAvailable);
-        buildingConstructionUI.setPosition(selectionTilemap.CellToWorld(selectedCell.GetVector3Coordinates()));
-        buildingConstructionUI.setVisibility(DisplayStyle.Flex);
-    }
-
-    /**
-     * Hides the building construction panel.
-     */
-    private void CloseBuildingConstructionUI()
-    {
-        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
-        buildingConstructionUI.setVisibility(DisplayStyle.None);
-        buildingConstructionUI.ResetUIComponent();
+        buildingConstructionUI.OpenBuildingConstrutionUI(GetValidBuildings(selectedCell), selectedCell.GetVector3Coordinates());
     }
 
     /**

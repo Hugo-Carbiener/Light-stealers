@@ -1,10 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Linq;
 using UnityEngine.Assertions;
-using System;
+using UnityEngine.UIElements;
 
 public class BuildingConstructionUIManager : UIManager
 {
@@ -12,7 +10,6 @@ public class BuildingConstructionUIManager : UIManager
     [SerializeField] private VisualTreeAsset button;
     [Header("Icons")]
     [SerializeField] SerializableDictionary<BuildingType, Sprite> iconDictionnary;
-
     private static Camera mainCamera;
 
     private static BuildingConstructionUIManager _instance;
@@ -36,11 +33,17 @@ public class BuildingConstructionUIManager : UIManager
         root = document.rootVisualElement;
     }
 
+    /**
+     * Add all the necessary buttons to the UI Component.
+     */
     public void UpdateUIComponent(List<BuildingType> buildingsToDisplay)
     {
         buildingsToDisplay.ForEach(building => AddButton(building));
     }
 
+    /**
+     * Generate a custom button and add it to the UI component.
+     */
     private void AddButton(BuildingType buildingType)
     {
         TemplateContainer buttonToAdd = button.Instantiate();
@@ -51,7 +54,35 @@ public class BuildingConstructionUIManager : UIManager
             Debug.LogError("Could not find Visual element button container in Building construction panel");
             return;
         }
+
+        Button buttonElement = buttonToAdd.Q<Button>("Button");
+        if (buttonElement == null)
+        {
+            Debug.LogError("Could not find Button element in Building construction panel button");
+            return;
+        }
+        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.build(buildingType); };  
         buttonContainer.Add(buttonToAdd);
+    }
+
+    /**
+     * Opens the building construction panel and initialise it.
+     */
+    public void OpenBuildingConstrutionUI(List<BuildingType> buildingsToDisplay, Vector3Int cellPosition)
+    {
+        ResetUIComponent();
+        UpdateUIComponent(buildingsToDisplay);
+        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition));
+        SetVisibility(DisplayStyle.Flex);
+    }
+
+    /**
+     * Hides the building construction panel.
+     */
+    public void CloseBuildingConstructionUI()
+    {
+        SetVisibility(DisplayStyle.None);
+        ResetUIComponent();
     }
 
     private void InitButton(TemplateContainer button, BuildingType buildingType)
@@ -75,6 +106,6 @@ public class BuildingConstructionUIManager : UIManager
 
         Vector3Int cellPosition = TileSelectionManager.Instance.GetSelectedCellData().GetVector3Coordinates();
         Vector3 worldPosition = TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition);
-        setPosition(worldPosition);
+        SetPosition(worldPosition);
     }
 }
