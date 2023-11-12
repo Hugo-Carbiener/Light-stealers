@@ -320,7 +320,7 @@ public class TilemapManager : MonoBehaviour
     public void DispatchSelectionTilemap()
     {
         selectionTilemap.ClearAllTiles();
-        CellData selectedCell = TileSelectionManager.Instance.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         if (selectedCell != null)
         {
             selectionTilemap.SetTile(selectedCell.GetVector3Coordinates(), GameAssets.i.selectionTile); 

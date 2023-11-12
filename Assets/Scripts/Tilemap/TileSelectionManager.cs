@@ -47,6 +47,9 @@ public class TileSelectionManager : MonoBehaviour
         UpdateBuildingConstructionUI();
     }
 
+    /**
+     * Select a cell if not cell is currently selected, unselect it otherwise. 
+     */
     private void SetSelectCell(Vector2Int coordinates)
     {
         if (selectedCell != null && selectedCell.GetCoordinates() == coordinates)
@@ -59,8 +62,11 @@ public class TileSelectionManager : MonoBehaviour
         selectedCell = tilemapManager.getCellData(coordinates);
     }
 
-    public CellData getSelectedCellData() { return selectedCell; }
+    public CellData GetSelectedCellData() { return selectedCell; }
 
+    /**
+     * Fetch the ist of avalibale buildings and display the building construction panel.
+     */
     private void UpdateBuildingConstructionUI()
     {
         if (selectedCell == null)
@@ -76,17 +82,21 @@ public class TileSelectionManager : MonoBehaviour
             return;
         }
 
-        BuildingConstructionUIManager buldingConstructionUI = BuildingConstructionUIManager.Instance;
-        buldingConstructionUI.UpdateUIComponent(buildingsAvailable);
-        buldingConstructionUI.setPosition(selectionTilemap.CellToWorld(selectedCell.GetVector3Coordinates()));
-        buldingConstructionUI.setVisibility(DisplayStyle.Flex);
+        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
+        buildingConstructionUI.ResetUIComponent();
+        buildingConstructionUI.UpdateUIComponent(buildingsAvailable);
+        buildingConstructionUI.setPosition(selectionTilemap.CellToWorld(selectedCell.GetVector3Coordinates()));
+        buildingConstructionUI.setVisibility(DisplayStyle.Flex);
     }
 
-
-
+    /**
+     * Hides the building construction panel.
+     */
     private void CloseBuildingConstructionUI()
     {
-        BuildingConstructionUIManager.Instance.setVisibility(DisplayStyle.None);
+        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
+        buildingConstructionUI.setVisibility(DisplayStyle.None);
+        buildingConstructionUI.ResetUIComponent();
     }
 
     /**
@@ -100,8 +110,7 @@ public class TileSelectionManager : MonoBehaviour
 
         foreach(GameObject building in buildingPrefabsDictionnary.Values)
         {
-            Building buildingComponent;
-            if (!TryGetComponent(out buildingComponent)) continue;
+            if (!building.TryGetComponent<Building>(out Building buildingComponent)) continue;
 
             Rule[] buildingRules = building.GetComponentsInChildren<Rule>();
             int invalidBuildingRuleAmount = buildingRules.Where(rule => !rule.IsValid(cell, buildingComponent)).Count();

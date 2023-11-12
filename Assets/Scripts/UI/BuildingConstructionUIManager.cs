@@ -13,6 +13,8 @@ public class BuildingConstructionUIManager : UIManager
     [Header("Icons")]
     [SerializeField] SerializableDictionary<BuildingType, Sprite> iconDictionnary;
 
+    private static Camera mainCamera;
+
     private static BuildingConstructionUIManager _instance;
     public static BuildingConstructionUIManager Instance
     {
@@ -29,6 +31,7 @@ public class BuildingConstructionUIManager : UIManager
 
     void Start()
     {
+        mainCamera = Camera.main;
         Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingType)).Length);
         root = document.rootVisualElement;
     }
@@ -57,6 +60,21 @@ public class BuildingConstructionUIManager : UIManager
         Label buildingName = button.Q<Label>("BuildingName");
 
         icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(buildingType));
-        buildingName.text = button.ToString();
+        buildingName.text = buildingType.ToString();
+    }
+
+    public void ResetUIComponent()
+    {
+        VisualElement buttonContainer = root.Q<VisualElement>("BuildingsContainer");
+        buttonContainer.Clear();
+    }
+
+    public void UpdateWorldPosition()
+    {
+        if (root.style.display == DisplayStyle.None) return;
+
+        Vector3Int cellPosition = TileSelectionManager.Instance.GetSelectedCellData().GetVector3Coordinates();
+        Vector3 worldPosition = TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition);
+        setPosition(worldPosition);
     }
 }

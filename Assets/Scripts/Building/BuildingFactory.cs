@@ -49,7 +49,7 @@ public class BuildingFactory : MonoBehaviour
      */
     public void build(BuildingType buildingType)
     {
-        CellData selectedCell = TileSelectionManager.Instance.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         
         // if the selected tile does have a building we cannot build another
         if (selectedCell.buildingTile) return;
@@ -102,7 +102,7 @@ public class BuildingFactory : MonoBehaviour
     private void notifyTilemapManager()
     {
         // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
-        CellData selectedCell = TileSelectionManager.Instance.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         foreach (Tile tile in GameAssets.i.buildingTiles)
         {
             if (tile.name.Equals(previouslyBuiltType.ToString()))
@@ -127,7 +127,7 @@ public class BuildingFactory : MonoBehaviour
 
     public void deconstructSelected()
     {
-        CellData selectedCell = TileSelectionManager.Instance.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         deconstructBuilding(selectedCell.coordinates);
     }
 

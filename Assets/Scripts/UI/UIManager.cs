@@ -20,9 +20,7 @@ public abstract class UIManager : MonoBehaviour
 
     public void setPosition(Vector2 worldPosition)
     {
-        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPosition);
-        var panelPos = RuntimePanelUtils.ScreenToPanel(root.panel, screenPoint);
-        root.style.top = Screen.height - panelPos.y;
-        root.style.left = panelPos.x;
+        Vector2 screenPoint = RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, worldPosition, Camera.main);
+        root.transform.position = screenPoint;
     }
 }

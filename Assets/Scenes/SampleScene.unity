@@ -3717,6 +3717,12 @@ MonoBehaviour:
       value: {fileID: 4421782755691153293, guid: 278870fad42c78340bcdee00dbe65ae3, type: 3}
     - key: 1
       value: {fileID: 4421782755691153293, guid: ccfb0bf8a5b2d6943bc2eae82a8347e0, type: 3}
+    - key: 2
+      value: {fileID: 4421782755691153293, guid: ae1e796d68713d44eb2fac93f4169998, type: 3}
+    - key: 3
+      value: {fileID: 4421782755691153293, guid: 9d2664715e6ba624aa58fbded9ee00a1, type: 3}
+    - key: 4
+      value: {fileID: 4421782755691153293, guid: 027130f9d57db1840bc1e77fcd02bf0d, type: 3}
 --- !u!4 &1228998643
 Transform:
   m_ObjectHideFlags: 0
