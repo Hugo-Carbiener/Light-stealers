@@ -47,7 +47,7 @@ public class BuildingFactory : MonoBehaviour
     /**
      * Method called by the radial menu to build a building of given type
      */
-    public void build(BuildingType buildingType)
+    public void Build(BuildingType buildingType)
     {
         CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         
@@ -59,7 +59,7 @@ public class BuildingFactory : MonoBehaviour
         Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
         foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
         {
-            int cost = prefabBuilding.getCost(resourceType);
+            int cost = prefabBuilding.GetCost(resourceType);
             int resource = resourceManager.getResource(resourceType);
             if (resource < cost)
             {
@@ -69,7 +69,7 @@ public class BuildingFactory : MonoBehaviour
         }
 
         // pay the build
-        payBuild(buildingType);
+        PayBuild(buildingType);
 
         previouslyBuiltType = buildingType;
 
@@ -78,9 +78,9 @@ public class BuildingFactory : MonoBehaviour
 
         Building building;
         if (instantiatedBuilding.TryGetComponent(out building)) {
-            building.setCoordinates(selectedCell.coordinates);
-            building.OnConstructionFinished.AddListener(notifyProductionManager);
-            building.OnConstructionFinished.AddListener(notifyTilemapManager);
+            building.SetCoordinates(selectedCell.coordinates);
+            building.OnConstructionFinished.AddListener(NotifyProductionManager);
+            building.OnConstructionFinished.AddListener(NotifyTilemapManager);
         }
 
         selectedCell.buildingType = buildingType;
@@ -90,16 +90,16 @@ public class BuildingFactory : MonoBehaviour
         // TODO 
         // add building in construction sprite update
 
-        building.startConstruction();
+        building.StartConstruction();
     }
 
-    private void notifyProductionManager()
+    private void NotifyProductionManager()
     {
         // we store the information we built a new 
         ProductionManager.Instance.AddBuilding(previouslyBuiltType);
     }
 
-    private void notifyTilemapManager()
+    private void NotifyTilemapManager()
     {
         // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
         CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
@@ -113,34 +113,34 @@ public class BuildingFactory : MonoBehaviour
         tilemapManager.DispatchTile(selectedCell.coordinates);
     }
     
-    private void payBuild(BuildingType buildingType)
+    private void PayBuild(BuildingType buildingType)
     {
         ResourceManager resourceManager = ResourceManager.Instance;
         Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
         foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
         {
-            int cost = prefabBuilding.getCost(resourceType);
+            int cost = prefabBuilding.GetCost(resourceType);
             int resource = resourceManager.getResource(resourceType);
             resourceManager.modifyResources(resourceType, -cost);
         }
     }
 
-    public void deconstructSelected()
+    public void DeconstructSelected()
     {
         CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
-        deconstructBuilding(selectedCell.coordinates);
+        DeconstructBuilding(selectedCell.coordinates);
     }
 
     /**
      * Deconstructs a specific building at specified coordinates
      */
-    public void deconstructBuilding(Vector2Int targetCoordinates)
+    public void DeconstructBuilding(Vector2Int targetCoordinates)
     {
         foreach (Building building in buildingsConstructed)
         {
-            if (building.getCoordinates() == targetCoordinates)
+            if (building.GetCoordinates() == targetCoordinates)
             {
-                if (building.canBeDeconstructed())
+                if (building.CanBeDeconstructed())
                 {
                     CellData targetCell = tilemapManager.getCellData(targetCoordinates);
 

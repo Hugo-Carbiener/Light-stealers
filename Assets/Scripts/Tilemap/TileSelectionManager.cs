@@ -67,23 +67,23 @@ public class TileSelectionManager : MonoBehaviour
     /**
      * Fetch the ist of avalibale buildings and display the building construction panel.
      */
-    private void UpdateBuildingConstructionUI()
+    public void UpdateBuildingConstructionUI()
     {
-        BuildingConstructionUIManager buildingConstructionUI = BuildingConstructionUIManager.Instance;
+        BuildingUIManager buildingUI = BuildingUIManager.Instance;
         if (selectedCell == null)
         {
-            buildingConstructionUI.CloseBuildingConstructionUI();
+            buildingUI.CloseBuildingConstructionUI();
             return;
         }
 
-        List<BuildingType> buildingsAvailable = GetValidBuildings(selectedCell);
-        if (buildingsAvailable.Count == 0)
+        if (selectedCell.building == null)
         {
-            buildingConstructionUI.CloseBuildingConstructionUI();
-            return;
+            List<BuildingType> buildingsAvailable = GetValidBuildings(selectedCell);
+            buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.GetVector3Coordinates());
+        } else
+        {
+            buildingUI.OpenBuildingDeconstrutionUI(selectedCell.coordinates);
         }
-
-        buildingConstructionUI.OpenBuildingConstrutionUI(GetValidBuildings(selectedCell), selectedCell.GetVector3Coordinates());
     }
 
     /**

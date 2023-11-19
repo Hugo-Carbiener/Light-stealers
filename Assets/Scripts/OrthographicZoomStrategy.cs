@@ -13,7 +13,7 @@ public class OrthographicZoomStrategy : IZoomStrategy
         cam.orthographicSize = Mathf.Max(cam.orthographicSize - delta, nearZoomLimit);
         if (TileSelectionManager.Instance.GetSelectedCellData() != null)
         {
-            BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+            BuildingUIManager.Instance.UpdateWorldPosition();
         }
     }
 
@@ -23,7 +23,7 @@ public class OrthographicZoomStrategy : IZoomStrategy
         cam.orthographicSize = Mathf.Min(cam.orthographicSize + delta, farZoomLimit);
         if (TileSelectionManager.Instance.GetSelectedCellData() != null)
         {
-            BuildingConstructionUIManager.Instance.UpdateWorldPosition();
+            BuildingUIManager.Instance.UpdateWorldPosition();
         }
     }
 }
