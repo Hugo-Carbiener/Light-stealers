@@ -29,7 +29,7 @@ public class SerializableDictionary<TKey, TValue>
                 return item.value;
             }
         }
-        return default(TValue);
+        return default;
     }
 
     public void Put(TKey key, TValue value)

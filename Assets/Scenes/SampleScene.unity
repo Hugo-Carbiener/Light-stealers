@@ -6556,7 +6556,7 @@ GameObject:
   - component: {fileID: 1994130727}
   - component: {fileID: 1994130726}
   m_Layer: 0
-  m_Name: BuildingConstructionUIManager
+  m_Name: BuildingUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6603,6 +6603,8 @@ MonoBehaviour:
       value: {fileID: 21300000, guid: 24835673c47446a4582ade66588066a9, type: 3}
     - key: 4
       value: {fileID: 21300000, guid: 24835673c47446a4582ade66588066a9, type: 3}
+  deconstructionButtonLabel: Deconstruct
+  deconstructionIcon: {fileID: 21300000, guid: e7a22070b1a30fc4681007b88e8eaf67, type: 3}
 --- !u!114 &1994130727
 MonoBehaviour:
   m_ObjectHideFlags: 0

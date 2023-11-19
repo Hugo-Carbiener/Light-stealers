@@ -104,7 +104,10 @@ public class Building : MonoBehaviour
         worldCoordinates = TilemapManager.Instance.buildingsTilemap.CellToWorld((Vector3Int) coordinates);
     }
 
-    public int GetCost(ResourceTypes resourceType) { return costs.At(resourceType); }
+    public int GetCost(ResourceTypes resourceType) { 
+        int cost = costs.At(resourceType);
+        return cost == null ? 0 : cost;
+    }
 
     public float GetConstructionDuration() { return constructionDuration; }
 

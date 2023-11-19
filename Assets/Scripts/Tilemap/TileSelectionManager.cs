@@ -78,7 +78,7 @@ public class TileSelectionManager : MonoBehaviour
 
         if (selectedCell.building == null)
         {
-            List<BuildingType> buildingsAvailable = GetValidBuildings(selectedCell);
+            List<Building> buildingsAvailable = GetValidBuildings(selectedCell);
             buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.GetVector3Coordinates());
         } else
         {
@@ -89,9 +89,9 @@ public class TileSelectionManager : MonoBehaviour
     /**
      * Generates the list of building types that are valid to be built on a given tile.
      */
-    private List<BuildingType> GetValidBuildings(CellData cell)
+    private List<Building> GetValidBuildings(CellData cell)
     {
-        List<BuildingType> validBuildings = new List<BuildingType>();
+        List<Building> validBuildings = new List<Building>();
         SerializableDictionary<BuildingType, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
         Dictionary<BuildingType, GameObject> buildingPrefabsDictionnary = buildingPrefabs.ToDictionnary();
 
@@ -103,7 +103,7 @@ public class TileSelectionManager : MonoBehaviour
             int invalidBuildingRuleAmount = buildingRules.Where(rule => !rule.IsValid(cell, buildingComponent)).Count();
 
             if (invalidBuildingRuleAmount > 0) continue;
-            validBuildings.Add(buildingComponent.type);
+            validBuildings.Add(buildingComponent);
         }
 
         return validBuildings;

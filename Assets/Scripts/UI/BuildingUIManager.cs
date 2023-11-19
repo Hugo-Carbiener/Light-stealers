@@ -39,7 +39,7 @@ public class BuildingUIManager : UIManager
     /**
      * Add all the necessary buttons to the UI Component.
      */
-    public void UpdateBuildingConstructionUIComponent(List<BuildingType> buildingsToDisplay)
+    public void UpdateBuildingConstructionUIComponent(List<Building> buildingsToDisplay)
     {
         if (buildingsToDisplay.Count == 0)
         {
@@ -53,7 +53,7 @@ public class BuildingUIManager : UIManager
     /**
      * Generate a custom button and add it to the UI component.
      */
-    private void AddBuildingButton(BuildingType buildingType)
+    private void AddBuildingButton(Building buildingType)
     {
         TemplateContainer buttonToAdd = button.Instantiate();
         InitBuildingButton(buttonToAdd, buildingType);
@@ -70,7 +70,7 @@ public class BuildingUIManager : UIManager
             Debug.LogError("Could not find Button element in Building construction panel button");
             return;
         }
-        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType); };  
+        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type); };  
         buttonContainer.Add(buttonToAdd);
     }
 
@@ -79,7 +79,7 @@ public class BuildingUIManager : UIManager
     /**
      * Opens the building construction panel and initialise it.
      */
-    public void OpenBuildingConstrutionUI(List<BuildingType> buildingsToDisplay, Vector3Int cellPosition)
+    public void OpenBuildingConstrutionUI(List<Building> buildingsToDisplay, Vector3Int cellPosition)
     {
         ResetUIComponent();
         UpdateBuildingConstructionUIComponent(buildingsToDisplay);
@@ -87,13 +87,19 @@ public class BuildingUIManager : UIManager
         SetVisibility(DisplayStyle.Flex);
     }
 
-    private void InitBuildingButton(TemplateContainer button, BuildingType buildingType)
+    private void InitBuildingButton(TemplateContainer button, Building building)
     {
         VisualElement icon = button.Q<VisualElement>("Icon");
         Label buildingName = button.Q<Label>("BuildingName");
+        Label foodAmountLabel = button.Q<Label>("FoodAmount");
+        Label woodAmountLabel = button.Q<Label>("WoodAmount");
+        Label stoneAmountLabel = button.Q<Label>("StoneAmount");
 
-        icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(buildingType));
-        buildingName.text = buildingType.ToString();
+        icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(building.type));
+        buildingName.text = building.type.ToString();
+        foodAmountLabel.text = building.GetCost(ResourceTypes.Food).ToString();
+        woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
+        stoneAmountLabel.text = building.GetCost(ResourceTypes.Stone).ToString();
     }
 
     /**
