@@ -100,6 +100,9 @@ public class BuildingUIManager : UIManager
         foodAmountLabel.text = building.GetCost(ResourceTypes.Food).ToString();
         woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
         stoneAmountLabel.text = building.GetCost(ResourceTypes.Stone).ToString();
+        
+        VisualElement costContainer = button.Q<VisualElement>("CostContainer");
+        costContainer.style.display = DisplayStyle.Flex;
     }
 
     /**
@@ -152,6 +155,9 @@ public class BuildingUIManager : UIManager
 
         icon.style.backgroundImage = new StyleBackground(deconstructionIcon);
         buildingName.text = deconstructionButtonLabel;
+
+        VisualElement costContainer = button.Q<VisualElement>("CostContainer");
+        costContainer.style.display = DisplayStyle.None;
     }
 
     // MISC
