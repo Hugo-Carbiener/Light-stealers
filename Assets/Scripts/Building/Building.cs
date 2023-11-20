@@ -7,10 +7,13 @@ using UnityEngine.Assertions;
 
 public class Building : MonoBehaviour
 {
+
     private Vector2Int coordinates;
 
     private Vector2 worldCoordinates;
 
+    [Header("General")]
+    public BuildingType type;
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
     [Header("Construction")]
@@ -42,14 +45,14 @@ public class Building : MonoBehaviour
         //OnConstructionFinished.AddListener(finishConstruction);
         if (doesConsumeFood)
         {
-            OnConstructionFinished.AddListener(linkConsumptionToCycle);
+            OnConstructionFinished.AddListener(LinkConsumptionToCycle);
             OnConstructionFinished.AddListener(ProductionUIManager.Instance.updateUIComponent);
         }
     }
  
-    public void startConstruction()
+    public void StartConstruction()
     {
-        StartCoroutine(startConstructionCoroutine());
+        StartCoroutine(StartConstructionCoroutine());
     }
 
     /*private void finishConstruction()
@@ -57,7 +60,7 @@ public class Building : MonoBehaviour
        
     }*/
 
-    private IEnumerator startConstructionCoroutine()
+    private IEnumerator StartConstructionCoroutine()
     {
         while (constructionTimer < constructionDuration)
         {
@@ -69,45 +72,48 @@ public class Building : MonoBehaviour
     }
 
     // Link the production of resources to the day night cycle
-    private void linkConsumptionToCycle()
+    private void LinkConsumptionToCycle()
     {
         Debug.Log(name + " is constructed. Linking to the resource consumption.");
-        DayNightCycleManager.OnCyclePhaseStart += consumeResources;
+        DayNightCycleManager.OnCyclePhaseStart += ConsumeResources;
     }
 
-    private void consumeResources(DayNightCyclePhases phaseToConsumeResources)
+    private void ConsumeResources(DayNightCyclePhases phaseToConsumeResources)
     {
         if (phaseToConsumeResources == consumeResourceAtStartOfPhase)
         {
             bool resourceIsAvailable = ResourceManager.Instance.modifyResources(resourceConsummed, -amountConsummed);
-            updateActivationStatus(resourceIsAvailable);
+            UpdateActivationStatus(resourceIsAvailable);
         }
     }
 
     /**
      * Update the status of the building and enable/disable components accordingly
      */
-    public void updateActivationStatus(bool targetStatus)
+    public void UpdateActivationStatus(bool targetStatus)
     {
         activated = targetStatus;
         ProductionUIManager.Instance.updateUIComponent();
     }
 
-    public Vector2Int getCoordinates() { return coordinates; }
+    public Vector2Int GetCoordinates() { return coordinates; }
 
-    public void setCoordinates(Vector2Int coords)
+    public void SetCoordinates(Vector2Int coords)
     {
         coordinates = coords;
         worldCoordinates = TilemapManager.Instance.buildingsTilemap.CellToWorld((Vector3Int) coordinates);
     }
 
-    public int getCost(ResourceTypes resourceType) { return costs.At(resourceType); }
+    public int GetCost(ResourceTypes resourceType) { 
+        int cost = costs.At(resourceType);
+        return cost == null ? 0 : cost;
+    }
 
-    public float getCOnstructionDuration() { return constructionDuration; }
+    public float GetConstructionDuration() { return constructionDuration; }
 
-    public float getConstructionProgression() { return constructionTimer / constructionDuration; }
+    public float GetConstructionProgression() { return constructionTimer / constructionDuration; }
 
-    public bool canBeDeconstructed() { return buildingCanBeDeconstructed; }
+    public bool CanBeDeconstructed() { return buildingCanBeDeconstructed; }
 
     
 }

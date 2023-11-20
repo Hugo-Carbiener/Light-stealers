@@ -6,6 +6,6 @@ using UnityEngine.Tilemaps;
 public class TileData : ScriptableObject
 {
     public List<TileBase> tiles;
-    public environments environment;
+    public Environment environment;
 
 }

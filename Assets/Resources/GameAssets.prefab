@@ -44,18 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6574e7acb02e543b229775d0de4ac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plainTile: {fileID: 11400000, guid: 4287fbb1a9b64044c9e46b396dcc89a1, type: 2}
-  forestTile: {fileID: 11400000, guid: 801f4cb1cc2a3934ea1d8e266dcbb838, type: 2}
-  mountainTile: {fileID: 11400000, guid: bda5e0f800a70e741be37ced2d4caf08, type: 2}
+  plainTile: {fileID: 11400000, guid: 36efec29bcdc6db47bd2f15980e51b76, type: 2}
+  forestTile: {fileID: 11400000, guid: 94946f9490a01e94bbc8e5e38f643b16, type: 2}
+  mountainTile: {fileID: 11400000, guid: 589b82850cc1a8e4baf9bb6b0cc351b5, type: 2}
   waterTile: {fileID: 11400000, guid: 4702d019f6a3f8f498c7e9f9d4e06e1f, type: 2}
-  cityTile: {fileID: 11400000, guid: 53179c6370a1f2e4c97e61663802585f, type: 2}
+  cityTile: {fileID: 11400000, guid: 7361fe102934b224784e4ce96340245e, type: 2}
   buildingTiles:
   - {fileID: 11400000, guid: 3e1a8dddff2ac1b4c9264ada8afb8756, type: 2}
   - {fileID: 11400000, guid: 013d9f1b4095b1a4698b44c21cb20d09, type: 2}
   - {fileID: 11400000, guid: 8e450a493e3f2164ab1ea1bd72a3692f, type: 2}
   - {fileID: 11400000, guid: 698ada0f4e16c8141ab26e35f038d270, type: 2}
   - {fileID: 11400000, guid: c91ae5e44f88c3043842391c1fb7cf00, type: 2}
-  selectionTile: {fileID: 11400000, guid: 4a0a966d4002c92429b66eb1167ede32, type: 2}
+  selectionTile: {fileID: 11400000, guid: 35a8b97ad0736d34c8bc8e55690e2146, type: 2}
   plainTileSprite: {fileID: 21300000, guid: b8b6d021b40f94a428fdc37394092450, type: 3}
   forestTileSprite: {fileID: 21300000, guid: 74049dc7993f36b44a2b1391837fd139, type: 3}
   mountainTileSprite: {fileID: 21300000, guid: a8129d7e2422d754e95ff5e90c79c80a, type: 3}

@@ -22,13 +22,15 @@ public class BuildingFactory : MonoBehaviour
     }
 
     [Header("Maps")]
-    [SerializeField] private SerializableDictionary<BuildingTypes, GameObject> buildingsPrefabs;
+    [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingsPrefabs;
+
     public event Action updateBuildingTilemapEvent;
+
     private TilemapManager tilemapManager;
     
     public List<Building> buildingsConstructed { get; private set; }
 
-    private BuildingTypes previouslyBuiltType;
+    private BuildingType previouslyBuiltType;
 
     private void Awake()
     {
@@ -40,12 +42,14 @@ public class BuildingFactory : MonoBehaviour
         tilemapManager = TilemapManager.Instance;
     }
     
+
+
     /**
      * Method called by the radial menu to build a building of given type
      */
-    public void build(BuildingTypes buildingType)
+    public void Build(BuildingType buildingType)
     {
-        CellData selectedCell = tilemapManager.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         
         // if the selected tile does have a building we cannot build another
         if (selectedCell.buildingTile) return;
@@ -55,7 +59,7 @@ public class BuildingFactory : MonoBehaviour
         Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
         foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
         {
-            int cost = prefabBuilding.getCost(resourceType);
+            int cost = prefabBuilding.GetCost(resourceType);
             int resource = resourceManager.getResource(resourceType);
             if (resource < cost)
             {
@@ -65,7 +69,7 @@ public class BuildingFactory : MonoBehaviour
         }
 
         // pay the build
-        payBuild(buildingType);
+        PayBuild(buildingType);
 
         previouslyBuiltType = buildingType;
 
@@ -74,9 +78,9 @@ public class BuildingFactory : MonoBehaviour
 
         Building building;
         if (instantiatedBuilding.TryGetComponent(out building)) {
-            building.setCoordinates(selectedCell.coordinates);
-            building.OnConstructionFinished.AddListener(notifyProductionManager);
-            building.OnConstructionFinished.AddListener(notifyTilemapManager);
+            building.SetCoordinates(selectedCell.coordinates);
+            building.OnConstructionFinished.AddListener(NotifyProductionManager);
+            building.OnConstructionFinished.AddListener(NotifyTilemapManager);
         }
 
         selectedCell.buildingType = buildingType;
@@ -86,19 +90,19 @@ public class BuildingFactory : MonoBehaviour
         // TODO 
         // add building in construction sprite update
 
-        building.startConstruction();
+        building.StartConstruction();
     }
 
-    private void notifyProductionManager()
+    private void NotifyProductionManager()
     {
         // we store the information we built a new 
         ProductionManager.Instance.AddBuilding(previouslyBuiltType);
     }
 
-    private void notifyTilemapManager()
+    private void NotifyTilemapManager()
     {
         // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
-        CellData selectedCell = tilemapManager.getSelectedCellData();
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         foreach (Tile tile in GameAssets.i.buildingTiles)
         {
             if (tile.name.Equals(previouslyBuiltType.ToString()))
@@ -109,40 +113,40 @@ public class BuildingFactory : MonoBehaviour
         tilemapManager.DispatchTile(selectedCell.coordinates);
     }
     
-    private void payBuild(BuildingTypes buildingType)
+    private void PayBuild(BuildingType buildingType)
     {
         ResourceManager resourceManager = ResourceManager.Instance;
         Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
         foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
         {
-            int cost = prefabBuilding.getCost(resourceType);
+            int cost = prefabBuilding.GetCost(resourceType);
             int resource = resourceManager.getResource(resourceType);
             resourceManager.modifyResources(resourceType, -cost);
         }
     }
 
-    public void deconstructSelected()
+    public void DeconstructSelected()
     {
-        CellData selectedCell = tilemapManager.getSelectedCellData();
-        deconstructBuilding(selectedCell.coordinates);
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
+        DeconstructBuilding(selectedCell.coordinates);
     }
 
     /**
      * Deconstructs a specific building at specified coordinates
      */
-    public void deconstructBuilding(Vector2Int targetCoordinates)
+    public void DeconstructBuilding(Vector2Int targetCoordinates)
     {
         foreach (Building building in buildingsConstructed)
         {
-            if (building.getCoordinates() == targetCoordinates)
+            if (building.GetCoordinates() == targetCoordinates)
             {
-                if (building.canBeDeconstructed())
+                if (building.CanBeDeconstructed())
                 {
                     CellData targetCell = tilemapManager.getCellData(targetCoordinates);
 
                     // update production data
-                    Dictionary<BuildingTypes, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
-                    buildingsAmount[(BuildingTypes)targetCell.buildingType] -= 1;
+                    Dictionary<BuildingType, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
+                    buildingsAmount[(BuildingType)targetCell.buildingType] -= 1;
 
                     // update cell data
                     targetCell.buildingType = null;
@@ -161,4 +165,6 @@ public class BuildingFactory : MonoBehaviour
             }
         }
     }
+
+    public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingsPrefabs; }
 }

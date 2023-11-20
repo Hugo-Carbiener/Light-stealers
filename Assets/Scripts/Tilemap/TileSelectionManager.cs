@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
+using UnityEngine.UIElements;
 
 public class TileSelectionManager : MonoBehaviour
 {
@@ -9,59 +11,101 @@ public class TileSelectionManager : MonoBehaviour
 
     [SerializeField] private TilemapManager tilemapManager;
     [SerializeField] private Tilemap selectionTilemap;
-    [SerializeField] private RadialMenuController radialMenu;
-    private bool cellIsSelected;
+    private CellData selectedCell;
+
+    private static TileSelectionManager _instance;
+    public static TileSelectionManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<TileSelectionManager>();
+            }
+
+            return _instance;
+        }
+    }
 
     private void Start()
     {
-        if (!radialMenu) radialMenu = GameObject.Find("Radial Menu Canvas").GetComponent<RadialMenuController>();
-
         tilemapManager = TilemapManager.Instance;
         selectionTilemap = tilemapManager.selectionTilemap;
-        InputManager.onSelectInput += updateFrameSelect;
-        InputManager.onRightClick += SwitchMenu;
-        cellIsSelected = false;
+        InputManager.onSelectInput += SelectCell;
     }
 
-    private void updateFrameSelect(Vector2 mousePosition)
+    private void SelectCell(Vector2 mousePosition)
     {
         Vector2Int oldFrameSelect = new Vector2Int(0, 0);
-        if (!radialMenu.MenuIsOpened()) { 
-        // Cell cannot be unselected or reselected selected if menu is opened on a selected cell
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
         oldFrameSelect = frameSelect;
         frameSelect = tilePos;
 
-            if (frameSelect == oldFrameSelect)
-            {
-                tilemapManager.reSelectCell();
-                cellIsSelected = false;
-            }
-            else
-            {
-                // generate newly selected cell coordinates
-                tilemapManager.SelectCell(tilePos);
-                cellIsSelected = true;
-            }
+        SetSelectCell(tilePos);
+        tilemapManager.DispatchSelectionTilemap();
+        UpdateBuildingConstructionUI();
+    }
+
+    /**
+     * Select a cell if not cell is currently selected, unselect it otherwise. 
+     */
+    private void SetSelectCell(Vector2Int coordinates)
+    {
+        if (selectedCell != null && selectedCell.GetCoordinates() == coordinates)
+        {
+            // unselect cell
+            selectedCell = null;
+            return;
+        } 
+
+        selectedCell = tilemapManager.getCellData(coordinates);
+    }
+
+    public CellData GetSelectedCellData() { return selectedCell; }
+
+    /**
+     * Fetch the ist of avalibale buildings and display the building construction panel.
+     */
+    public void UpdateBuildingConstructionUI()
+    {
+        BuildingUIManager buildingUI = BuildingUIManager.Instance;
+        if (selectedCell == null)
+        {
+            buildingUI.CloseBuildingConstructionUI();
+            return;
+        }
+
+        if (selectedCell.building == null)
+        {
+            List<Building> buildingsAvailable = GetValidBuildings(selectedCell);
+            buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.GetVector3Coordinates());
+        } else
+        {
+            buildingUI.OpenBuildingDeconstrutionUI(selectedCell.coordinates);
         }
     }
 
-    public void SwitchMenu()
+    /**
+     * Generates the list of building types that are valid to be built on a given tile.
+     */
+    private List<Building> GetValidBuildings(CellData cell)
     {
-        // menu can be open and closed if a cell is selected
-        bool menuIsOpened = radialMenu.MenuIsOpened();
-        if (cellIsSelected)
+        List<Building> validBuildings = new List<Building>();
+        SerializableDictionary<BuildingType, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
+        Dictionary<BuildingType, GameObject> buildingPrefabsDictionnary = buildingPrefabs.ToDictionnary();
+
+        foreach(GameObject building in buildingPrefabsDictionnary.Values)
         {
-            if (!menuIsOpened)
-            {
-                environments menuEnvironment = tilemapManager.getSelectedCellData().environment;
-                radialMenu.OpenMenu(frameSelect, menuEnvironment);
-            }
-            else
-            {
-                radialMenu.CloseMenu();
-            }
+            if (!building.TryGetComponent<Building>(out Building buildingComponent)) continue;
+
+            Rule[] buildingRules = building.GetComponentsInChildren<Rule>();
+            int invalidBuildingRuleAmount = buildingRules.Where(rule => !rule.IsValid(cell, buildingComponent)).Count();
+
+            if (invalidBuildingRuleAmount > 0) continue;
+            validBuildings.Add(buildingComponent);
         }
+
+        return validBuildings;
     }
 }

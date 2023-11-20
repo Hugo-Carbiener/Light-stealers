@@ -1,14 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public abstract class UIManager : MonoBehaviour
 {
-    protected void updateText(Text text, string content)
+    [SerializeField] protected UIDocument document;
+    protected VisualElement root;
+
+    protected void UpdateText(Label text, string content)
     {
         text.text = content;
     }
 
-    public abstract void updateUIComponent();
+    public void SetVisibility(DisplayStyle displayStyle)
+    {
+        root.style.display = displayStyle;
+    }
+
+    public void SetPosition(Vector2 worldPosition)
+    {
+        Vector2 screenPoint = RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, worldPosition, Camera.main);
+        root.transform.position = screenPoint;
+    }
 }

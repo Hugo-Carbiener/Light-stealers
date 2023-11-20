@@ -29,7 +29,7 @@ public class SerializableDictionary<TKey, TValue>
                 return item.value;
             }
         }
-        return default(TValue);
+        return default;
     }
 
     public void Put(TKey key, TValue value)
@@ -73,5 +73,13 @@ public class SerializableDictionary<TKey, TValue>
             }
         }
         return false;
+    }
+
+    public Dictionary<TKey, TValue> ToDictionnary()
+    {
+        Dictionary<TKey, TValue> dictionnary = new Dictionary<TKey, TValue>();
+        elements.ForEach(element => dictionnary.Add(element.key, element.value));
+
+        return dictionnary;
     }
 }

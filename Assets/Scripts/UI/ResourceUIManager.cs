@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
-public class ResourceUIManager : UIManager
+public class ResourceUIManager : UIManager, PassiveUIInterface
 {
+    private Label foodLabel;
+    private Label woodLabel;
+    private Label stoneLabel;
+
     private static ResourceUIManager _instance;
     public static ResourceUIManager Instance
     {
@@ -19,25 +24,28 @@ public class ResourceUIManager : UIManager
         }
     }
 
-    [Header("Texts")]
-    [SerializeField] private Text foodText;
-    [SerializeField] private Text woodText;
-    [SerializeField] private Text stoneText;
+    private void Start()
+    {
+        root = document.rootVisualElement;
+        foodLabel = root.Q<Label>("FoodLabel"); 
+        woodLabel = root.Q<Label>("WoodLabel"); 
+        stoneLabel = root.Q<Label>("StoneLabel"); 
+    }
 
-    public override void updateUIComponent()
+    public void UpdateUIComponent()
     {
         int foodAmount = ResourceManager.Instance.getResource(ResourceTypes.Food);
         int woodAmount = ResourceManager.Instance.getResource(ResourceTypes.Wood);
         int stoneAmount = ResourceManager.Instance.getResource(ResourceTypes.Stone);
-        updateText(foodText, foodAmount.ToString());
-        updateText(woodText, woodAmount.ToString());
-        updateText(stoneText, stoneAmount.ToString());
+        UpdateText(foodLabel, foodAmount.ToString());
+        UpdateText(woodLabel, woodAmount.ToString());
+        UpdateText(stoneLabel, stoneAmount.ToString());
     }
 
-    public void updateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
+    public void UpdateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
     {
-        updateText(foodText, foodAmount.ToString());
-        updateText(woodText, woodAmount.ToString());
-        updateText(stoneText, stoneAmount.ToString());
+        UpdateText(foodLabel, foodAmount.ToString());
+        UpdateText(woodLabel, woodAmount.ToString());
+        UpdateText(stoneLabel, stoneAmount.ToString());
     }
 }

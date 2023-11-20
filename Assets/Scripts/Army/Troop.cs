@@ -15,7 +15,7 @@ public class Troop : MonoBehaviour
         gameObject.SetActive(false);
         ArmyManager.Instance.armySize--;
         ArmyManager.Instance.armyTroops.Remove(this);
-        HousingUIManager.Instance.updateUIComponent();
+        HousingUIManager.Instance.UpdateUIComponent();
     }
 
     public int getFoodConsummed() { return foodAmount; }
