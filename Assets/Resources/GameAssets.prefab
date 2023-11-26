@@ -47,7 +47,7 @@ MonoBehaviour:
   plainTile: {fileID: 11400000, guid: 36efec29bcdc6db47bd2f15980e51b76, type: 2}
   forestTile: {fileID: 11400000, guid: 94946f9490a01e94bbc8e5e38f643b16, type: 2}
   mountainTile: {fileID: 11400000, guid: 589b82850cc1a8e4baf9bb6b0cc351b5, type: 2}
-  waterTile: {fileID: 11400000, guid: 4702d019f6a3f8f498c7e9f9d4e06e1f, type: 2}
+  waterTile: {fileID: 11400000, guid: 9403db5f4b222be42a9cdf57495bf87e, type: 2}
   cityTile: {fileID: 11400000, guid: 7361fe102934b224784e4ce96340245e, type: 2}
   buildingTiles:
   - {fileID: 11400000, guid: 3e1a8dddff2ac1b4c9264ada8afb8756, type: 2}

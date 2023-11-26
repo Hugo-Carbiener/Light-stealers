@@ -14,6 +14,7 @@ public class TilemapManager : MonoBehaviour
 
     [SerializeField] private int columns;
     [SerializeField] private int rows;
+    [SerializeField] private int additionalWaterTileAmount;
     private List<CellData> cells = new List<CellData>();
 
     public bool activateClustering;
@@ -52,6 +53,7 @@ public class TilemapManager : MonoBehaviour
 
     private void Start()
     {
+        GenerateWaterTilemap(columns, rows);
         generateGroundTilemap(columns, rows);
         if (activateIsolatedCellsRemoval)
         {
@@ -85,12 +87,7 @@ public class TilemapManager : MonoBehaviour
 
     public void generateGroundTilemap(int columns, int rows)
     {
-        // Start on a blank grid
         groundTilemap.ClearAllTiles();
-        buildingsTilemap.ClearAllTiles();
-        waterTilemap.ClearAllTiles();
-        selectionTilemap.ClearAllTiles();
-
         for (int y = 0; y < rows; y++)
         { 
             for (int x = 0; x < columns; x++)
@@ -266,53 +263,29 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void generateCastle()
+    public void GenerateWaterTilemap(int columns, int rows)
     {
-        Vector2Int center = new Vector2Int(rows/2, columns/2);
-        int? centerCellIndex = getCell(center);
-        CellData centerCell = cells[(int)centerCellIndex];
-        //centerCell.waterTile = GameAssets.i.waterTiles[7];
-        List<Vector2Int> neighborCoordinates;
-        int i = 0;
-        
-
-        if (center.y % 2 == 0)
+        waterTilemap.ClearAllTiles();
+        for (int y = -additionalWaterTileAmount; y < rows + additionalWaterTileAmount; y++)
         {
-            neighborCoordinates = evenNeighborCoordinates;
-        }
-        else
-        {
-            neighborCoordinates = oddNeighborCoordinates;
-        }
-
-        foreach (Vector2Int neighbor in neighborCoordinates)
-        {
-            int? currentCellIndex = getCell(center + neighbor);
-            CellData currentCell = cells[(int)currentCellIndex];
-            i += 1;
-            //currentCell.waterTile = GameAssets.i.waterTiles[i];
+            for (int x = -additionalWaterTileAmount; x < columns + additionalWaterTileAmount; x++)
+            {
+                waterTilemap.SetTile(new Vector3Int(x, y, 0), GameAssets.i.waterTile);
+            }
         }
     }
 
     public void initialPaintTilemap()
-    // if a water tile is referred to in the CellData it will be painted and the ground/building tile ignored
     {
         foreach (CellData cell in cells)
         {
-            if (cell.waterTile == null)
+            if (cell.buildingTile != null)
             {
-                if (cell.buildingTile != null)
-                {
-                    buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
-                }
-                if (cell.groundTile != null)
-                {
-                    groundTilemap.SetTile(cell.GetVector3Coordinates(), cell.groundTile);
-                }
+                buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
             }
-            else
+            if (cell.groundTile != null)
             {
-                waterTilemap.SetTile(cell.GetVector3Coordinates(), cell.waterTile);
+                groundTilemap.SetTile(cell.GetVector3Coordinates(), cell.groundTile);
             }
         }
     }
@@ -329,6 +302,7 @@ public class TilemapManager : MonoBehaviour
 
     private void DispatchBuildingTilemap()
     {
+        buildingsTilemap.ClearAllTiles();
         foreach (CellData cell in cells)
         {
             if (cell.buildingTile)
