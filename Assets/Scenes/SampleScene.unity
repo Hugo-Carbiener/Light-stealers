@@ -1572,6 +1572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columns: 50
   rows: 50
+  additionalWaterTileAmount: 3
   activateClustering: 1
   activateIsolatedCellsRemoval: 1
 --- !u!4 &732722165

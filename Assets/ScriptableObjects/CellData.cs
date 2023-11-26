@@ -8,7 +8,6 @@ public class CellData
     public BuildingType? buildingType { get; set; }
     public TileBase groundTile { get; set; } = null;
     public TileBase buildingTile { get; set; } = null;
-    public TileBase waterTile { get; set; } = null;
     public bool isSelected { get; set; } = false;
 
     public CellData(Vector2Int coordinates)
