@@ -59,7 +59,7 @@ public class TileSelectionManager : MonoBehaviour
             return;
         } 
 
-        selectedCell = tilemapManager.getCellData(coordinates);
+        selectedCell = tilemapManager.GetCellData(coordinates);
     }
 
     public CellData GetSelectedCellData() { return selectedCell; }
@@ -79,7 +79,7 @@ public class TileSelectionManager : MonoBehaviour
         if (selectedCell.building == null)
         {
             List<Building> buildingsAvailable = GetValidBuildings(selectedCell);
-            buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.GetVector3Coordinates());
+            buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.coordinates);
         } else
         {
             buildingUI.OpenBuildingDeconstrutionUI(selectedCell.coordinates);

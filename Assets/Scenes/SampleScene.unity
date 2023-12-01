@@ -3712,7 +3712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15537ecd12d88d44080f22687c11b3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingsPrefabs:
+  buildingPrefabs:
     elements:
     - key: 0
       value: {fileID: 4421782755691153293, guid: 278870fad42c78340bcdee00dbe65ae3, type: 3}
@@ -3724,6 +3724,30 @@ MonoBehaviour:
       value: {fileID: 4421782755691153293, guid: 9d2664715e6ba624aa58fbded9ee00a1, type: 3}
     - key: 4
       value: {fileID: 4421782755691153293, guid: 027130f9d57db1840bc1e77fcd02bf0d, type: 3}
+  buildingTiles:
+    elements:
+    - key: 0
+      value: {fileID: 11400000, guid: 3e1a8dddff2ac1b4c9264ada8afb8756, type: 2}
+    - key: 1
+      value: {fileID: 11400000, guid: c91ae5e44f88c3043842391c1fb7cf00, type: 2}
+    - key: 2
+      value: {fileID: 11400000, guid: 013d9f1b4095b1a4698b44c21cb20d09, type: 2}
+    - key: 3
+      value: {fileID: 11400000, guid: 8e450a493e3f2164ab1ea1bd72a3692f, type: 2}
+    - key: 4
+      value: {fileID: 11400000, guid: 698ada0f4e16c8141ab26e35f038d270, type: 2}
+  environmentTiles:
+    elements:
+    - key: 0
+      value: {fileID: 11400000, guid: 36efec29bcdc6db47bd2f15980e51b76, type: 2}
+    - key: 1
+      value: {fileID: 11400000, guid: 94946f9490a01e94bbc8e5e38f643b16, type: 2}
+    - key: 2
+      value: {fileID: 11400000, guid: 589b82850cc1a8e4baf9bb6b0cc351b5, type: 2}
+    - key: 3
+      value: {fileID: 11400000, guid: 7361fe102934b224784e4ce96340245e, type: 2}
+    - key: 4
+      value: {fileID: 11400000, guid: 9403db5f4b222be42a9cdf57495bf87e, type: 2}
 --- !u!4 &1228998643
 Transform:
   m_ObjectHideFlags: 0
