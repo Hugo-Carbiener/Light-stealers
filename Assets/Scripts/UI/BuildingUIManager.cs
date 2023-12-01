@@ -39,7 +39,7 @@ public class BuildingUIManager : UIManager
     /**
      * Add all the necessary buttons to the UI Component.
      */
-    public void UpdateBuildingConstructionUIComponent(List<Building> buildingsToDisplay)
+    public void UpdateBuildingConstructionUIComponent(List<Building> buildingsToDisplay, Vector2Int cellPosition)
     {
         if (buildingsToDisplay.Count == 0)
         {
@@ -47,13 +47,13 @@ public class BuildingUIManager : UIManager
             return;
         }
 
-        buildingsToDisplay.ForEach(building => AddBuildingButton(building));
+        buildingsToDisplay.ForEach(building => AddBuildingButton(building, cellPosition));
     }
 
     /**
      * Generate a custom button and add it to the UI component.
      */
-    private void AddBuildingButton(Building buildingType)
+    private void AddBuildingButton(Building buildingType, Vector2Int cellPosition)
     {
         TemplateContainer buttonToAdd = button.Instantiate();
         InitBuildingButton(buttonToAdd, buildingType);
@@ -70,20 +70,18 @@ public class BuildingUIManager : UIManager
             Debug.LogError("Could not find Button element in Building construction panel button");
             return;
         }
-        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type); };  
+        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type, cellPosition); };  
         buttonContainer.Add(buttonToAdd);
     }
-
-    // DECONSTRUCTION
 
     /**
      * Opens the building construction panel and initialise it.
      */
-    public void OpenBuildingConstrutionUI(List<Building> buildingsToDisplay, Vector3Int cellPosition)
+    public void OpenBuildingConstrutionUI(List<Building> buildingsToDisplay, Vector2Int cellPosition)
     {
         ResetUIComponent();
-        UpdateBuildingConstructionUIComponent(buildingsToDisplay);
-        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition));
+        UpdateBuildingConstructionUIComponent(buildingsToDisplay, cellPosition);
+        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld((Vector3Int) cellPosition));
         SetVisibility(DisplayStyle.Flex);
     }
 
@@ -104,6 +102,8 @@ public class BuildingUIManager : UIManager
         VisualElement costContainer = button.Q<VisualElement>("CostContainer");
         costContainer.style.display = DisplayStyle.Flex;
     }
+
+    // DECONSTRUCTION
 
     /**
      * Add all the necessary buttons to the UI Component.

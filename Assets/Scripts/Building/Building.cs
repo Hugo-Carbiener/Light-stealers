@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;
 using UnityEngine.Assertions;
+using System;
 
 public class Building : MonoBehaviour
 {
@@ -14,22 +15,27 @@ public class Building : MonoBehaviour
 
     [Header("General")]
     public BuildingType type;
+
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
+
     [Header("Construction")]
     [SerializeField] private float constructionDuration;
-    private float constructionTimer = 0;
     public bool isConstructed { private set; get; } = false;
     public UnityEvent OnConstructionFinished { private set; get; } = new UnityEvent();
+    private float constructionTimer = 0;
 
     [Header("Deconstruction")]
-    [SerializeField] private bool buildingCanBeDeconstructed;
+    [SerializeField] private bool canBeDeconstructed;
 
     [Header("Daily Consumption")]
     [SerializeField] private bool doesConsumeFood;
     [SerializeField] private DayNightCyclePhases consumeResourceAtStartOfPhase;
     [SerializeField] private ResourceTypes resourceConsummed;
     [SerializeField] private int amountConsummed;
+
+    [Header("Terraforming")]
+    [SerializeField] private bool isTerraforming;
 
     public bool activated { private set; get; }
 
@@ -41,13 +47,25 @@ public class Building : MonoBehaviour
 
     private void Start()
     {
-        // programm the init to take place when the building is constructed
-        //OnConstructionFinished.AddListener(finishConstruction);
+        if (!BuildingCanBePayedFor()) { Destroy(gameObject); }
+        PayForBuilding();
+
+        if (isTerraforming)
+        {
+            Terraformer.TerraformAround(coordinates);
+        }
+
+        NotifyTilemapManager();        
+        OnConstructionFinished.AddListener(NotifyTilemapManager);
+        OnConstructionFinished.AddListener(finishConstruction);
+
         if (doesConsumeFood)
         {
             OnConstructionFinished.AddListener(LinkConsumptionToCycle);
             OnConstructionFinished.AddListener(ProductionUIManager.Instance.updateUIComponent);
         }
+
+        StartConstruction();
     }
  
     public void StartConstruction()
@@ -55,10 +73,10 @@ public class Building : MonoBehaviour
         StartCoroutine(StartConstructionCoroutine());
     }
 
-    /*private void finishConstruction()
+    private void finishConstruction()
     {
-       
-    }*/
+      
+    }
 
     private IEnumerator StartConstructionCoroutine()
     {
@@ -87,6 +105,13 @@ public class Building : MonoBehaviour
         }
     }
 
+    private void NotifyTilemapManager()
+    {
+        // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
+        CellData selectedCell = TilemapManager.Instance.GetCellData(coordinates);
+        TilemapManager.Instance.DispatchTile(selectedCell);
+    }
+
     /**
      * Update the status of the building and enable/disable components accordingly
      */
@@ -94,6 +119,32 @@ public class Building : MonoBehaviour
     {
         activated = targetStatus;
         ProductionUIManager.Instance.updateUIComponent();
+    }
+
+    private bool BuildingCanBePayedFor()
+    {
+        // if the player does not have the required amount of resources we cannot build
+        ResourceManager resourceManager = ResourceManager.Instance;
+        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
+        {
+            int cost = GetCost(resourceType);
+            int resource = resourceManager.getResource(resourceType);
+            if (resource < cost)
+            {
+                // player does not have the funds to pay for construction
+                return false; ;
+            }
+        }
+        return true;
+    }
+    private void PayForBuilding()
+    {
+        ResourceManager resourceManager = ResourceManager.Instance;
+        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
+        {
+            int cost = GetCost(resourceType);
+            resourceManager.modifyResources(resourceType, -cost);
+        }
     }
 
     public Vector2Int GetCoordinates() { return coordinates; }
@@ -113,7 +164,7 @@ public class Building : MonoBehaviour
 
     public float GetConstructionProgression() { return constructionTimer / constructionDuration; }
 
-    public bool CanBeDeconstructed() { return buildingCanBeDeconstructed; }
+    public bool CanBeDeconstructed() { return canBeDeconstructed; }
 
-    
+    public bool IsTerraforming() { return isTerraforming; }
 }

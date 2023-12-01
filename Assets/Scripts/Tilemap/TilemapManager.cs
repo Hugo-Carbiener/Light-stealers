@@ -4,7 +4,19 @@ using UnityEngine.Tilemaps;
 
 public class TilemapManager : MonoBehaviour
 {
-    public static TilemapManager Instance { get; private set; }
+    private static TilemapManager _instance;
+    public static TilemapManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<TilemapManager>();
+            }
+
+            return _instance;
+        }
+    }
 
     public Grid grid { get; private set; }
     public Tilemap groundTilemap { get; private set; }
@@ -19,10 +31,6 @@ public class TilemapManager : MonoBehaviour
 
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
-
-    private List<Vector2Int> evenNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(-1, 1), new Vector2Int(-1, 0), new Vector2Int(-1, -1), new Vector2Int(0, -1), };
-    private List<Vector2Int> oddNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(1, 1), new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, -1), };
-
     private void Awake()
     {
         // define tilemaps
@@ -35,17 +43,6 @@ public class TilemapManager : MonoBehaviour
         // event to refresh tiles
         BuildingFactory.Instance.updateBuildingTilemapEvent += DispatchBuildingTilemap;
 
-        // create instance of tilemapManager
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(Instance);
-            Debug.Log("You had to destroy a TilemapManager You fucked up");
-        }
-
         // add offset to building tilemap
         Vector3 offset = new Vector3(0, buildingsTilemap.layoutGrid.cellSize.x / 4, 0);
         buildingsTilemap.transform.position += offset;
@@ -54,38 +51,28 @@ public class TilemapManager : MonoBehaviour
     private void Start()
     {
         GenerateWaterTilemap(columns, rows);
-        generateGroundTilemap(columns, rows);
+        GenerateGroundTilemap(columns, rows);
+
         if (activateIsolatedCellsRemoval)
         {
-        removeIsolatedCells();
+        RemoveIsolatedCells();
         }
-        //generateCastle();
 
-        // --------------
-        initialPaintTilemap();
+        GenerateTownCenter(new Vector2Int(columns / 2, rows / 2));
+        DispatchGroundAndBuildingTilemaps();
     }
 
-    public int? getCell(Vector2Int coordinates)
+    public CellData GetCellData(Vector2Int coordinates)
     {
-        for (int i = 0; i < cells.Count; i++)
-        {
-            if (cells[i].coordinates == coordinates)
-            {
-                return i;
-            }
-        }
-        return null;
+        int index = coordinates.y * columns + coordinates.x;
+        if (!CoordinatesAreInBounds(coordinates) || index >= cells.Count) return null;
+        return cells[index];
     }
 
-    public CellData getCellData(Vector2Int coordinates)
-    {
-        return cells[coordinates.y * columns + coordinates.x];
-    }
+    public int GetTilemapColumns() { return columns; }
+    public int GetTilemapRows() { return rows; }
 
-    public int getTilemapColumns() { return columns; }
-    public int getTilemapRows() { return rows; }
-
-    public void generateGroundTilemap(int columns, int rows)
+    public void GenerateGroundTilemap(int columns, int rows)
     {
         groundTilemap.ClearAllTiles();
         for (int y = 0; y < rows; y++)
@@ -97,78 +84,64 @@ public class TilemapManager : MonoBehaviour
 
                 if (activateClustering)
                 {
-                    setTileToCellDependingOnNeighbor(cell);
+                    SetTileToCellDependingOnNeighbor(cell);
                 }
                 else
                 {
-                    setCellAtRandom(cell);
+                    SetCellAtRandom(cell);
                 }
                 cells.Add(cell);
             }
         }
     }
 
-    public void setCellAtRandom(CellData data)
+    public void SetCellAtRandom(CellData data)
     {
         int rd = Random.Range(0, 3);
         if (rd == 0)
         {
-            setCellToPlain(data);
+            SetCellToPlain(data);
         }
         else if (rd == 1)
         {
-            setCellToForest(data);
+            SetCellToForest(data);
         }
         else
         {
-            setCellToMountain(data);
+            SetCellToMountain(data);
         }
     }
-    public void setCellToPlain(CellData data) {
+    public void SetCellToPlain(CellData data) {
         data.environment = Environment.plain;
-        data.groundTile = GameAssets.i.plainTile;
     }
-    public void setCellToForest(CellData data) {
+    public void SetCellToForest(CellData data) {
         data.environment = Environment.forest;
-        data.groundTile = GameAssets.i.forestTile;
     }
-    public void setCellToMountain(CellData data) {
+    public void SetCellToMountain(CellData data) {
         data.environment = Environment.mountain;
-        data.groundTile = GameAssets.i.mountainTile;
     }
 
-    public void setTileToCellDependingOnNeighbor(CellData data)
+    public void SetTileToCellDependingOnNeighbor(CellData data)
     {
         float plainNeighbors = 0;
         float forestNeighbors = 0;
         float mountainNeighbors = 0;
 
-        // get neighbor coordinates depending on if the tile is even or odd
-        List<Vector2Int> neighborCoordinates;
-
-        if (data.coordinates.y % 2 == 0)
-        {
-            neighborCoordinates = evenNeighborCoordinates;
-        }
-        else
-        {
-            neighborCoordinates = oddNeighborCoordinates;
-        }
-        
+        List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(data.coordinates);
         foreach (Vector2Int neighbor in neighborCoordinates)
         {   
-            int? currentCellIndex = getCell(data.coordinates + neighbor);
-            if (currentCellIndex != null)
+            CellData celldata = GetCellData(data.coordinates + neighbor);
+            if (celldata != null)
             {
-                if (cells[ (int) currentCellIndex].environment == Environment.plain)
+                if (celldata.environment == Environment.plain)
                 {
                     plainNeighbors += 1;
                 }
-                else if (cells[ (int) currentCellIndex].environment == Environment.forest)
+                else if (celldata.environment == Environment.forest)
                 {
                     forestNeighbors += 1;
                 }
-                else if (cells[ (int) currentCellIndex].environment == Environment.mountain)
+                else if (celldata.environment == Environment.mountain)
                 {
                     mountainNeighbors += 1;
                 }
@@ -181,20 +154,18 @@ public class TilemapManager : MonoBehaviour
         
         double random = Random.value;
         if (random < plainProba) {
-            setCellToPlain(data);
+            SetCellToPlain(data);
         } else if (random >= plainProba && random < forestProba +plainProba)
         {
-            setCellToForest(data);
+            SetCellToForest(data);
         } else
         {
-            setCellToMountain(data);
+            SetCellToMountain(data);
         }
     }
 
-    public void removeIsolatedCells()
+    public void RemoveIsolatedCells()
     {
-        List<Vector2Int> neighborCoordinates;
-
         // iterate on each cells
         for (int x = 0; x < columns; x++)
         {
@@ -210,27 +181,18 @@ public class TilemapManager : MonoBehaviour
 
 
                 Vector2Int currentCellCoordinates = new Vector2Int(x, y);
-                int? currentCellIndex = getCell(currentCellCoordinates);
-                CellData currentCell = cells[(int)currentCellIndex];
-                Environment currentCellEnvironment = cells[(int)currentCellIndex].environment;
+                CellData currentCell = GetCellData(currentCellCoordinates);
+                if (currentCell == null) continue;
+                Environment currentCellEnvironment = currentCell.environment;
 
-                // get neighbor coordinates depending on if the tile is even or odd
-                if (y % 2 == 0)
-                {
-                    neighborCoordinates = evenNeighborCoordinates;
-                }
-                else
-                {
-                    neighborCoordinates = oddNeighborCoordinates;
-                }
-
+                List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(currentCellCoordinates);
                 foreach (Vector2Int coordinates in neighborCoordinates)
                 {
-                    int? neighborCellIndex = getCell(currentCellCoordinates + coordinates);
-                    if (neighborCellIndex != null)
+                    CellData neighborCell = GetCellData(currentCellCoordinates + coordinates);
+                    if (neighborCell != null)
                     {
-                    Environment neighborCellEnvironment = cells[(int)neighborCellIndex].environment;
-                    neighborAmount[neighborCellEnvironment] += 1;
+                        Environment neighborCellEnvironment = neighborCell.environment;
+                        neighborAmount[neighborCellEnvironment] += 1;
                     }
                 }
                 if (neighborAmount[currentCellEnvironment] == 0) // cell is isolated we need to replace it by the environement that is the most present around the cell
@@ -248,15 +210,15 @@ public class TilemapManager : MonoBehaviour
                     // replace the initial environment by the most present one
                     if (max.Key == Environment.plain)
                     {
-                        setCellToPlain(currentCell);
+                        SetCellToPlain(currentCell);
                     }
                     else if (max.Key == Environment.forest)
                     {
-                        setCellToForest(currentCell);
+                        SetCellToForest(currentCell);
                     }
                     else if (max.Key == Environment.mountain)
                     {
-                        setCellToMountain(currentCell);
+                        SetCellToMountain(currentCell);
                     }
                 }
             }
@@ -275,18 +237,23 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void initialPaintTilemap()
+    public void GenerateTownCenter(Vector2Int coordinates)
+    {
+        CellData targetCell = GetCellData(coordinates);
+        if (targetCell == null)
+        {
+            Debug.LogError("Error: could not find center tile to place fountain.");
+            return;
+        }
+        targetCell.environment = Environment.city;
+        BuildingFactory.Instance.Build(BuildingType.Fountain, coordinates);
+    }
+
+    public void DispatchGroundAndBuildingTilemaps()
     {
         foreach (CellData cell in cells)
         {
-            if (cell.buildingTile != null)
-            {
-                buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
-            }
-            if (cell.groundTile != null)
-            {
-                groundTilemap.SetTile(cell.GetVector3Coordinates(), cell.groundTile);
-            }
+            DispatchTile(cell);
         }
     }
 
@@ -305,17 +272,30 @@ public class TilemapManager : MonoBehaviour
         buildingsTilemap.ClearAllTiles();
         foreach (CellData cell in cells)
         {
-            if (cell.buildingTile)
+            if (cell.building)
             {
-                buildingsTilemap.SetTile(cell.GetVector3Coordinates(), cell.buildingTile);
+                Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles().At(cell.building.type);
+                buildingsTilemap.SetTile(cell.GetVector3Coordinates(), buildingTile);
             }
         }
     }
 
-    public void DispatchTile(Vector2Int coordinates)
+    public void DispatchTile(CellData cellData)
     {
-        CellData data = getCellData(coordinates);
-        groundTilemap.SetTile(data.GetVector3Coordinates(), data.groundTile);
-        buildingsTilemap.SetTile(data.GetVector3Coordinates(), data.buildingTile);
+        Tile environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(cellData.environment);
+        groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
+
+        if (cellData.building != null)
+        {
+            Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type);
+            buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
+
+            // TODO - display construction asset while the building is not finished.
+        }
+    }
+
+    private bool CoordinatesAreInBounds(Vector2Int coordinates)
+    {
+        return coordinates.x >= 0 && coordinates.x < columns && coordinates.y >= 0 && coordinates.y < rows;
     }
 }

@@ -41,7 +41,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4421782755691153293}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0dc8842900bb2214fa83506f74676b31, type: 3}
   m_Name: 
@@ -52,11 +52,12 @@ MonoBehaviour:
     - key: 0
       value: 10
   constructionDuration: 3
-  buildingCanBeDeconstructed: 1
+  canBeDeconstructed: 0
   doesConsumeFood: 0
   consumeResourceAtStartOfPhase: 1
   resourceConsummed: 2
   amountConsummed: 1
+  isTerraforming: 0
 --- !u!114 &2760587689436357825
 MonoBehaviour:
   m_ObjectHideFlags: 0

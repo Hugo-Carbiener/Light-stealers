@@ -22,11 +22,11 @@ public class BuildingFactory : MonoBehaviour
     }
 
     [Header("Maps")]
-    [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingsPrefabs;
+    [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingPrefabs;
+    [SerializeField] private SerializableDictionary<BuildingType, Tile> buildingTiles;
+    [SerializeField] private SerializableDictionary<Environment, Tile> environmentTiles;
 
     public event Action updateBuildingTilemapEvent;
-
-    private TilemapManager tilemapManager;
     
     public List<Building> buildingsConstructed { get; private set; }
 
@@ -37,92 +37,27 @@ public class BuildingFactory : MonoBehaviour
         buildingsConstructed = new List<Building>();
     }
 
-    private void Start()
-    {
-        tilemapManager = TilemapManager.Instance;
-    }
-    
-
 
     /**
      * Method called by the radial menu to build a building of given type
      */
-    public void Build(BuildingType buildingType)
+    public void Build(BuildingType buildingType, Vector2Int coordinates)
     {
-        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
-        
-        // if the selected tile does have a building we cannot build another
-        if (selectedCell.buildingTile) return;
-
-        // if the player does not have the required amount of resources we cannot build
-        ResourceManager resourceManager = ResourceManager.Instance;
-        Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
-        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
-        {
-            int cost = prefabBuilding.GetCost(resourceType);
-            int resource = resourceManager.getResource(resourceType);
-            if (resource < cost)
-            {
-                // player does not have the funds to pay for construction
-                return;
-            }
-        }
-
-        // pay the build
-        PayBuild(buildingType);
-
+        CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
+        if (targetCell == null || targetCell.building) return;
+        // instantiate the building prefab and store building information in cell data
+        GameObject instantiatedBuilding = Instantiate(buildingPrefabs.At(buildingType));        
         previouslyBuiltType = buildingType;
 
-        // instantiate the building prefab and store building information in cell data
-        GameObject instantiatedBuilding = Instantiate(buildingsPrefabs.At(buildingType));        
-
         Building building;
-        if (instantiatedBuilding.TryGetComponent(out building)) {
-            building.SetCoordinates(selectedCell.coordinates);
-            building.OnConstructionFinished.AddListener(NotifyProductionManager);
-            building.OnConstructionFinished.AddListener(NotifyTilemapManager);
+        if (instantiatedBuilding.TryGetComponent(out building))
+        {
+            building.SetCoordinates(targetCell.coordinates);
+            building.enabled = true;
         }
 
-        selectedCell.buildingType = buildingType;
-        selectedCell.building = building;
+        targetCell.building = building;
         buildingsConstructed.Add(building);
-
-        // TODO 
-        // add building in construction sprite update
-
-        building.StartConstruction();
-    }
-
-    private void NotifyProductionManager()
-    {
-        // we store the information we built a new 
-        ProductionManager.Instance.AddBuilding(previouslyBuiltType);
-    }
-
-    private void NotifyTilemapManager()
-    {
-        // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
-        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
-        foreach (Tile tile in GameAssets.i.buildingTiles)
-        {
-            if (tile.name.Equals(previouslyBuiltType.ToString()))
-            {
-                selectedCell.buildingTile = tile;
-            }
-        }
-        tilemapManager.DispatchTile(selectedCell.coordinates);
-    }
-    
-    private void PayBuild(BuildingType buildingType)
-    {
-        ResourceManager resourceManager = ResourceManager.Instance;
-        Building prefabBuilding = buildingsPrefabs.At(buildingType).GetComponent<Building>();
-        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
-        {
-            int cost = prefabBuilding.GetCost(resourceType);
-            int resource = resourceManager.getResource(resourceType);
-            resourceManager.modifyResources(resourceType, -cost);
-        }
     }
 
     public void DeconstructSelected()
@@ -142,20 +77,19 @@ public class BuildingFactory : MonoBehaviour
             {
                 if (building.CanBeDeconstructed())
                 {
-                    CellData targetCell = tilemapManager.getCellData(targetCoordinates);
+                    CellData targetCell = TilemapManager.Instance.GetCellData(targetCoordinates);
 
                     // update production data
                     Dictionary<BuildingType, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
-                    buildingsAmount[(BuildingType)targetCell.buildingType] -= 1;
+                    buildingsAmount[targetCell.building.type] -= 1;
 
                     // update cell data
-                    targetCell.buildingType = null;
-                    targetCell.buildingTile = null;
+                    targetCell.building = null;
 
                     // update scene
                     Destroy(building.gameObject);
 
-                    tilemapManager.DispatchTile(targetCoordinates);
+                    TilemapManager.Instance.DispatchTile(targetCell);
 
                     return;
                 } else
@@ -166,5 +100,7 @@ public class BuildingFactory : MonoBehaviour
         }
     }
 
-    public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingsPrefabs; }
+    public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingPrefabs; }
+    public SerializableDictionary<BuildingType, Tile> GetBuildingTiles() { return buildingTiles; }
+    public SerializableDictionary<Environment, Tile> GetEnvironmentTiles() { return environmentTiles; }
 }
