@@ -31,10 +31,6 @@ public class TilemapManager : MonoBehaviour
 
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
-
-    private List<Vector2Int> evenNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(-1, 1), new Vector2Int(-1, 0), new Vector2Int(-1, -1), new Vector2Int(0, -1), };
-    private List<Vector2Int> oddNeighborCoordinates = new List<Vector2Int>() { new Vector2Int(1, 0), new Vector2Int(1, 1), new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, -1), };
-
     private void Awake()
     {
         // define tilemaps
@@ -131,18 +127,7 @@ public class TilemapManager : MonoBehaviour
         float forestNeighbors = 0;
         float mountainNeighbors = 0;
 
-        // get neighbor coordinates depending on if the tile is even or odd
-        List<Vector2Int> neighborCoordinates;
-
-        if (data.coordinates.y % 2 == 0)
-        {
-            neighborCoordinates = evenNeighborCoordinates;
-        }
-        else
-        {
-            neighborCoordinates = oddNeighborCoordinates;
-        }
-        
+        List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(data.coordinates);
         foreach (Vector2Int neighbor in neighborCoordinates)
         {   
             CellData celldata = GetCellData(data.coordinates + neighbor);
@@ -181,8 +166,6 @@ public class TilemapManager : MonoBehaviour
 
     public void RemoveIsolatedCells()
     {
-        List<Vector2Int> neighborCoordinates;
-
         // iterate on each cells
         for (int x = 0; x < columns; x++)
         {
@@ -201,17 +184,8 @@ public class TilemapManager : MonoBehaviour
                 CellData currentCell = GetCellData(currentCellCoordinates);
                 if (currentCell == null) continue;
                 Environment currentCellEnvironment = currentCell.environment;
-                
-                // get neighbor coordinates depending on if the tile is even or odd
-                if (y % 2 == 0)
-                {
-                    neighborCoordinates = evenNeighborCoordinates;
-                }
-                else
-                {
-                    neighborCoordinates = oddNeighborCoordinates;
-                }
 
+                List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(currentCellCoordinates);
                 foreach (Vector2Int coordinates in neighborCoordinates)
                 {
                     CellData neighborCell = GetCellData(currentCellCoordinates + coordinates);
@@ -265,6 +239,13 @@ public class TilemapManager : MonoBehaviour
 
     public void GenerateTownCenter(Vector2Int coordinates)
     {
+        CellData targetCell = GetCellData(coordinates);
+        if (targetCell == null)
+        {
+            Debug.LogError("Error: could not find center tile to place fountain.");
+            return;
+        }
+        targetCell.environment = Environment.city;
         BuildingFactory.Instance.Build(BuildingType.Fountain, coordinates);
     }
 
@@ -308,6 +289,8 @@ public class TilemapManager : MonoBehaviour
         {
             Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type);
             buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
+
+            // TODO - display construction asset while the building is not finished.
         }
     }
 

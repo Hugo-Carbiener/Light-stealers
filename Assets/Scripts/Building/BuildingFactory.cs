@@ -45,68 +45,19 @@ public class BuildingFactory : MonoBehaviour
     {
         CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
         if (targetCell == null || targetCell.building) return;
-
-        // if the player does not have the required amount of resources we cannot build
-        ResourceManager resourceManager = ResourceManager.Instance;
-        Building prefabBuilding = buildingPrefabs.At(buildingType).GetComponent<Building>();
-        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
-        {
-            int cost = prefabBuilding.GetCost(resourceType);
-            int resource = resourceManager.getResource(resourceType);
-            if (resource < cost)
-            {
-                // player does not have the funds to pay for construction
-                return;
-            }
-        }
-
-        // pay the build
-        PayBuild(buildingType);
-
-        previouslyBuiltType = buildingType;
-
         // instantiate the building prefab and store building information in cell data
         GameObject instantiatedBuilding = Instantiate(buildingPrefabs.At(buildingType));        
+        previouslyBuiltType = buildingType;
 
         Building building;
-        if (instantiatedBuilding.TryGetComponent(out building)) {
+        if (instantiatedBuilding.TryGetComponent(out building))
+        {
             building.SetCoordinates(targetCell.coordinates);
-            building.OnConstructionFinished.AddListener(NotifyProductionManager);
-            building.OnConstructionFinished.AddListener(NotifyTilemapManager);
+            building.enabled = true;
         }
 
         targetCell.building = building;
         buildingsConstructed.Add(building);
-
-        // TODO 
-        // add building in construction sprite update
-
-        building.StartConstruction();
-    }
-
-    private void NotifyProductionManager()
-    {
-        // we store the information we built a new 
-        ProductionManager.Instance.AddBuilding(previouslyBuiltType);
-    }
-
-    private void NotifyTilemapManager()
-    {
-        // set the buildings values in the selected cell data and the coordinates in the building data if there is no building already placed
-        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
-        TilemapManager.Instance.DispatchTile(selectedCell);
-    }
-    
-    private void PayBuild(BuildingType buildingType)
-    {
-        ResourceManager resourceManager = ResourceManager.Instance;
-        Building prefabBuilding = buildingPrefabs.At(buildingType).GetComponent<Building>();
-        foreach (ResourceTypes resourceType in Enum.GetValues(typeof(ResourceTypes)))
-        {
-            int cost = prefabBuilding.GetCost(resourceType);
-            int resource = resourceManager.getResource(resourceType);
-            resourceManager.modifyResources(resourceType, -cost);
-        }
     }
 
     public void DeconstructSelected()
