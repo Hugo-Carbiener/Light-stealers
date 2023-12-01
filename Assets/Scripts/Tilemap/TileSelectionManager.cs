@@ -72,7 +72,7 @@ public class TileSelectionManager : MonoBehaviour
         BuildingUIManager buildingUI = BuildingUIManager.Instance;
         if (selectedCell == null)
         {
-            buildingUI.CloseBuildingConstructionUI();
+            buildingUI.CloseUI();
             return;
         }
 

@@ -43,7 +43,7 @@ public class BuildingUIManager : UIManager
     {
         if (buildingsToDisplay.Count == 0)
         {
-            CloseBuildingConstructionUI();
+            CloseUI();
             return;
         }
 
@@ -71,6 +71,7 @@ public class BuildingUIManager : UIManager
             return;
         }
         buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type, cellPosition); };  
+        buttonElement.clickable.clicked += delegate { CloseUI(); };
         buttonContainer.Add(buttonToAdd);
     }
 
@@ -134,6 +135,7 @@ public class BuildingUIManager : UIManager
             return;
         }
         buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.DeconstructBuilding(cellPosition); };
+        buttonElement.clickable.clicked += delegate { CloseUI(); };
         buttonContainer.Add(buttonToAdd);
     }
 
@@ -165,7 +167,7 @@ public class BuildingUIManager : UIManager
     /**
     * Hides the building construction panel.
     */
-    public void CloseBuildingConstructionUI()
+    public void CloseUI()
     {
         SetVisibility(DisplayStyle.None);
         ResetUIComponent();
