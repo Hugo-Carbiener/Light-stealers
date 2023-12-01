@@ -284,14 +284,12 @@ public class TilemapManager : MonoBehaviour
     {
         Tile environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(cellData.environment);
         groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
+        
+        Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type) : null;
+        buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
 
-        if (cellData.building != null)
-        {
-            Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type);
-            buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
-
-            // TODO - display construction asset while the building is not finished.
-        }
+        // TODO - display construction asset while the building is not finished.
+        
     }
 
     private bool CoordinatesAreInBounds(Vector2Int coordinates)

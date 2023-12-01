@@ -73,33 +73,35 @@ public class BuildingFactory : MonoBehaviour
     {
         foreach (Building building in buildingsConstructed)
         {
-            if (building.GetCoordinates() == targetCoordinates)
+            if (building.GetCoordinates() != targetCoordinates) continue;
+
+            if (!building.CanBeDeconstructed())
             {
-                if (building.CanBeDeconstructed())
-                {
-                    CellData targetCell = TilemapManager.Instance.GetCellData(targetCoordinates);
-
-                    // update production data
-                    Dictionary<BuildingType, int> buildingsAmount = ProductionManager.Instance.getBuildingAmount();
-                    buildingsAmount[targetCell.building.type] -= 1;
-
-                    // update cell data
-                    targetCell.building = null;
-
-                    // update scene
-                    Destroy(building.gameObject);
-
-                    TilemapManager.Instance.DispatchTile(targetCell);
-
-                    return;
-                } else
-                {
-                    Debug.Log("could not be deconstructed");
-                }
+                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because it is protected.");
+                continue;
             }
+
+            CellData targetCell = TilemapManager.Instance.GetCellData(targetCoordinates);
+            if (targetCell == null)
+            {
+                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because its cell data is null.");
+                return;
+            }
+
+            if (targetCell.building == null)
+            {
+                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because its building is null.");
+                return;
+            }
+
+            targetCell.building = null;
+            buildingsConstructed.Remove(building);
+            Destroy(building.gameObject);
+            TilemapManager.Instance.DispatchTile(targetCell);
+
+            return;
         }
     }
-
     public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingPrefabs; }
     public SerializableDictionary<BuildingType, Tile> GetBuildingTiles() { return buildingTiles; }
     public SerializableDictionary<Environment, Tile> GetEnvironmentTiles() { return environmentTiles; }
