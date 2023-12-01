@@ -113,7 +113,7 @@ MonoBehaviour:
     - key: 0
       value: 10
   constructionDuration: 3
-  canBeDeconstructed: 0
+  canBeDeconstructed: 1
   doesConsumeFood: 1
   consumeResourceAtStartOfPhase: 1
   resourceConsummed: 2
