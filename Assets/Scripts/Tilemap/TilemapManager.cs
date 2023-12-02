@@ -84,7 +84,8 @@ public class TilemapManager : MonoBehaviour
 
                 if (activateClustering)
                 {
-                    SetTileToCellDependingOnNeighbor(cell);
+                    SetCellDependingOnDistance(cell);
+                    //SetTileToCellDependingOnNeighbor(cell);
                 }
                 else
                 {
@@ -119,6 +120,29 @@ public class TilemapManager : MonoBehaviour
     }
     public void SetCellToMountain(CellData data) {
         data.environment = Environment.mountain;
+    }
+
+    private void SetCellDependingOnDistance(CellData data)
+    {
+        List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(data.coordinates);
+        foreach (Vector2Int neighbor in neighborCoordinates)
+        {
+            CellData celldata = GetCellData(data.coordinates + neighbor);
+            if (celldata != null)
+            {
+                switch(Utils.GetTileDistance(new Vector2Int(columns/2, rows/2), celldata.coordinates) % 3) {
+                    case 0:
+                        SetCellToPlain(celldata);
+                        break;
+                    case 1:
+                    SetCellToForest(celldata);
+                        break;
+                    case 2:
+                        SetCellToMountain(celldata);
+                        break;
+                }
+            }
+        }
     }
 
     public void SetTileToCellDependingOnNeighbor(CellData data)
