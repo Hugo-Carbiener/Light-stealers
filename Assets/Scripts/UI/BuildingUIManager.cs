@@ -41,13 +41,7 @@ public class BuildingUIManager : UIManager
      */
     public void UpdateBuildingConstructionUIComponent(List<Building> buildingsToDisplay, Vector2Int cellPosition)
     {
-        if (buildingsToDisplay.Count == 0)
-        {
-            CloseUI();
-            return;
-        }
-
-        buildingsToDisplay.ForEach(building => AddBuildingButton(building, cellPosition));
+         buildingsToDisplay.ForEach(building => AddBuildingButton(building, cellPosition));
     }
 
     /**
@@ -81,6 +75,11 @@ public class BuildingUIManager : UIManager
     public void OpenBuildingConstrutionUI(List<Building> buildingsToDisplay, Vector2Int cellPosition)
     {
         ResetUIComponent();
+        if (buildingsToDisplay.Count == 0)
+        {
+            CloseUI();
+            return;
+        }
         UpdateBuildingConstructionUIComponent(buildingsToDisplay, cellPosition);
         SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld((Vector3Int) cellPosition));
         SetVisibility(DisplayStyle.Flex);
