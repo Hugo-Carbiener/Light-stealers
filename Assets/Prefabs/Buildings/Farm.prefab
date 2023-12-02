@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 94818351213487189}
   - component: {fileID: 833420752762517208}
   - component: {fileID: 899990563749856309}
+  - component: {fileID: 2256033387292088722}
   m_Layer: 0
   m_Name: Rules
   m_TagString: Untagged
@@ -134,3 +135,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comparator: 2
   environment: 4
+--- !u!114 &2256033387292088722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5313718873028236191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22969b0ebd178a74bad4b9b192d368c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comparator: 4
+  nearestBuildingDistance: 3

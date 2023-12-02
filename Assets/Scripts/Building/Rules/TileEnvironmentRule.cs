@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /**
-    * Verifies the environment of the targetted cell.
-    */
+* Verifies the environment of the targetted cell.
+*/
 public class TileEnvironmentRule : Rule
 {
     [SerializeField] private Environment environment;
