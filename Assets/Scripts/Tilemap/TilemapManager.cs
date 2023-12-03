@@ -84,8 +84,7 @@ public class TilemapManager : MonoBehaviour
 
                 if (activateClustering)
                 {
-                    SetCellDependingOnDistance(cell);
-                    //SetTileToCellDependingOnNeighbor(cell);
+                    SetTileToCellDependingOnNeighbor(cell);
                 }
                 else
                 {
