@@ -6,6 +6,15 @@ using UnityEngine.UIElements;
 
 public class BuildingUIManager : UIManager
 {
+    private static readonly string BUTTON_CONTAINER_ELEMENT_KEY = "ButtonContainer";
+    private static readonly string BUTTON_ELEMENT_KEY = "Button";
+    private static readonly string BUTTON_ICON_KEY = "Icon";
+    private static readonly string BUTTON_BUILDING_NAME_KEY = "BuildingName";
+    private static readonly string BUTTON_BUILDING_COST_CONTAINER_KEY = "CostContainer";
+    private static readonly string BUTTON_COST_FOOD_TEXT_KEY = "FoodAmount";
+    private static readonly string BUTTON_COST_WOOD_TEXT_KEY = "WoodAmount";
+    private static readonly string BUTTON_COST_STONE_TEXT_KEY = "StoneAmount";
+
     [Header("Button template")]
     [SerializeField] private VisualTreeAsset button;
     [Header("Icons")]
@@ -32,6 +41,7 @@ public class BuildingUIManager : UIManager
     {
         Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingType)).Length);
         root = document.rootVisualElement;
+        SetVisibility(DisplayStyle.None);
     }
 
     // CONSTRUCTION
@@ -51,14 +61,14 @@ public class BuildingUIManager : UIManager
     {
         TemplateContainer buttonToAdd = button.Instantiate();
         InitBuildingButton(buttonToAdd, buildingType);
-        VisualElement buttonContainer = root.Q<VisualElement>("BuildingsContainer");
+        VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         if (buttonContainer == null)
         {
             Debug.LogError("Could not find Visual element button container in Building construction panel");
             return;
         }
 
-        Button buttonElement = buttonToAdd.Q<Button>("Button");
+        Button buttonElement = buttonToAdd.Q<Button>(BUTTON_ELEMENT_KEY);
         if (buttonElement == null)
         {
             Debug.LogError("Could not find Button element in Building construction panel button");
@@ -87,11 +97,11 @@ public class BuildingUIManager : UIManager
 
     private void InitBuildingButton(TemplateContainer button, Building building)
     {
-        VisualElement icon = button.Q<VisualElement>("Icon");
-        Label buildingName = button.Q<Label>("BuildingName");
-        Label foodAmountLabel = button.Q<Label>("FoodAmount");
-        Label woodAmountLabel = button.Q<Label>("WoodAmount");
-        Label stoneAmountLabel = button.Q<Label>("StoneAmount");
+        VisualElement icon = button.Q<VisualElement>(BUTTON_ICON_KEY);
+        Label buildingName = button.Q<Label>(BUTTON_BUILDING_NAME_KEY);
+        Label foodAmountLabel = button.Q<Label>(BUTTON_COST_FOOD_TEXT_KEY);
+        Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY);
+        Label stoneAmountLabel = button.Q<Label>(BUTTON_COST_STONE_TEXT_KEY);
 
         icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(building.type));
         buildingName.text = building.type.ToString();
@@ -99,7 +109,7 @@ public class BuildingUIManager : UIManager
         woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
         stoneAmountLabel.text = building.GetCost(ResourceTypes.Stone).ToString();
         
-        VisualElement costContainer = button.Q<VisualElement>("CostContainer");
+        VisualElement costContainer = button.Q<VisualElement>(BUTTON_BUILDING_COST_CONTAINER_KEY);
         costContainer.style.display = DisplayStyle.Flex;
     }
 
@@ -120,14 +130,14 @@ public class BuildingUIManager : UIManager
     {
         TemplateContainer buttonToAdd = button.Instantiate();
         InitDeconstructionButton(buttonToAdd);
-        VisualElement buttonContainer = root.Q<VisualElement>("BuildingsContainer");
+        VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         if (buttonContainer == null)
         {
             Debug.LogError("Could not find Visual element button container in Building deconstruction panel");
             return;
         }
 
-        Button buttonElement = buttonToAdd.Q<Button>("Button");
+        Button buttonElement = buttonToAdd.Q<Button>(BUTTON_ELEMENT_KEY);
         if (buttonElement == null)
         {
             Debug.LogError("Could not find Button element in Building deconstruction panel button");
@@ -151,13 +161,13 @@ public class BuildingUIManager : UIManager
 
     private void InitDeconstructionButton(TemplateContainer button)
     {
-        VisualElement icon = button.Q<VisualElement>("Icon");
-        Label buildingName = button.Q<Label>("BuildingName");
+        VisualElement icon = button.Q<VisualElement>(BUTTON_ICON_KEY);
+        Label buildingName = button.Q<Label>(BUTTON_BUILDING_NAME_KEY);
 
         icon.style.backgroundImage = new StyleBackground(deconstructionIcon);
         buildingName.text = deconstructionButtonLabel;
 
-        VisualElement costContainer = button.Q<VisualElement>("CostContainer");
+        VisualElement costContainer = button.Q<VisualElement>(BUTTON_BUILDING_COST_CONTAINER_KEY);
         costContainer.style.display = DisplayStyle.None;
     }
 
@@ -174,7 +184,7 @@ public class BuildingUIManager : UIManager
 
     public void ResetUIComponent()
     {
-        VisualElement buttonContainer = root.Q<VisualElement>("BuildingsContainer");
+        VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         buttonContainer.Clear();
     }
 
