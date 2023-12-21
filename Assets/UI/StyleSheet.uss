@@ -1,4 +1,20 @@
-text {
+.text-writing {
     -unity-font-definition: url('project://database/Assets/UI/Font/alagard%20SDF.asset?fileID=11400000&guid=a4d5e9b6574ef454a9a01516e84e27fc&type=2#alagard SDF');
-    -unity-background-image-tint-color: rgba(255, 0, 0, 255);
+    -unity-background-image-tint-color: rgb(255, 0, 0);
+    color: rgb(131, 102, 77);
+    font-size: 12px;
+    -unity-text-outline-color: rgb(131, 102, 77);
+}
+
+.unity-label {
+    margin: 0;
+    padding: 0;
+}
+
+.subtext-writing {
+    -unity-font-definition: url('project://database/Assets/UI/Font/alagard%20SDF.asset?fileID=11400000&guid=a4d5e9b6574ef454a9a01516e84e27fc&type=2#alagard SDF');
+    -unity-background-image-tint-color: rgb(255, 0, 0);
+    color: rgb(131, 102, 77);
+    font-size: 6px;
+    -unity-text-outline-color: rgb(131, 102, 77);
 }
