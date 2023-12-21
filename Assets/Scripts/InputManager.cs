@@ -32,17 +32,6 @@ public class InputManager : MonoBehaviour {
             onMoveInput?.Invoke(Vector2.left);
         }
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
-        {
-            // mouse wheel goes up
-            onZoomInput?.Invoke(-1);
-        }
-        if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
-        {
-            // mouse wheel goes down
-            onZoomInput?.Invoke(1);
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             // if the mouse is not over UI 
