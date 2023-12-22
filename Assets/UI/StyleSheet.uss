@@ -1,8 +1,14 @@
 .text-writing {
-    -unity-font-definition: url('project://database/Assets/UI/Font/alagard%20SDF.asset?fileID=11400000&guid=a4d5e9b6574ef454a9a01516e84e27fc&type=2#alagard SDF');
-    -unity-background-image-tint-color: rgb(255, 0, 0);
+    -unity-font-definition: url('project://database/Assets/UI/Font/alagard.asset?fileID=11400000&guid=2a57e6a41b4c3e243990dac2b2d4e832&type=2#alagard');
     color: rgb(131, 102, 77);
     font-size: 12px;
+    -unity-text-outline-color: rgb(131, 102, 77);
+}
+
+.subtext-writing {
+    -unity-font-definition: url('project://database/Assets/UI/Font/alagard.asset?fileID=11400000&guid=2a57e6a41b4c3e243990dac2b2d4e832&type=2#alagard');
+    color: rgb(131, 102, 77);
+    font-size: 6px;
     -unity-text-outline-color: rgb(131, 102, 77);
 }
 
@@ -11,10 +17,10 @@
     padding: 0;
 }
 
-.subtext-writing {
-    -unity-font-definition: url('project://database/Assets/UI/Font/alagard%20SDF.asset?fileID=11400000&guid=a4d5e9b6574ef454a9a01516e84e27fc&type=2#alagard SDF');
-    -unity-background-image-tint-color: rgb(255, 0, 0);
-    color: rgb(131, 102, 77);
-    font-size: 6px;
-    -unity-text-outline-color: rgb(131, 102, 77);
+.unity-button {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.unity-button:hover {
+    background-color: rgba(0, 0, 0, 0.04);
 }
