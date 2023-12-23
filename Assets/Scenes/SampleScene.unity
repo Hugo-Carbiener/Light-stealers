@@ -1378,6 +1378,11 @@ MonoBehaviour:
   document: {fileID: 587115299}
   openedMenuColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   closedMenuColor: {r: 0, g: 0, b: 0, a: 0}
+  bookmarkHighlights:
+    elements:
+    - key: ReturnBookmark
+      value: {fileID: 21300000, guid: 91740e2d9a8703a45943e60f25e31be5, type: 3}
+  baseBookSprite: {fileID: 21300000, guid: a6959e3f0c033ef4ab7d051d57644196, type: 3}
 --- !u!114 &587115301
 MonoBehaviour:
   m_ObjectHideFlags: 0

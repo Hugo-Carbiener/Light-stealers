@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SerializableDictionary<TKey, TValue>
+public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey, TValue>>
 {
     [System.Serializable]
     public class DictionaryItem
@@ -81,5 +81,18 @@ public class SerializableDictionary<TKey, TValue>
         elements.ForEach(element => dictionnary.Add(element.key, element.value));
 
         return dictionnary;
+    }
+
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    {
+        foreach (DictionaryItem element in elements)
+        {
+            yield return new KeyValuePair<TKey, TValue>(element.key, element.value);
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
