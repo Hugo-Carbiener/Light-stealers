@@ -65,7 +65,6 @@ public class ResourceManager : MonoBehaviour
                 return false;
             }
         }
-        ResourceUIManager.Instance.UpdateUIComponent();
         return true;
     }
 

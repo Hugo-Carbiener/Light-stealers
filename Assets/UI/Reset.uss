@@ -1,0 +1,67 @@
+.unity-button {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    border-width: 0;
+    background-color: transparent;
+    overflow: visible;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: rgba(0, 0, 0, 255);
+    border-right-color: rgba(0, 0, 0, 255);
+    border-top-color: rgba(0, 0, 0, 255);
+    border-bottom-color: rgba(0, 0, 0, 255);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.unity-button:disabled {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.unity-button:hover {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.unity-button:active {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.unity-button:focus {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.unity-label {
+    padding: 0;
+    margin: 0;
+}
+
+.unity-disabled {
+    opacity: 1;
+}
+
+.unity-text-field {
+    margin: 0;
+}
+
+.unity-text-field #unity-text-input {
+    border-radius: 0;
+    border-width: 0;
+    padding: 0;
+}

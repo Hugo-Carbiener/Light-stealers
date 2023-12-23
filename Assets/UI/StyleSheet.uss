@@ -1,26 +1,29 @@
 .text-writing {
-    -unity-font-definition: url('project://database/Assets/UI/Font/alagard.asset?fileID=11400000&guid=2a57e6a41b4c3e243990dac2b2d4e832&type=2#alagard');
     color: rgb(131, 102, 77);
-    font-size: 12px;
     -unity-text-outline-color: rgb(131, 102, 77);
+    -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
+    -unity-font-definition: none;
 }
 
 .subtext-writing {
-    -unity-font-definition: url('project://database/Assets/UI/Font/alagard.asset?fileID=11400000&guid=2a57e6a41b4c3e243990dac2b2d4e832&type=2#alagard');
-    color: rgb(131, 102, 77);
-    font-size: 6px;
-    -unity-text-outline-color: rgb(131, 102, 77);
-}
-
-.unity-label {
-    margin: 0;
-    padding: 0;
-}
-
-.unity-button {
-    background-color: rgba(0, 0, 0, 0);
+    color: rgb(125, 92, 63);
+    -unity-text-outline-color: rgb(125, 92, 63);
+    -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
+    -unity-font-definition: none;
 }
 
 .unity-button:hover {
     background-color: rgba(0, 0, 0, 0.04);
+}
+
+.font-size-12 {
+    font-size: 12px;
+}
+
+.font-size-10 {
+    font-size: 10px;
+}
+
+.font-size-7 {
+    font-size: 7px;
 }

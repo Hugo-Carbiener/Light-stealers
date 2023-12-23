@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class ResourceUIManager : UIManager, PassiveUIInterface
 {
+    private static readonly string FOOD_AMOUNT_TEXT_KEY = "FoodAmount";
+    private static readonly string WOOD_AMOUNT_TEXT_KEY = "WoodAmount";
+    private static readonly string STONE_AMOUNT_TEXT_KEY = "StoneAmount";
     private Label foodLabel;
     private Label woodLabel;
     private Label stoneLabel;
@@ -27,9 +27,9 @@ public class ResourceUIManager : UIManager, PassiveUIInterface
     private void Start()
     {
         root = document.rootVisualElement;
-        foodLabel = root.Q<Label>("FoodLabel"); 
-        woodLabel = root.Q<Label>("WoodLabel"); 
-        stoneLabel = root.Q<Label>("StoneLabel"); 
+        foodLabel = root.Q<Label>(FOOD_AMOUNT_TEXT_KEY); 
+        woodLabel = root.Q<Label>(WOOD_AMOUNT_TEXT_KEY); 
+        stoneLabel = root.Q<Label>(STONE_AMOUNT_TEXT_KEY); 
     }
 
     public void UpdateUIComponent()
