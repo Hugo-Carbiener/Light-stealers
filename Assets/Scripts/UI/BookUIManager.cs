@@ -58,6 +58,7 @@ public class BookUIManager : UIManager, ActiveUIInterface
     {
         ResourceUIManager.Instance.UpdateUIComponent();
         HousingUIManager.Instance.UpdateUIComponent();
+        TileSelectionManager.Instance.UnselectCell();
         SetEnabled(bookButton, false);
         root.style.backgroundColor = openedMenuColor;
         SetVisibility(bookMenu, DisplayStyle.Flex);

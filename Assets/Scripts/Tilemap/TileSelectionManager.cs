@@ -62,6 +62,13 @@ public class TileSelectionManager : MonoBehaviour
         selectedCell = tilemapManager.GetCellData(coordinates);
     }
 
+    public void UnselectCell()
+    {
+        selectedCell = null;
+        tilemapManager.DispatchSelectionTilemap();
+        UpdateBuildingConstructionUI();
+    }
+
     public CellData GetSelectedCellData() { return selectedCell; }
 
     /**
