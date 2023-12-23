@@ -32,11 +32,6 @@
     border-color: transparent;
 }
 
-.unity-button:hover {
-    background-color: transparent;
-    border-color: transparent;
-}
-
 .unity-button:active {
     background-color: transparent;
     border-color: transparent;

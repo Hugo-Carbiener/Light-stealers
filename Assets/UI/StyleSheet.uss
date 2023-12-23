@@ -12,8 +12,9 @@
     -unity-font-definition: none;
 }
 
-.unity-button:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+.interactible:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    -unity-background-image-tint-color: rgb(128, 128, 128);
 }
 
 .font-size-12 {
@@ -26,4 +27,7 @@
 
 .font-size-7 {
     font-size: 7px;
+}
+
+.interactible {
 }
