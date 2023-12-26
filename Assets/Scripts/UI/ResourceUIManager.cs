@@ -41,11 +41,4 @@ public class ResourceUIManager : UIManager, PassiveUIInterface
         UpdateText(woodLabel, woodAmount.ToString());
         UpdateText(stoneLabel, stoneAmount.ToString());
     }
-
-    public void UpdateUIComponent(int foodAmount, int woodAmount, int stoneAmount)
-    {
-        UpdateText(foodLabel, foodAmount.ToString());
-        UpdateText(woodLabel, woodAmount.ToString());
-        UpdateText(stoneLabel, stoneAmount.ToString());
-    }
 }
