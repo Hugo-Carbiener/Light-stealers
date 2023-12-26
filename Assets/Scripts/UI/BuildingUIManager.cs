@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
-public class BuildingUIManager : UIManager
+public class BuildingUIManager : UIManager, ActiveUIInterface
 {
     private static readonly string BUTTON_CONTAINER_ELEMENT_KEY = "ButtonContainer";
     private static readonly string BUTTON_ELEMENT_KEY = "Button";
@@ -75,23 +75,37 @@ public class BuildingUIManager : UIManager
             return;
         }
         buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type, cellPosition); };  
-        buttonElement.clickable.clicked += delegate { CloseUI(); };
+        buttonElement.clickable.clicked += delegate { CloseUIComponent(); };
         buttonContainer.Add(buttonToAdd);
     }
 
     /**
      * Opens the building construction panel and initialise it.
      */
-    public void OpenBuildingConstrutionUI(List<Building> buildingsToDisplay, Vector2Int cellPosition)
+    public void OpenUIComponent()
     {
         ResetUIComponent();
-        if (buildingsToDisplay.Count == 0)
+        CellData cell = TileSelectionManager.Instance.GetSelectedCellData();
+        if (cell == null)
         {
-            CloseUI();
+            Debug.LogError("Attempting to open bulding construction UI menu when no cell is selected.");
             return;
         }
-        UpdateBuildingConstructionUIComponent(buildingsToDisplay, cellPosition);
-        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld((Vector3Int) cellPosition));
+
+        if (cell.building == null)
+        {
+            List<Building> buildingsToDisplay = TileSelectionManager.Instance.GetValidBuildings(cell);
+            if (buildingsToDisplay.Count == 0)
+            {
+                CloseUIComponent();
+                return;
+            }
+            UpdateBuildingConstructionUIComponent(buildingsToDisplay, cell.coordinates);
+        } else
+        {
+            UpdateBuildingDeconstructionUIComponent(cell.coordinates);
+        }
+        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld(cell.GetVector3Coordinates()));
         SetVisibility(DisplayStyle.Flex);
     }
 
@@ -144,19 +158,8 @@ public class BuildingUIManager : UIManager
             return;
         }
         buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.DeconstructBuilding(cellPosition); };
-        buttonElement.clickable.clicked += delegate { CloseUI(); };
+        buttonElement.clickable.clicked += delegate { CloseUIComponent(); };
         buttonContainer.Add(buttonToAdd);
-    }
-
-    /**
-    * Opens the building construction panel and initialise it.
-    */
-    public void OpenBuildingDeconstrutionUI(Vector2Int cellPosition)
-    {
-        ResetUIComponent();
-        UpdateBuildingDeconstructionUIComponent(cellPosition);
-        SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld((Vector3Int) cellPosition));
-        SetVisibility(DisplayStyle.Flex);
     }
 
     private void InitDeconstructionButton(TemplateContainer button)
@@ -176,7 +179,7 @@ public class BuildingUIManager : UIManager
     /**
     * Hides the building construction panel.
     */
-    public void CloseUI()
+    public void CloseUIComponent()
     {
         SetVisibility(DisplayStyle.None);
         ResetUIComponent();

@@ -79,24 +79,17 @@ public class TileSelectionManager : MonoBehaviour
         BuildingUIManager buildingUI = BuildingUIManager.Instance;
         if (selectedCell == null)
         {
-            buildingUI.CloseUI();
+            buildingUI.CloseUIComponent();
             return;
         }
 
-        if (selectedCell.building == null)
-        {
-            List<Building> buildingsAvailable = GetValidBuildings(selectedCell);
-            buildingUI.OpenBuildingConstrutionUI(buildingsAvailable, selectedCell.coordinates);
-        } else
-        {
-            buildingUI.OpenBuildingDeconstrutionUI(selectedCell.coordinates);
-        }
+        buildingUI.OpenUIComponent();
     }
 
     /**
      * Generates the list of building types that are valid to be built on a given tile.
      */
-    private List<Building> GetValidBuildings(CellData cell)
+    public List<Building> GetValidBuildings(CellData cell)
     {
         List<Building> validBuildings = new List<Building>();
         SerializableDictionary<BuildingType, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
