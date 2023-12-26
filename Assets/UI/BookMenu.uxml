@@ -7,7 +7,7 @@
             <ui:VisualElement name="PlaceHolder" style="width: 160px; height: 160px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-grow: 1; display: flex;" />
             <ui:VisualElement name="Book" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI_book-main.png?fileID=2800000&amp;guid=a6959e3f0c033ef4ab7d051d57644196&amp;type=3#UI_book-main&apos;); width: 160px; height: 160px; flex-direction: column; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: 160px;">
                 <ui:VisualElement name="Pages" style="background-image: none; width: auto; height: 140px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: auto; flex-grow: 1;">
-                    <ui:VisualElement name="CensusPageContainer" style="flex-grow: 1; padding-left: 10%; padding-right: 5%; width: 50%; padding-top: 22%; padding-bottom: 20%;">
+                    <ui:VisualElement name="CensusPageContainer" style="flex-grow: 1; padding-left: 10%; padding-right: 5%; width: 50%; padding-top: 22%; padding-bottom: 20%; justify-content: space-around;">
                         <ui:VisualElement name="PageRow" style="flex-direction: row;">
                             <ui:VisualElement name="HousingIcon" style="width: 8px; height: 8px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI_census-housing-icon.png?fileID=2800000&amp;guid=ca7222e222007fb43b0fb8582715da40&amp;type=3#UI_census-housing-icon&apos;);" />
                             <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="HousingAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
@@ -17,7 +17,7 @@
                             <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="PopulationAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement name="LedgerPageContainer" style="flex-grow: 1; width: 50%; padding-left: 5%; padding-right: 10%; padding-top: 22%; padding-bottom: 15%;">
+                    <ui:VisualElement name="LedgerPageContainer" style="flex-grow: 1; width: 50%; padding-left: 5%; padding-right: 10%; padding-top: 22%; padding-bottom: 15%; justify-content: space-around;">
                         <ui:VisualElement name="PageRow" style="flex-direction: row;">
                             <ui:VisualElement name="FoodIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/resources_food.png?fileID=2800000&amp;guid=3c003a79a68017547b37b2d8b0ecc6f8&amp;type=3#resources_food&apos;);" />
                             <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="FoodAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
