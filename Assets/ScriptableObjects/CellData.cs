@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 public class CellData
 {
     public Vector2Int coordinates { get; private set; }
-    public Environment environment { get; set; }
+    public Environment environment { get; set; } = Environment.water;
     public Building? building { get; set; }
     public bool isSelected { get; set; } = false;
 

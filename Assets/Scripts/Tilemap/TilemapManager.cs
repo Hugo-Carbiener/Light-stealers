@@ -91,6 +91,11 @@ public class TilemapManager : MonoBehaviour
                     SetCellAtRandom(cell);
                 }
                 cells.Add(cell);
+
+                if (Pathfinder.CellIsWalkable(cell))
+                {
+                    Pathfinder.accessibleCells.Add(cell);
+                }
             }
         }
     }
