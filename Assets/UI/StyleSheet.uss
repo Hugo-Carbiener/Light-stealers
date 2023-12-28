@@ -1,4 +1,33 @@
-text {
-    -unity-font-definition: url('project://database/Assets/UI/Font/alagard%20SDF.asset?fileID=11400000&guid=a4d5e9b6574ef454a9a01516e84e27fc&type=2#alagard SDF');
-    -unity-background-image-tint-color: rgba(255, 0, 0, 255);
+.text-writing {
+    color: rgb(131, 102, 77);
+    -unity-text-outline-color: rgb(131, 102, 77);
+    -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
+    -unity-font-definition: none;
+}
+
+.subtext-writing {
+    color: rgb(125, 92, 63);
+    -unity-text-outline-color: rgb(125, 92, 63);
+    -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
+    -unity-font-definition: none;
+}
+
+.interactible:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    -unity-background-image-tint-color: rgb(128, 128, 128);
+}
+
+.font-size-12 {
+    font-size: 12px;
+}
+
+.font-size-10 {
+    font-size: 10px;
+}
+
+.font-size-7 {
+    font-size: 7px;
+}
+
+.interactible {
 }

@@ -35,11 +35,6 @@ public class ResourceManager : MonoBehaviour
         // resources[ResourceTypes.Food] = 0;
     }
 
-    private void Start()
-    {
-        ResourceUIManager.Instance.UpdateUIComponent(resources[ResourceTypes.Food], resources[ResourceTypes.Wood], resources[ResourceTypes.Stone]);
-    }
-
     public int getResource(ResourceTypes resourceType) { return resources[resourceType]; }
     public int getResourceProduction(ResourceTypes resourceType) { return resourceProductions[resourceType]; }
     /**
@@ -65,7 +60,6 @@ public class ResourceManager : MonoBehaviour
                 return false;
             }
         }
-        ResourceUIManager.Instance.UpdateUIComponent();
         return true;
     }
 
