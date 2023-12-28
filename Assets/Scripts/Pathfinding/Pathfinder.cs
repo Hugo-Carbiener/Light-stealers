@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Pathfinder
 {
+    public static readonly int DEFAULT_NEIGHBOR_TRAVEL_WEIGHT = 1;
     public static List<CellData> accessibleCells { get; private set; } = new List<CellData>();
 
     public static void UpdatePathfinderForCell(CellData cell)

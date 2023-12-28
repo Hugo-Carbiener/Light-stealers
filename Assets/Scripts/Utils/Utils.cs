@@ -48,4 +48,17 @@ public static class Utils
         int penalty = ((from.y % 2 == 0 && to.y % 2 == 1 && from.x < to.x) || (to.y % 2 == 0 && from.y % 2 == 1 && to.x < from.x)) ? 1 : 0;
         return Mathf.Max(y,  x + (int)Mathf.Floor(y / 2) + penalty);
     }
+
+    public static bool CellsAreNeighbors(Vector2Int from, Vector2Int to)
+    {
+        return GetTileDistance(from, to) == 1;
+    }
+
+    public static bool CellCoordinatesAreValid(Vector2Int coordinates)
+    {
+        return coordinates.x >= 0
+            && coordinates.y >= 0
+            && coordinates.x < TilemapManager.Instance.GetTilemapColumns()
+            && coordinates.y < TilemapManager.Instance.GetTilemapRows();
+    }
 }
