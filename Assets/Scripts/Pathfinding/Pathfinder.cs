@@ -26,6 +26,19 @@ public static class Pathfinder
         }
     }
 
+    public static List<CellData> GetPath(Vector2Int from, Vector2Int to)
+    {
+        CellData start = TilemapManager.Instance.GetCellData(from);
+        CellData destination = TilemapManager.Instance.GetCellData(to);
+        if (start == null || destination == null)
+        {
+            Debug.LogError(string.Format($"Path ({from.x}, {from.y}) to ({to.x}, {to.y}) - Starting/Ending cell does not exist."));
+            return new List<CellData>();
+        }
+
+        return GetPath(from, to);
+    }
+
     public static List<CellData> GetPath(CellData from, CellData to)
     {
         if (from.coordinates == to.coordinates) return new List<CellData>();
@@ -33,7 +46,7 @@ public static class Pathfinder
         if (!CellIsProperDestination(from) || !CellIsProperDestination(to))
         {
             Debug.LogError(string.Format($"Path ({from.coordinates.x}, {from.coordinates.y}) to ({to.coordinates.x}, {to.coordinates.y}) - Starting/Ending cell is not a proper destination"));
-            return null;
+            return new List<CellData>();
         }
 
         int currentMovementCost = 0;
@@ -65,7 +78,7 @@ public static class Pathfinder
                                                                .Where(cellData => !visitedCells.Exists(pfCellData => pfCellData.coordinates == cellData.coordinates))
                                                                .ToList();
             
-        unvisitedNeighborCells.ForEach(neighborCellData => accessibleCells.Add(new PathfindingCellData(neighborCellData, destination, currentMovementCost + currentCell.GetNeighborTravelWeight(neighborCellData.coordinates));
+        unvisitedNeighborCells.ForEach(neighborCellData => accessibleCells.Add(new PathfindingCellData(neighborCellData, destination, currentMovementCost + currentCell.GetNeighborTravelWeight(neighborCellData.coordinates))));
     }
 
     private static CellData GetNewCurrentCell(CellData currentCell)

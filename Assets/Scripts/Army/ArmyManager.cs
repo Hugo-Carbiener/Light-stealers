@@ -119,6 +119,7 @@ public class ArmyManager : MonoBehaviour
 
         troop.gameObject.SetActive(true);
         troop.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
+        troop.position = (Vector2Int) startingPos;
         armyTroops.Add(troop);
         armySize++;
     }
