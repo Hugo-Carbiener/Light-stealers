@@ -7293,7 +7293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArmyPoolContainer: {fileID: 644228488}
-  initialHousingSize: 10
+  initialHousingSize: 1
   basicTroopPrefab: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
   createTroopsAtStartOfPhase: 0
   startingPos: {x: 24, y: 24, z: 0}

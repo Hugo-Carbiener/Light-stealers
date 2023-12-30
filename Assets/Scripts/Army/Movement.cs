@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private int maxTraverRange;
     [SerializeField] private Vector2Int destination;
     [SerializeField] private Troop troop;
+    [SerializeField]
+    private DayNightCyclePhases drawAtStartOfPhase;
     List<CellData> path;
 
-    public void DrawPath(List<CellData> draw)
+    public void DrawPath(DayNightCyclePhases phaseToDraw)
     {
+        if (phaseToDraw != drawAtStartOfPhase) return;
         GeneratePath();
         if (path == null) return;
         CellData prev = null;
@@ -30,6 +32,6 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnCyclePhaseStart += DrawPath;
+       DayNightCycleManager.OnCyclePhaseStart += DrawPath;
     }
 }

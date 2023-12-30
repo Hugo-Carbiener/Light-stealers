@@ -36,11 +36,12 @@ public static class Pathfinder
             return new List<CellData>();
         }
 
-        return GetPath(from, to);
+        return GetPath(start, destination);
     }
 
     public static List<CellData> GetPath(CellData from, CellData to)
     {
+        Debug.Log("Starting pathfinding algorithm");
         if (from.coordinates == to.coordinates) return new List<CellData>();
 
         if (!CellIsProperDestination(from) || !CellIsProperDestination(to))
@@ -53,15 +54,18 @@ public static class Pathfinder
         CellData currentCell = from;
         while (currentCell != to)
         {
+            Debug.Log("Adding cell to visited cells");
             visitedCells.Add(new PathfindingCellData(currentCell, to, currentMovementCost));
             SetNeighborTilesAsAccessible(currentCell, to, currentMovementCost);
             CellData newCurrentCell = GetNewCurrentCell(currentCell);
-            currentMovementCost += currentCell.GetNeighborTravelWeight(newCurrentCell.coordinates);
+            currentMovementCost = GetNewMovementCost(currentCell, newCurrentCell);
 
             if (newCurrentCell == to)
             {
-                visitedCells.Add(new PathfindingCellData(currentCell, to, currentMovementCost));
+                visitedCells.Add(new PathfindingCellData(newCurrentCell, to, currentMovementCost));
+                Debug.Log("Adding destination cell to visited cells");
             }
+            currentCell = newCurrentCell;
         }
 
         List<CellData> path = Backtrack(from, to);
@@ -85,38 +89,57 @@ public static class Pathfinder
     {
         return accessibleCells.OrderBy(pfCellData => pfCellData.movementProgression)
                               .ThenByDescending(pfCellData => Utils.CellsAreNeighbors(currentCell.coordinates, pfCellData.coordinates))
+                              .Where(pfCellData => !visitedCells.Exists(visitedCell => pfCellData.coordinates == visitedCell.coordinates))
                               .Select(pfCellData => TilemapManager.Instance.GetCellData(pfCellData.coordinates))
                               .First(cellData => cellData != null);
+    }
+
+    private static int GetNewMovementCost(CellData currentCell, CellData targetCell)
+    {
+        if (Utils.CellsAreNeighbors(currentCell.coordinates, targetCell.coordinates))
+        {
+            PathfindingCellData pfCurrentCell = visitedCells.Find(pfCellData => pfCellData.coordinates == currentCell.coordinates);
+            return pfCurrentCell.currentMovementCost + currentCell.GetNeighborTravelWeight(targetCell.coordinates);
+        } else
+        {
+            PathfindingCellData pfPreviouslyVisitedNeighbor = visitedCells.OrderBy(pfCellData => pfCellData.currentMovementCost)
+                                                                        .First(pfCellData => Utils.CellsAreNeighbors(pfCellData.coordinates, targetCell.coordinates));
+            CellData previouslyVisitedNeighbor = TilemapManager.Instance.GetCellData(pfPreviouslyVisitedNeighbor.coordinates);
+            return pfPreviouslyVisitedNeighbor.currentMovementCost + previouslyVisitedNeighbor.GetNeighborTravelWeight(targetCell.coordinates);
+        }
     }
 
     private static List<CellData> Backtrack(CellData from, CellData to)
     {
         List<PathfindingCellData> backtrackedPath = new List<PathfindingCellData>();
-        List<PathfindingCellData> reversedVisitedCells = visitedCells;
-        reversedVisitedCells.Reverse();
+        visitedCells.Reverse();
 
-        PathfindingCellData currentCell = reversedVisitedCells[0];
+        PathfindingCellData currentCell = visitedCells[0];
+        PathfindingCellData start = visitedCells[^1];
         backtrackedPath.Add(currentCell);
-        while (!backtrackedPath.Contains(visitedCells[0]))
+        visitedCells.Remove(currentCell);
+        while (!backtrackedPath.Contains(start))
         {
-            currentCell = reversedVisitedCells.OrderByDescending(pfCellData => Utils.CellsAreNeighbors(pfCellData.coordinates, currentCell.coordinates)).ThenBy(pfCellData => pfCellData.movementProgression < currentCell.movementProgression).First();
-            reversedVisitedCells.Remove(currentCell);
+            currentCell = visitedCells.OrderByDescending(pfCellData => Utils.CellsAreNeighbors(pfCellData.coordinates, currentCell.coordinates)).ThenByDescending(pfCellData => pfCellData.currentMovementCost < currentCell.currentMovementCost).First();
+            visitedCells.Remove(currentCell);
             backtrackedPath.Add(currentCell);
+            Debug.Log("Adding cell to backtracked cells");
         }
 
         List<CellData> path = backtrackedPath.Select(pfCellData => TilemapManager.Instance.GetCellData(pfCellData.coordinates))
                                              .Where(cellData => cellData != null)
                                              .Reverse()
                                              .ToList();
-        if (path[0] != from)
+
+        if (path[0].coordinates != from.coordinates)
         {
-            Debug.LogError(string.Format($"Starting cell ({reversedVisitedCells[^1].coordinates.x}, {reversedVisitedCells[^1].coordinates.y}) is invalid because it does not correspond to the expected start ({from.coordinates.x}, {from.coordinates.y})."));
+            Debug.LogError(string.Format($"Starting cell ({path[0].coordinates.x}, {path[0].coordinates.y}) is invalid because it does not correspond to the expected start ({from.coordinates.x}, {from.coordinates.y})."));
             return new List<CellData>();
         }
 
-        if (path[^1] != to)
+        if (path[^1].coordinates != to.coordinates)
         {
-            Debug.LogError(string.Format($"Destination cell ({reversedVisitedCells[0].coordinates.x}, {reversedVisitedCells[0].coordinates.y}) is invalid because it does not correspond to the expected destination ({to.coordinates.x}, {to.coordinates.y})."));
+            Debug.LogError(string.Format($"Destination cell ({path[^1].coordinates.x}, {path[^1].coordinates.y}) is invalid because it does not correspond to the expected destination ({to.coordinates.x}, {to.coordinates.y})."));
             return new List<CellData>();
         }
 
