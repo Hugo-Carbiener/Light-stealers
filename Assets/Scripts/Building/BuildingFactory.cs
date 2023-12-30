@@ -58,7 +58,6 @@ public class BuildingFactory : MonoBehaviour
 
         targetCell.building = building;
         buildingsConstructed.Add(building);
-        Pathfinder.UpdatePathfinderForCell(targetCell);
     }
 
     public void DeconstructSelected()
@@ -97,7 +96,6 @@ public class BuildingFactory : MonoBehaviour
 
             targetCell.building = null;
             buildingsConstructed.Remove(building);
-            Pathfinder.UpdatePathfinderForCell(targetCell);
             Destroy(building.gameObject);
             TilemapManager.Instance.DispatchTile(targetCell);
 
