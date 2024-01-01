@@ -50,6 +50,9 @@ public static class Pathfinder
             return new List<CellData>();
         }
 
+        visitedCells.Clear();
+        accessibleCells.Clear();
+
         int currentMovementCost = 0;
         CellData currentCell = from;
         while (currentCell != to)
