@@ -29,7 +29,7 @@ public class ResourceManager : MonoBehaviour
         resourceProductions = new Dictionary<ResourceTypes, int>();
         foreach (ResourceTypes resource in ResourceTypes.GetValues(typeof(ResourceTypes)))
         {
-            resources.Add(resource, 50);
+            resources.Add(resource, 5000);
             resourceProductions.Add(resource, 0);
         }
         // resources[ResourceTypes.Food] = 0;

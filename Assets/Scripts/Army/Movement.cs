@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Movement : MonoBehaviour
 {
@@ -16,12 +17,19 @@ public class Movement : MonoBehaviour
         GeneratePath();
         if (path == null) return;
         CellData prev = null;
-        path.ForEach(cell =>
+        LineRenderer ln;
+        if (!TryGetComponent(out ln))
         {
-            if (prev == null) return;
-            Debug.DrawLine(TilemapManager.Instance.groundTilemap.CellToWorld(prev.GetVector3Coordinates()), TilemapManager.Instance.groundTilemap.CellToWorld(cell.GetVector3Coordinates()), Color.white, 2.5f);
-            prev = cell;
-        });
+            ln = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        }
+        Vector3[] positions = path.Select(celldata => TilemapManager.Instance.groundTilemap.layoutGrid.CellToWorld(celldata.GetVector3Coordinates())).ToArray();
+        ln.positionCount = positions.Length;
+        ln.SetPositions(positions);
+        ln.startColor = Color.red;
+        ln.endColor = Color.red;
+        ln.startWidth = 0.1f;
+        ln.endWidth = 0.1f;
+        ln.sortingOrder = 10;
     }
 
     private void GeneratePath()

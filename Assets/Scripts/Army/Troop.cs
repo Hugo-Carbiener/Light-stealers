@@ -10,7 +10,7 @@ public class Troop : MonoBehaviour
     [Header("Consumption")]
     [SerializeField] private int foodAmount;
 
-    public Vector2Int position { get; set; }
+    public Vector2Int position { get; set; } = Vector2Int.zero;
 
     public void die()
     {

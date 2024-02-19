@@ -22,7 +22,7 @@ public static class Pathfinder
             coordinates = currentCell.coordinates;
             this.currentMovementCost = currentMovementCost;
             this.estimatedMovementCost = Utils.GetTileDistance(currentCell.coordinates, targetCell.coordinates);
-            this.movementProgression = this.currentMovementCost + estimatedMovementCost;
+            this.movementProgression = this.currentMovementCost + estimatedMovementCost * 2;
         }
     }
 
@@ -57,7 +57,6 @@ public static class Pathfinder
         CellData currentCell = from;
         while (currentCell != to)
         {
-            Debug.Log("Adding cell to visited cells");
             visitedCells.Add(new PathfindingCellData(currentCell, to, currentMovementCost));
             SetNeighborTilesAsAccessible(currentCell, to, currentMovementCost);
             CellData newCurrentCell = GetNewCurrentCell(currentCell);
@@ -66,7 +65,6 @@ public static class Pathfinder
             if (newCurrentCell == to)
             {
                 visitedCells.Add(new PathfindingCellData(newCurrentCell, to, currentMovementCost));
-                Debug.Log("Adding destination cell to visited cells");
             }
             currentCell = newCurrentCell;
         }
@@ -126,7 +124,6 @@ public static class Pathfinder
             currentCell = visitedCells.OrderByDescending(pfCellData => Utils.CellsAreNeighbors(pfCellData.coordinates, currentCell.coordinates)).ThenByDescending(pfCellData => pfCellData.currentMovementCost < currentCell.currentMovementCost).First();
             visitedCells.Remove(currentCell);
             backtrackedPath.Add(currentCell);
-            Debug.Log("Adding cell to backtracked cells");
         }
 
         List<CellData> path = backtrackedPath.Select(pfCellData => TilemapManager.Instance.GetCellData(pfCellData.coordinates))
