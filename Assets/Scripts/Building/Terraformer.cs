@@ -9,7 +9,9 @@ public static class Terraformer
     public static void Terraform(Vector2Int coordinates)
     {
         CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
-        if (targetCell == null || unterraformableEnvironments.Contains(targetCell.environment)) return;
+        if (targetCell == null 
+            || targetCell.environment == null 
+            || unterraformableEnvironments.Contains(targetCell.environment.Value)) return;
 
         targetCell.environment = Environment.city;
         if (targetCell.building)

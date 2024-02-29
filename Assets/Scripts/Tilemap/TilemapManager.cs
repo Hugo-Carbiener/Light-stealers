@@ -50,8 +50,7 @@ public class TilemapManager : MonoBehaviour
 
     private void Start()
     {
-        GenerateWaterTilemap(columns, rows);
-        GenerateGroundTilemap(columns, rows);
+        GenerateBaseTilemap(columns, rows);
 
         if (activateIsolatedCellsRemoval)
         {
@@ -72,15 +71,23 @@ public class TilemapManager : MonoBehaviour
     public int GetTilemapColumns() { return columns; }
     public int GetTilemapRows() { return rows; }
 
-    public void GenerateGroundTilemap(int columns, int rows)
+    public void GenerateBaseTilemap(int columns, int rows)
     {
         groundTilemap.ClearAllTiles();
-        for (int y = 0; y < rows; y++)
+        for (int y = 0; y < rows + additionalWaterTileAmount * 2; y++)
         { 
-            for (int x = 0; x < columns; x++)
+            for (int x = 0; x < columns + additionalWaterTileAmount * 2; x++)
             {
+
                 Vector2Int coordinates = new Vector2Int(x, y);
                 CellData cell = new CellData(coordinates);
+
+                if (x <= additionalWaterTileAmount || y <= additionalWaterTileAmount || x > columns + additionalWaterTileAmount || y > rows + additionalWaterTileAmount)
+                {
+                    cell.environment = Environment.water;
+                    cells.Add(cell);
+                    continue;
+                }
 
                 if (activateClustering)
                 {
@@ -206,16 +213,16 @@ public class TilemapManager : MonoBehaviour
 
                 Vector2Int currentCellCoordinates = new Vector2Int(x, y);
                 CellData currentCell = GetCellData(currentCellCoordinates);
-                if (currentCell == null) continue;
-                Environment currentCellEnvironment = currentCell.environment;
+                if (currentCell == null || currentCell.environment == null) continue;
+                Environment currentCellEnvironment = currentCell.environment.Value;
 
                 List<Vector2Int> neighborCoordinates = Utils.GetNeighborOffsetVectors(currentCellCoordinates);
                 foreach (Vector2Int coordinates in neighborCoordinates)
                 {
                     CellData neighborCell = GetCellData(currentCellCoordinates + coordinates);
-                    if (neighborCell != null)
+                    if (neighborCell != null && neighborCell.environment != null)
                     {
-                        Environment neighborCellEnvironment = neighborCell.environment;
+                        Environment neighborCellEnvironment = neighborCell.environment.Value;
                         neighborAmount[neighborCellEnvironment] += 1;
                     }
                 }
@@ -245,18 +252,6 @@ public class TilemapManager : MonoBehaviour
                         SetCellToMountain(currentCell);
                     }
                 }
-            }
-        }
-    }
-
-    public void GenerateWaterTilemap(int columns, int rows)
-    {
-        waterTilemap.ClearAllTiles();
-        for (int y = -additionalWaterTileAmount; y < rows + additionalWaterTileAmount; y++)
-        {
-            for (int x = -additionalWaterTileAmount; x < columns + additionalWaterTileAmount; x++)
-            {
-                waterTilemap.SetTile(new Vector3Int(x, y, 0), GameAssets.i.waterTile);
             }
         }
     }
@@ -306,13 +301,26 @@ public class TilemapManager : MonoBehaviour
 
     public void DispatchTile(CellData cellData)
     {
-        Tile environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(cellData.environment);
-        groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
-        
-        Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type) : null;
-        buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
+        Environment? cellEnvironment = cellData.environment;
+        if (cellEnvironment == null) return;
 
+        Tile environmentTile;
+        switch (cellEnvironment)
+        {
+            case null:
+                return;
+            case Environment.water:
+                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(Environment.water);
+                waterTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
+                return;
+            default:
+                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(cellEnvironment.Value);
+                groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
+
+                Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type) : null;
+                buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
+                return;
+        }
         // TODO - display construction asset while the building is not finished.
-        
     }
 }
