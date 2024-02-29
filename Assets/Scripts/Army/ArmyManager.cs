@@ -32,7 +32,7 @@ public class ArmyManager : MonoBehaviour
     [Header("Army variables")]
     [SerializeField] private GameObject basicTroopPrefab;
     [SerializeField] private DayNightCyclePhases createTroopsAtStartOfPhase;
-    [SerializeField] private Vector3 startingPos; // will be bound to the building generation troops in the future
+    [SerializeField] private Vector3Int startingPos; // will be bound to the building generation troops in the future
 
     // pool variables
     private List<Troop> armyTroopPool;      // all troops, active and inactive
@@ -118,7 +118,8 @@ public class ArmyManager : MonoBehaviour
         if (troop.gameObject.activeInHierarchy) return;
 
         troop.gameObject.SetActive(true);
-        troop.transform.position = startingPos;
+        troop.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
+        troop.position = (Vector2Int) startingPos;
         armyTroops.Add(troop);
         armySize++;
     }

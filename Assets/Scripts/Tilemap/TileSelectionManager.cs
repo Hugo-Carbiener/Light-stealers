@@ -52,7 +52,7 @@ public class TileSelectionManager : MonoBehaviour
      */
     private void SetSelectCell(Vector2Int coordinates)
     {
-        if (selectedCell != null && selectedCell.GetCoordinates() == coordinates)
+        if (selectedCell != null && selectedCell.coordinates == coordinates)
         {
             // unselect cell
             selectedCell = null;

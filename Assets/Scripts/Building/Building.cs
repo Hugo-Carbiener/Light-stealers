@@ -62,7 +62,6 @@ public class Building : MonoBehaviour
         if (doesConsumeFood)
         {
             OnConstructionFinished.AddListener(LinkConsumptionToCycle);
-            OnConstructionFinished.AddListener(ProductionUIManager.Instance.updateUIComponent);
         }
 
         StartConstruction();
@@ -118,7 +117,6 @@ public class Building : MonoBehaviour
     public void UpdateActivationStatus(bool targetStatus)
     {
         activated = targetStatus;
-        ProductionUIManager.Instance.updateUIComponent();
     }
 
     private bool BuildingCanBePayedFor()

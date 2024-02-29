@@ -8,5 +8,6 @@ public enum BuildingType
     Farm,
     Mine,
     House,
-    Fountain
+    Fountain,
+    TestBuilding
 }

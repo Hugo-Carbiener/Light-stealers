@@ -65,7 +65,7 @@ public class TilemapManager : MonoBehaviour
     public CellData GetCellData(Vector2Int coordinates)
     {
         int index = coordinates.y * columns + coordinates.x;
-        if (!CoordinatesAreInBounds(coordinates) || index >= cells.Count) return null;
+        if (!Utils.CellCoordinatesAreValid(coordinates) || index >= cells.Count) return null;
         return cells[index];
     }
 
@@ -85,6 +85,7 @@ public class TilemapManager : MonoBehaviour
                 if (activateClustering)
                 {
                     SetTileToCellDependingOnNeighbor(cell);
+                    //SetCellDependingOnDistance(cell);
                 }
                 else
                 {
@@ -313,10 +314,5 @@ public class TilemapManager : MonoBehaviour
 
         // TODO - display construction asset while the building is not finished.
         
-    }
-
-    private bool CoordinatesAreInBounds(Vector2Int coordinates)
-    {
-        return coordinates.x >= 0 && coordinates.x < columns && coordinates.y >= 0 && coordinates.y < rows;
     }
 }
