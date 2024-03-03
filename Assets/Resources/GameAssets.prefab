@@ -49,6 +49,7 @@ MonoBehaviour:
   mountainTile: {fileID: 11400000, guid: 589b82850cc1a8e4baf9bb6b0cc351b5, type: 2}
   waterTile: {fileID: 11400000, guid: 9403db5f4b222be42a9cdf57495bf87e, type: 2}
   cityTile: {fileID: 11400000, guid: 7361fe102934b224784e4ce96340245e, type: 2}
+  fractureTile: {fileID: 11400000, guid: 4757a9da8594c6b4eb0e84b4defd2fcd, type: 2}
   buildingTiles:
   - {fileID: 11400000, guid: 3e1a8dddff2ac1b4c9264ada8afb8756, type: 2}
   - {fileID: 11400000, guid: 013d9f1b4095b1a4698b44c21cb20d09, type: 2}

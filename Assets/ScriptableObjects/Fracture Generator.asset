@@ -19,3 +19,4 @@ MonoBehaviour:
   - {x: 26, y: 30}
   - {x: 27, y: 30}
   - {x: 28, y: 30}
+  fractureLight: {fileID: 1498862107795571118, guid: d6a62b5524b4acb4fb3d70833e8dea4c, type: 3}

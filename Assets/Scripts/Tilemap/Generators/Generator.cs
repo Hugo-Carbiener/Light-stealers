@@ -26,7 +26,7 @@ public abstract class Generator : ScriptableObject {
     {
         if (!initialized)
         {
-            Debug.LogError("Attempting to generate using an uninitialized generator");
+            Debug.LogError("Attempting to generate using an uninitialized generator : " + this.ToString());
             return false;
         }
         return true;

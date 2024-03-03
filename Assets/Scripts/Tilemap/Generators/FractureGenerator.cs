@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using System.Linq;
 
 /**
@@ -11,10 +10,12 @@ using System.Linq;
 public class FractureGenerator : Generator
 {
     [SerializeField] private List<Vector2Int> fracturedCells;
+    [SerializeField] private GameObject fractureLight;
 
     public override void Initialize()
     {
-        initialized = true;
+
+        initialized = fracturedCells.Count == 0 || fractureLight != null;
     }
 
     protected override void GenerateElement()
@@ -30,6 +31,8 @@ public class FractureGenerator : Generator
         {
             CellData cell = TilemapManager.Instance.GetCellData(fracturedCell.coordinates);
             cell.environment = null;
+            GameObject instantiatedLight = GameObject.Instantiate(fractureLight);
+            instantiatedLight.transform.position = TilemapManager.Instance.groundTilemap.layoutGrid.CellToWorld(cell.GetVector3Coordinates());
         }
     }
 }

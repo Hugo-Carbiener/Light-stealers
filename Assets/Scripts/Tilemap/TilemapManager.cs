@@ -290,12 +290,12 @@ public class TilemapManager : MonoBehaviour
     public void DispatchTile(CellData cellData)
     {
         Environment? cellEnvironment = cellData.environment;
-        if (cellEnvironment == null) return;
-
         Tile environmentTile;
         switch (cellEnvironment)
         {
             case null:
+                environmentTile = GameAssets.i.fractureTile;
+                groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
                 return;
             case Environment.water:
                 environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(Environment.water);
