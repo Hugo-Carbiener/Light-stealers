@@ -6,6 +6,7 @@ using UnityEngine;
     * Rules ensure certain conditions are valid to enable the construction of a building.
     */
 public abstract class Rule : MonoBehaviour
+
 {
     [SerializeField] protected Comparator comparator;
 

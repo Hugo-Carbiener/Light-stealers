@@ -57,13 +57,13 @@ public class TilemapManager : MonoBehaviour
         RemoveIsolatedCells();
         }
 
-        GenerateTownCenter(new Vector2Int(columns / 2, rows / 2));
+        GeneratorsManager.Instance.ExecuteGenerators();
         DispatchGroundAndBuildingTilemaps();
     }
 
     public CellData GetCellData(Vector2Int coordinates)
     {
-        int index = coordinates.y * columns + coordinates.x;
+        int index = coordinates.y * (columns + (additionalWaterTileAmount * 2)) + coordinates.x;
         if (!Utils.CellCoordinatesAreValid(coordinates) || index >= cells.Count) return null;
         return cells[index];
     }
@@ -256,18 +256,6 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void GenerateTownCenter(Vector2Int coordinates)
-    {
-        CellData targetCell = GetCellData(coordinates);
-        if (targetCell == null)
-        {
-            Debug.LogError("Error: could not find center tile to place fountain.");
-            return;
-        }
-        targetCell.environment = Environment.city;
-        BuildingFactory.Instance.Build(BuildingType.Fountain, coordinates);
-    }
-
     public void DispatchGroundAndBuildingTilemaps()
     {
         foreach (CellData cell in cells)
@@ -318,6 +306,7 @@ public class TilemapManager : MonoBehaviour
                 groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
 
                 Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type) : null;
+                if (buildingTile == null) return;
                 buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
                 return;
         }
