@@ -15,7 +15,9 @@ public class TileEnvironmentRule : Rule
     {
         ComparatorIsAuthorized();
 
-        Environment cellEnvironment = cell.environment;
+        Environment? cellEnvironment = cell.environment;
+        if (cellEnvironment == null) return false;
+
         switch (comparator)
         {
             case Comparator.EQUAL:

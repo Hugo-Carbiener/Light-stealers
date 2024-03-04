@@ -66,9 +66,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1633081374406861732}
-  - component: {fileID: 2662186960085966838}
-  - component: {fileID: 7053667552762632883}
-  - component: {fileID: 6578096671929055775}
+  - component: {fileID: 1977065643549864942}
+  - component: {fileID: 4008170528001782575}
   m_Layer: 0
   m_Name: Rules
   m_TagString: Untagged
@@ -91,21 +90,7 @@ Transform:
   m_Father: {fileID: 8624392791890969088}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2662186960085966838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5941718714019086800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd0eb38961be0f643abcdbe5682ebe6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comparator: 1
-  environment: 3
---- !u!114 &7053667552762632883
+--- !u!114 &1977065643549864942
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,9 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e432121a04b38542bc85874103d03c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comparator: 4
-  amount: 1
---- !u!114 &6578096671929055775
+  comparator: 1
+  amount: 0
+--- !u!114 &4008170528001782575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -25,6 +25,7 @@ public class GameAssets : MonoBehaviour
     public Tile mountainTile;
     public Tile waterTile;
     public Tile cityTile;
+    public Tile fractureTile;
     public List<Tile> buildingTiles;
     public TileBase selectionTile;
 

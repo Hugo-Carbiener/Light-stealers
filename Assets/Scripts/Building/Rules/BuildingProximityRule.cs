@@ -9,6 +9,7 @@ using System.Linq;
 public class BuildingProximityRule : Rule
 {
     [SerializeField] private int nearestBuildingDistance;
+
     protected override List<Comparator> authorizedComparators => new List<Comparator> { Comparator.EQUAL, Comparator.NOT_EQUAL, Comparator.GREATER_THAN, Comparator.LESSER_THAN };
 
    public override bool IsValid(CellData cell, Building buildingType)
