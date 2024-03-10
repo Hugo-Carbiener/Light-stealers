@@ -42,10 +42,6 @@ public class TilemapManager : MonoBehaviour
 
         // event to refresh tiles
         BuildingFactory.Instance.updateBuildingTilemapEvent += DispatchBuildingTilemap;
-
-        // add offset to building tilemap
-        Vector3 offset = new Vector3(0, buildingsTilemap.layoutGrid.cellSize.x / 4, 0);
-        buildingsTilemap.transform.position += offset;
     }
 
     private void Start()
