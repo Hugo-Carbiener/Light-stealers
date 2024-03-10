@@ -138,9 +138,9 @@ public class DayNightCycleManager : MonoBehaviour
         light.intensity = phaseIntensityCurve.Evaluate(phaseProgress);
     }
 
-    private void UpdateLightTravel(DayNightCyclePhases currentPhase, float phaseProgress)
+    private void UpdateLightTravel(DayNightCyclePhases phase, float phaseProgress)
     {
-        if (!travellingLight.gameObject.activeInHierarchy) return;
+        if (phase != DayNightCyclePhases.Day) return;
 
         travellingLight.transform.position = Vector3.Lerp(start, destination, phaseProgress);
     }
