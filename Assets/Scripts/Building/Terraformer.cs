@@ -11,16 +11,11 @@ public static class Terraformer
         CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
         if (targetCell == null 
             || targetCell.environment == null 
+            || targetCell.building
             || unterraformableEnvironments.Contains(targetCell.environment.Value)) return;
 
         targetCell.environment = Environment.city;
-        if (targetCell.building)
-        {
-            BuildingFactory.Instance.DeconstructBuilding(coordinates);
-        } else
-        {
-            TilemapManager.Instance.DispatchTile(targetCell);
-        }
+        TilemapManager.Instance.DispatchTile(targetCell);
     }
 
     public static void TerraformAround(Vector2Int coordinates)
