@@ -6,7 +6,7 @@ using System.Linq;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private Vector2Int destination;
-    [SerializeField] private Troop troop;
+    [SerializeField] private Unit troop;
     [SerializeField]
     private DayNightCyclePhases drawAtStartOfPhase;
     List<CellData> path;

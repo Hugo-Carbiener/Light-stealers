@@ -35,15 +35,15 @@ public class ArmyManager : MonoBehaviour
     [SerializeField] private Vector3Int startingPos; // will be bound to the building generation troops in the future
 
     // pool variables
-    private List<Troop> armyTroopPool;      // all troops, active and inactive
-    public List<Troop> armyTroops { get; private set; }         // active troops
+    private List<Unit> armyTroopPool;      // all troops, active and inactive
+    public List<Unit> armyTroops { get; private set; }         // active troops
 
     private void Awake()
     {
         armySize = 0;
         housingSize = initialHousingSize;
-        armyTroopPool = new List<Troop>();
-        armyTroops = new List<Troop>();
+        armyTroopPool = new List<Unit>();
+        armyTroops = new List<Unit>();
         initArmyPool();
     }
 
@@ -86,8 +86,8 @@ public class ArmyManager : MonoBehaviour
         GameObject instantiatedObject = Instantiate(basicTroopPrefab, ArmyPoolContainer);
         instantiatedObject.SetActive(false);
         
-        Troop troop;
-        if (instantiatedObject.TryGetComponent<Troop>(out troop)) {
+        Unit troop;
+        if (instantiatedObject.TryGetComponent<Unit>(out troop)) {
             armyTroopPool.Add(troop);
         } else
         {
@@ -98,9 +98,9 @@ public class ArmyManager : MonoBehaviour
     /**
      * Army pool getter
      */
-    private Troop? getFirstAvailableTroop()
+    private Unit? getFirstAvailableTroop()
     {
-        foreach (Troop troop in armyTroopPool)
+        foreach (Unit troop in armyTroopPool)
         {
             if (!troop.gameObject.activeInHierarchy)
             {
@@ -113,7 +113,7 @@ public class ArmyManager : MonoBehaviour
     /**
      * instantiate a troop
      */
-    private void wakeTroop(Troop troop)
+    private void wakeTroop(Unit troop)
     {
         if (troop.gameObject.activeInHierarchy) return;
 
@@ -129,7 +129,7 @@ public class ArmyManager : MonoBehaviour
      */
     private void armyConsumption()
     {
-        foreach (Troop troop in armyTroops)
+        foreach (Unit troop in armyTroops)
         {
             if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -troop.getFoodConsummed()))
             {
@@ -151,7 +151,7 @@ public class ArmyManager : MonoBehaviour
                 int i = 0;
                 while (i < armySize - housingSize)
                 {
-                    Troop troop = armyTroops[0];
+                    Unit troop = armyTroops[0];
                     troop.die();
                     i++;
                 }
@@ -159,7 +159,7 @@ public class ArmyManager : MonoBehaviour
             {
                 while (armySize < housingSize)
                 {
-                    Troop troop = getFirstAvailableTroop();
+                    Unit troop = getFirstAvailableTroop();
                     if (troop == null)
                     {
                         Debug.LogError("Could not find active troop, pool is not big enough.");
