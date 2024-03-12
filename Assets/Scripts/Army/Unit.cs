@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour
 {
     [Header("Modules")]
     [SerializeField] private BehaviorModule behaviorModule;
-    [SerializeField] private Movement movementModule;
+    [SerializeField] private MovementModule movementModule;
     [Header("Consumption")]
     [SerializeField] private int foodAmount;
 
@@ -20,13 +20,21 @@ public class Unit : MonoBehaviour
         Assert.IsNotNull(movementModule);
     }
 
-    public Vector2Int position { get; set; } = Vector2Int.zero;
+    public Vector2Int position
+    {
+        get { return this.position; }
+
+        set
+        {
+            movementModule.currentCell = value;
+        }
+    }
     
     public void die()
     {
         gameObject.SetActive(false);
         ArmyManager.Instance.armySize--;
-        ArmyManager.Instance.armyTroops.Remove(this);
+        ArmyManager.Instance.armyUnits.Remove(this);
     }
 
     public int getFoodConsummed() { return foodAmount; }
