@@ -38,4 +38,7 @@ public class Unit : MonoBehaviour
     }
 
     public int getFoodConsummed() { return foodAmount; }
+
+    public BehaviorModule GetBehaviorModule() { return behaviorModule; }   
+    public MovementModule GetMovementModule() { return movementModule; }
 }

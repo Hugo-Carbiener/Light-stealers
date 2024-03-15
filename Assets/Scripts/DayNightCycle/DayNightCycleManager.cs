@@ -40,9 +40,9 @@ public class DayNightCycleManager : MonoBehaviour
     private int day;
     private DayNightCyclePhases phase;
 
-    public static event cyclePhaseHandler OnCyclePhaseStart;
-    public static event cyclePhaseHandler OnCyclePhaseEnd;
-    public delegate void cyclePhaseHandler(DayNightCyclePhases phase);
+    public static event CyclePhaseHandler OnCyclePhaseStart;
+    public static event CyclePhaseHandler OnCyclePhaseEnd;
+    public delegate void CyclePhaseHandler(DayNightCyclePhases phase);
 
 
     private void Awake()

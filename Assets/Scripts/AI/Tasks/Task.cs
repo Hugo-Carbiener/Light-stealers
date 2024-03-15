@@ -9,10 +9,12 @@ public class Task
 {
     public CellData location { get; set; }
     public TaskType type { get; private set; }
+    public Status status { get; private set; } 
 
-    public Task(CellData location, TaskType type)
+
+
+    public void Finish()
     {
-        this.location = location;
-        this.type = type;
+        status = Status.Done;
     }
 }

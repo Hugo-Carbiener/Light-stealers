@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 /**
  * Unit module in charge of executing movement after being given a destination cell.
@@ -13,7 +14,10 @@ public class MovementModule : MonoBehaviour
     public Vector2Int destination { get; private set; }
     public Vector2Int currentCell { get; set; }
     public List<CellData> path { get; private set; }
-    public MovementStatus status { get; private set; } = MovementStatus.ToBeProgrammed;
+    public Status status { get; private set; } = Status.ToBeProgrammed;
+
+    public event MovementHandler OnArrival;
+    public delegate void MovementHandler(Task task);
 
     private void Start()
     {
@@ -23,7 +27,7 @@ public class MovementModule : MonoBehaviour
     public void SetDestination(Vector2Int destination)
     {
         this.destination = destination;
-        status = MovementStatus.Waiting;
+        status = Status.Pending;
     }
 
     /**
@@ -32,11 +36,11 @@ public class MovementModule : MonoBehaviour
     public void setCurrentCell(Vector2Int position)
     {
         currentCell = position;
-        if (status != MovementStatus.Finished || status != MovementStatus.ToBeProgrammed)
+        if (status != Status.Done || status != Status.ToBeProgrammed)
         {
             destination = currentCell;
             path = null;
-            status = MovementStatus.ToBeProgrammed;
+            status = Status.ToBeProgrammed;
         }
     }
     
@@ -47,13 +51,13 @@ public class MovementModule : MonoBehaviour
     {
         if (destination == currentCell || !Utils.CellCoordinatesAreValid(destination)) return;
 
-        if (status != MovementStatus.Waiting)
+        if (status != Status.Pending)
         {
             Debug.LogError("Unit " + gameObject.name + " : Movement was started while in status " + status);
             return;
         }
 
-        status = MovementStatus.InProgress;
+        status = Status.InProgress;
         path = Pathfinder.GetPath(currentCell, destination);
         if (path == null) return;
         StartCoroutine("MovementLoop");
@@ -71,7 +75,7 @@ public class MovementModule : MonoBehaviour
         }
 
         path = null;
-        status = MovementStatus.Finished;
+        status = Status.Done;
     }
 
     /**
@@ -80,7 +84,7 @@ public class MovementModule : MonoBehaviour
     public void CancelMovement()
     {
         StopAllCoroutines();
-        status = MovementStatus.Cancelled;
+        status = Status.Cancelled;
 
         path = null;
         destination = currentCell;

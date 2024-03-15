@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MovementStatus
+public enum Status
 {
     ToBeProgrammed,
-    Waiting,
+    Pending,
     InProgress,
     Cancelled,
-    Finished
+    Done
 }
