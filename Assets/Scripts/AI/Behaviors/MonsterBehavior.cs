@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterBehavior : Behavior
+public class MonsterBehavior : BehaviorModule
 {
-    public override void Execute(Task task)
+    public override void ExecuteAction(Task task)
     {
-        
+        throw new System.NotImplementedException();
     }
 
-    protected override void SetTaskLocation(Task task)
+    public override void ExecuteMovement(Task task)
     {
-        // get closest attackable cell for now
-        task.location = null;
+        throw new System.NotImplementedException();
+    }
+
+    public override void InitAction(Task task)
+    {
+        throw new System.NotImplementedException();
     }
 }
