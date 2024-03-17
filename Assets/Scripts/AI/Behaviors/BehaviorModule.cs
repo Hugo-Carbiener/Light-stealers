@@ -43,8 +43,10 @@ public abstract class BehaviorModule : MonoBehaviour
 
     }
 
-    public abstract void ExecuteMovement(Task task);
-    public abstract void InitAction(Task task);
-    public abstract void ExecuteAction(Task task);
+    protected abstract void ExecuteMovement(Task task);
+    protected abstract void InitAction(Task task);
+    protected abstract void ExecuteAction(Task task);
+    public bool IsIdle() { return assignedTask == null; }
+    public bool IsGeneratingOwnTasks => this is ITaskAutoGeneration;
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
 }
