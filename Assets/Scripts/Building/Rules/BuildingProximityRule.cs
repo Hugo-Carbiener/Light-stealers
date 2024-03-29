@@ -15,7 +15,7 @@ public class BuildingProximityRule : Rule
    public override bool IsValid(CellData cell, Building buildingType)
     {
         ComparatorIsAuthorized();
-        int minDistance = BuildingFactory.Instance.buildingsConstructed.Select(building => building.GetCoordinates())
+        int minDistance = BuildingFactory.Instance.buildingsConstructed.Select(building => building.GetPosition())
                                                                         .Where(coordinates => coordinates != cell.coordinates)
                                                                         .Select(buildingCoordinates => Utils.GetTileDistance(cell.coordinates, buildingCoordinates))
                                                                         .Min();

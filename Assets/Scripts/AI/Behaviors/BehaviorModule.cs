@@ -23,11 +23,12 @@ public abstract class BehaviorModule : MonoBehaviour
             Debug.LogError(string.Format($"Attempting to assign wrong task ({task.type}) to behavior {this.name}"));
             return;
         }
+        task.status = Status.ToBeProgrammed;
         assignedTask = task;
         InitMovement(task, movementModule);
     }
 
-    public bool InitMovement(Task task, MovementModule movementModule)
+    private bool InitMovement(Task task, MovementModule movementModule)
     {
         if (task.location == null)
         {
@@ -40,13 +41,12 @@ public abstract class BehaviorModule : MonoBehaviour
         movementModule.SetDestination(task.location.coordinates);
         movementModule.OnArrival += InitAction;
         return true;
-
     }
 
     protected abstract void ExecuteMovement(Task task);
     protected abstract void InitAction(Task task);
     protected abstract void ExecuteAction(Task task);
     public bool IsIdle() { return assignedTask == null; }
-    public bool IsGeneratingOwnTasks => this is ITaskAutoGeneration;
+    public bool GeneratesOwnTasks => this is ITaskAutoGeneration;
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
 }

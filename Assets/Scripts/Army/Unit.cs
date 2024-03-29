@@ -6,11 +6,12 @@ using UnityEngine.Assertions;
 /**
  * Basic component for game agents
  */
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, ITargettable
 {
     [Header("Modules")]
     [SerializeField] private BehaviorModule behaviorModule;
     [SerializeField] private MovementModule movementModule;
+    [SerializeField] private FightModule fightModule;
     [Header("Consumption")]
     [SerializeField] private int foodAmount;
 
@@ -18,6 +19,7 @@ public class Unit : MonoBehaviour
     {
         Assert.IsNotNull(behaviorModule);
         Assert.IsNotNull(movementModule);
+        Assert.IsNotNull(fightModule);
     }
 
     public Vector2Int position
@@ -41,4 +43,7 @@ public class Unit : MonoBehaviour
 
     public BehaviorModule GetBehaviorModule() { return behaviorModule; }   
     public MovementModule GetMovementModule() { return movementModule; }
+    public FightModule GetFightModule() { return fightModule; }
+
+    public Vector2Int GetPosition() { return position; }
 }

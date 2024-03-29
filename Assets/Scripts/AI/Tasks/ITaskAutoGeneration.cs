@@ -7,5 +7,5 @@ using UnityEngine;
  */
 public interface ITaskAutoGeneration 
 {
-
+    public Task GenerateTask(Unit unit);
 }
