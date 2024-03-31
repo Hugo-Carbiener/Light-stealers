@@ -33,7 +33,7 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         ITargettable closestTarget = null;
         int distanceToTarget = TilemapManager.Instance.GetTilemapColumns() * TilemapManager.Instance.GetTilemapRows();
 
-        List<ITargettable> targets = Enumerable.Concat<ITargettable>(BuildingFactory.Instance.buildingsConstructed, ArmyManager.Instance.armyUnits).ToList();
+        List<ITargettable> targets = Enumerable.Concat<ITargettable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.armyUnits).ToList();
         foreach (ITargettable target in targets)
         {
             if (target == null || target.GetFightModule().IsAttackable()) continue;

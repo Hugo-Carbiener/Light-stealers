@@ -32,8 +32,8 @@ public class HousingUIManager : UIManager, PassiveUIInterface
 
     public void UpdateUIComponent()
     {
-        int housingAmount = ArmyManager.Instance.housingSize;
-        int populationAmount = ArmyManager.Instance.armySize;
+        int housingAmount = HousingManager.Instance.housingSizes[Factions.Villagers];
+        int populationAmount = UnitManager.Instance.activeUnits[Factions.Villagers].Count;
         UpdateText(housingLabel, housingAmount.ToString());
         UpdateText(populationLabel, populationAmount.ToString());
     }

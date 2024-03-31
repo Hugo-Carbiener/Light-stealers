@@ -34,9 +34,7 @@ public class Unit : MonoBehaviour, ITargettable
     
     public void die()
     {
-        gameObject.SetActive(false);
-        ArmyManager.Instance.armySize--;
-        ArmyManager.Instance.armyUnits.Remove(this);
+        UnitManager.Instance.DeactivateUnit(this);
     }
 
     public int getFoodConsummed() { return foodAmount; }
@@ -46,4 +44,10 @@ public class Unit : MonoBehaviour, ITargettable
     public FightModule GetFightModule() { return fightModule; }
 
     public Vector2Int GetPosition() { return position; }
+
+    public bool Attack(Vector2Int location)
+    {
+        if (movementModule.currentCell != location) return false;
+        return fightModule.Attack(location);
+    }
 }

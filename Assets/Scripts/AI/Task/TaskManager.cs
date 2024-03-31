@@ -42,9 +42,9 @@ public class TaskManager : MonoBehaviour
 
     private void PollUnits()
     {
-        if (ArmyManager.Instance.armyUnits == null || ArmyManager.Instance.armyUnits.Count == 0) return;
+        if (UnitManager.Instance.armyUnits == null || UnitManager.Instance.armyUnits.Count == 0) return;
 
-        foreach (Unit unit in ArmyManager.Instance.armyUnits)
+        foreach (Unit unit in UnitManager.Instance.armyUnits)
         {
             if (unit == null) continue;
             BehaviorModule behaviorModule = unit.GetBehaviorModule();
