@@ -17,7 +17,7 @@ public class MovementModule : MonoBehaviour
     public Status status { get; private set; } = Status.ToBeProgrammed;
 
     public event MovementHandler OnArrival;
-    public delegate void MovementHandler(Task task);
+    public delegate void MovementHandler(Vector2Int destination);
 
     private void Start()
     {
@@ -76,10 +76,11 @@ public class MovementModule : MonoBehaviour
 
         path = null;
         status = Status.Done;
+        OnArrival.Invoke(destination);
     }
 
     /**
-     * Disgraceful terminaison of the movement procedure. Changes status while taking to unit to the closest cell the end the movement.
+     * Disgraceful terminaison of the movement procedure. Changes status and does not trigger the arrival event.
      */
     public void CancelMovement()
     {

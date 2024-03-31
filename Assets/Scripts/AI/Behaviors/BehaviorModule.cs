@@ -8,15 +8,18 @@ using UnityEngine.Assertions;
  */ 
 public abstract class BehaviorModule : MonoBehaviour
 {
+    [SerializeField] protected Unit unit;
+
     private List<TaskType> acceptedTasks;
     protected Task assignedTask { get; private set; }
 
     private void Awake()
     {
         Assert.IsTrue(acceptedTasks != null && acceptedTasks.Count > 0);
+        Assert.IsTrue(unit != null);
     }
 
-    public void AssignNewTask(Task task, MovementModule movementModule)
+    public void AssignNewTask(Task task)
     {
         if (!acceptedTasks.Contains(task.type))
         {
@@ -25,28 +28,40 @@ public abstract class BehaviorModule : MonoBehaviour
         }
         task.status = Status.ToBeProgrammed;
         assignedTask = task;
-        InitMovement(task, movementModule);
+        if (InitMovement(task))
+        {
+            ExecuteMovement(task);
+        }
     }
 
-    private bool InitMovement(Task task, MovementModule movementModule)
+    protected bool InitMovement(Task task)
     {
         if (task.location == null)
         {
-            Debug.LogError(string.Format($"Monster ({movementModule.currentCell}) attempting attack on null cell"));
+            Debug.LogError(string.Format($"Monster ({unit.GetMovementModule().currentCell}) attempting attack on null cell"));
             return false;
         }
 
         // check if the destination is accessible
 
-        movementModule.SetDestination(task.location.coordinates);
-        movementModule.OnArrival += InitAction;
+        unit.GetMovementModule().SetDestination(task.location);
+        unit.GetMovementModule().OnArrival += InitAction;
         return true;
     }
 
-    protected abstract void ExecuteMovement(Task task);
-    protected abstract void InitAction(Task task);
+    protected void ExecuteMovement(Task task)
+    {
+        unit.GetMovementModule().StartMovement();
+    }
+    protected abstract void InitAction(Vector2Int targetCell);
     protected abstract void ExecuteAction(Task task);
     public bool IsIdle() { return assignedTask == null; }
     public bool GeneratesOwnTasks => this is ITaskAutoGeneration;
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
+
+    public void EndTask()
+    {
+        assignedTask = null;
+        assignedTask.Finish();
+    }
 }

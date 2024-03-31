@@ -7,13 +7,13 @@ using UnityEngine;
  */
 public class Task
 {
-    public CellData location { get; set; }
+    public Vector2Int location { get; set; }
     public TaskType type { get; private set; }
     public Status status { get; set; } 
 
     public Task(Vector2Int location, TaskType type)
     {
-        this.location = TilemapManager.Instance.GetCellData(location);
+        this.location = location;
         this.type = type;
         status = Status.Pending;
     }

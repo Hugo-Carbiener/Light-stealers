@@ -5,25 +5,27 @@ using System.Linq;
 
 public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 {
+    private ITargettable target;
+
+    private void Update()
+    {
+        UpdateMovementDestination(assignedTask);
+    }
+
     protected override void ExecuteAction(Task task)
     {
         throw new System.NotImplementedException();
     }
 
-    protected override void ExecuteMovement(Task task)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void InitAction(Task task)
+    protected override void InitAction(Vector2Int targetCell)
     {
         throw new System.NotImplementedException();
     }
 
     public Task GenerateTask(Unit unit)
     {
-        ITargettable target = GetTarget(unit.GetMovementModule());
-        return new Task(target.GetPosition(), TaskType.MonsterAttack);
+        target = GetTarget(unit.GetMovementModule());
+        return target == null ? null : new Task(target.GetPosition(), TaskType.MonsterAttack);
     }
 
     private ITargettable GetTarget(MovementModule movementModule)
@@ -38,10 +40,27 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 
             int distanceToThisTarget = Utils.GetTileDistance(movementModule.currentCell, target.GetPosition());
             if (distanceToThisTarget >= distanceToTarget) continue;
-            
+
             distanceToTarget = distanceToThisTarget;
             closestTarget = target;
         }
         return closestTarget;
+    }
+
+    private void UpdateMovementDestination(Task task)
+    {
+        if (task.location == target.GetPosition()) return;
+        
+        unit.GetMovementModule().CancelMovement();
+        task.location = target.GetPosition();
+
+        if (InitMovement(task))
+        {
+            ExecuteMovement(task);
+        }
+        else
+        {
+            EndTask();
+        }   
     }
 }

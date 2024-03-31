@@ -25,7 +25,19 @@ public class TaskManager : MonoBehaviour
 
     private void Update()
     {
+        PollTasks();
         PollUnits();
+    }
+
+    private void PollTasks()
+    {
+        foreach (Task task in tasks)
+        {
+            if (task == null || task.status == Status.Done)
+            {
+                tasks.Remove(task);
+            }
+        }
     }
 
     private void PollUnits()
@@ -43,7 +55,7 @@ public class TaskManager : MonoBehaviour
                 Task task = GetTaskForUnit(unit);
                 if (task == null) continue;
 
-                behaviorModule.AssignNewTask(task, unit.GetMovementModule());
+                behaviorModule.AssignNewTask(task);
             }
         }
     }
