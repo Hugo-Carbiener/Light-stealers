@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8624392791890969088}
   - component: {fileID: 3244944682662217720}
   - component: {fileID: -6890040010664876067}
+  - component: {fileID: 4115004608451503442}
   m_Layer: 0
   m_Name: Mine
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
   resourceConsummed: 2
   amountConsummed: 1
   isTerraforming: 0
+  fightModule: {fileID: 0}
 --- !u!114 &-6890040010664876067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +77,19 @@ MonoBehaviour:
   resourceType: 1
   amount: 1
   produceResourceAtStartOfphase: 1
+--- !u!114 &4115004608451503442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4421782755691153293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79b715d82d46f144c9764b47f6ceadb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackable: 1
 --- !u!1 &5266960479363598845
 GameObject:
   m_ObjectHideFlags: 0
