@@ -20,7 +20,15 @@ public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey
 
     public List<DictionaryItem> elements = new List<DictionaryItem>();
 
-    public TValue At(TKey key)
+    public TValue this[TKey key]
+    {
+        get
+        {
+            return At(key);
+        }
+    }
+
+    private TValue At(TKey key)
     {
         foreach(DictionaryItem item in elements)
         {

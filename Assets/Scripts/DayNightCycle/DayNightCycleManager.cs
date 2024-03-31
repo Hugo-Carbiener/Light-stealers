@@ -63,7 +63,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     private void OnPhaseStart(DayNightCyclePhases phase)
     {
-        Debug.Log("Phase " + phase.ToString() + " has started and will last for " + phasesDurations.At(phase));
+        Debug.Log("Phase " + phase.ToString() + " has started and will last for " + phasesDurations[phase]);
     }
 
     private void OnPhaseEnd(DayNightCyclePhases phase)
@@ -95,7 +95,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
 
         float timer = 0;
-        float phaseDuration = phasesDurations.At(phase);
+        float phaseDuration = phasesDurations[phase];
         while (timer < phaseDuration)
         {
             timer += Time.deltaTime;
@@ -116,7 +116,7 @@ public class DayNightCycleManager : MonoBehaviour
     {
         if (!light.enabled) return;
 
-        Gradient phaseColorGradient = phaseColorGradients.At(currentPhase);
+        Gradient phaseColorGradient = phaseColorGradients[currentPhase];
         if (phaseColorGradient == null)
         {
             Debug.LogError("Error : the phase color gradient does not exist for phase " + currentPhase);
@@ -129,7 +129,7 @@ public class DayNightCycleManager : MonoBehaviour
     {
         if (!light.enabled) return;
 
-        AnimationCurve phaseIntensityCurve = phaseIntensityGradients.At(currentPhase);
+        AnimationCurve phaseIntensityCurve = phaseIntensityGradients[currentPhase];
         if (phaseIntensityCurve == null)
         {
             Debug.LogError("Error : the phase intensity curve does not exist for phase " + currentPhase);

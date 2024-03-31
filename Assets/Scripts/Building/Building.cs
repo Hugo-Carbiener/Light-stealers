@@ -152,7 +152,7 @@ public class Building : MonoBehaviour, ITargettable
     }
 
     public int GetCost(ResourceTypes resourceType) { 
-        int cost = costs.At(resourceType);
+        int cost = costs[resourceType];
         return cost == null ? 0 : cost;
     }
 

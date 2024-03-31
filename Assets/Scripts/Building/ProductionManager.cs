@@ -77,8 +77,8 @@ public class ProductionManager : MonoBehaviour
     {
         foreach (BuildingType buildingTypes in BuildingType.GetValues(typeof(BuildingType)))
         {
-            ResourceTypes resourceToModify = buildingsProductions.At(buildingTypes);
-            int amountToAdd = buildingsAmount[buildingTypes] * buildingsProductionAmounts.At(buildingTypes);
+            ResourceTypes resourceToModify = buildingsProductions[buildingTypes];
+            int amountToAdd = buildingsAmount[buildingTypes] * buildingsProductionAmounts[buildingTypes];
 
             ResourceManager.Instance.modifyResources(resourceToModify, amountToAdd);
         }

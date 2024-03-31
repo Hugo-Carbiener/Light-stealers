@@ -46,7 +46,7 @@ public class BuildingFactory : MonoBehaviour
         CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
         if (targetCell == null || targetCell.building) return;
         // instantiate the building prefab and store building information in cell data
-        GameObject instantiatedBuilding = Instantiate(buildingPrefabs.At(buildingType));        
+        GameObject instantiatedBuilding = Instantiate(buildingPrefabs[buildingType]);        
         previouslyBuiltType = buildingType;
 
         Building building;

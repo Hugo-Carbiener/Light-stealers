@@ -117,7 +117,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY);
         Label stoneAmountLabel = button.Q<Label>(BUTTON_COST_STONE_TEXT_KEY);
 
-        icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(building.type));
+        icon.style.backgroundImage = new StyleBackground(iconDictionnary[building.type]);
         buildingName.text = building.type.ToString();
         foodAmountLabel.text = building.GetCost(ResourceTypes.Food).ToString();
         woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
