@@ -6,12 +6,10 @@ using UnityEngine.Events;
 using UnityEngine.Assertions;
 using System;
 
-public class Building : MonoBehaviour
+public class Building : MonoBehaviour, ITargettable
 {
 
     private Vector2Int coordinates;
-
-    private Vector2 worldCoordinates;
 
     [Header("General")]
     public BuildingType type;
@@ -36,6 +34,9 @@ public class Building : MonoBehaviour
 
     [Header("Terraforming")]
     [SerializeField] private bool isTerraforming;
+
+    [Header("Fight")]
+    [SerializeField] private FightModule fightModule;
 
     public bool activated { private set; get; }
 
@@ -145,12 +146,9 @@ public class Building : MonoBehaviour
         }
     }
 
-    public Vector2Int GetCoordinates() { return coordinates; }
-
     public void SetCoordinates(Vector2Int coords)
     {
         coordinates = coords;
-        worldCoordinates = TilemapManager.Instance.buildingsTilemap.CellToWorld((Vector3Int) coordinates);
     }
 
     public int GetCost(ResourceTypes resourceType) { 
@@ -165,4 +163,8 @@ public class Building : MonoBehaviour
     public bool CanBeDeconstructed() { return canBeDeconstructed; }
 
     public bool IsTerraforming() { return isTerraforming; }
+
+    public  FightModule GetFightModule() { return fightModule; }
+
+    public Vector2Int GetPosition() { return coordinates; }
 }

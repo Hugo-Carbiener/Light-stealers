@@ -30,20 +30,20 @@ public class ArmyManager : MonoBehaviour
     public int armySize { set; get; } 
 
     [Header("Army variables")]
-    [SerializeField] private GameObject basicTroopPrefab;
+    [SerializeField] private GameObject basicUnitPrefab;
     [SerializeField] private DayNightCyclePhases createTroopsAtStartOfPhase;
     [SerializeField] private Vector3Int startingPos; // will be bound to the building generation troops in the future
 
     // pool variables
-    private List<Troop> armyTroopPool;      // all troops, active and inactive
-    public List<Troop> armyTroops { get; private set; }         // active troops
+    private List<Unit> armyUnitPool;      // all troops, active and inactive
+    public List<Unit> armyUnits { get; private set; }         // active troops
 
     private void Awake()
     {
         armySize = 0;
         housingSize = initialHousingSize;
-        armyTroopPool = new List<Troop>();
-        armyTroops = new List<Troop>();
+        armyUnitPool = new List<Unit>();
+        armyUnits = new List<Unit>();
         initArmyPool();
     }
 
@@ -69,8 +69,8 @@ public class ArmyManager : MonoBehaviour
      */
     private void updateArmyPool()
     {
-        if (armyTroopPool.Count >= housingSize) return;
-        for (int i = armyTroopPool.Count; i < housingSize; i++)
+        if (armyUnitPool.Count >= housingSize) return;
+        for (int i = armyUnitPool.Count; i < housingSize; i++)
         {
             instantiateNewBasicTroopInPool();
         }
@@ -81,26 +81,26 @@ public class ArmyManager : MonoBehaviour
      */
     private void instantiateNewBasicTroopInPool()
     {
-        if (armyTroopPool.Count >= housingSize) return;
+        if (armyUnitPool.Count >= housingSize) return;
 
-        GameObject instantiatedObject = Instantiate(basicTroopPrefab, ArmyPoolContainer);
+        GameObject instantiatedObject = Instantiate(basicUnitPrefab, ArmyPoolContainer);
         instantiatedObject.SetActive(false);
         
-        Troop troop;
-        if (instantiatedObject.TryGetComponent<Troop>(out troop)) {
-            armyTroopPool.Add(troop);
+        Unit unit;
+        if (instantiatedObject.TryGetComponent<Unit>(out unit)) {
+            armyUnitPool.Add(unit);
         } else
         {
-            Debug.LogError("Troop does not have Troop component.");
+            Debug.LogError("Unit does not have Unit component.");
         }
     }
 
     /**
      * Army pool getter
      */
-    private Troop? getFirstAvailableTroop()
+    private Unit? getFirstAvailableUnit()
     {
-        foreach (Troop troop in armyTroopPool)
+        foreach (Unit troop in armyUnitPool)
         {
             if (!troop.gameObject.activeInHierarchy)
             {
@@ -111,16 +111,16 @@ public class ArmyManager : MonoBehaviour
     }
 
     /**
-     * instantiate a troop
+     * instantiate a unit
      */
-    private void wakeTroop(Troop troop)
+    private void wakeUnit(Unit unit)
     {
-        if (troop.gameObject.activeInHierarchy) return;
+        if (unit.gameObject.activeInHierarchy) return;
 
-        troop.gameObject.SetActive(true);
-        troop.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
-        troop.position = (Vector2Int) startingPos;
-        armyTroops.Add(troop);
+        unit.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
+        unit.position = (Vector2Int) startingPos;
+        unit.gameObject.SetActive(true);
+        armyUnits.Add(unit);
         armySize++;
     }
 
@@ -129,17 +129,17 @@ public class ArmyManager : MonoBehaviour
      */
     private void armyConsumption()
     {
-        foreach (Troop troop in armyTroops)
+        foreach (Unit unit in armyUnits)
         {
-            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -troop.getFoodConsummed()))
+            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -unit.getFoodConsummed()))
             {
-                troop.die();
+                unit.die();
             }
         }
     }
 
     /**
-     * Temporary while troops appear each day
+     * Temporary while units appear each day
      */
     private void dailyArmyUpdate(DayNightCyclePhases phaseToInstanciateArmy)
     {
@@ -151,21 +151,21 @@ public class ArmyManager : MonoBehaviour
                 int i = 0;
                 while (i < armySize - housingSize)
                 {
-                    Troop troop = armyTroops[0];
-                    troop.die();
+                    Unit unit = armyUnits[0];
+                    unit.die();
                     i++;
                 }
             } else if (armySize < housingSize)
             {
                 while (armySize < housingSize)
                 {
-                    Troop troop = getFirstAvailableTroop();
-                    if (troop == null)
+                    Unit unit = getFirstAvailableUnit();
+                    if (unit == null)
                     {
-                        Debug.LogError("Could not find active troop, pool is not big enough.");
+                        Debug.LogError("Could not find active unit, pool is not big enough.");
                         return;
                     }
-                    wakeTroop(troop);
+                    wakeUnit(unit);
                 }
             }
             armyConsumption();

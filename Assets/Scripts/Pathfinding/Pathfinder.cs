@@ -33,7 +33,7 @@ public static class Pathfinder
         if (start == null || destination == null)
         {
             Debug.LogError(string.Format($"Path ({from.x}, {from.y}) to ({to.x}, {to.y}) - Starting/Ending cell does not exist."));
-            return new List<CellData>();
+            return null;
         }
 
         return GetPath(start, destination);
@@ -47,7 +47,7 @@ public static class Pathfinder
         if (!CellIsProperDestination(from) || !CellIsProperDestination(to))
         {
             Debug.LogError(string.Format($"Path ({from.coordinates.x}, {from.coordinates.y}) to ({to.coordinates.x}, {to.coordinates.y}) - Starting/Ending cell is not a proper destination"));
-            return new List<CellData>();
+            return null;
         }
 
         visitedCells.Clear();
@@ -134,13 +134,13 @@ public static class Pathfinder
         if (path[0].coordinates != from.coordinates)
         {
             Debug.LogError(string.Format($"Starting cell ({path[0].coordinates.x}, {path[0].coordinates.y}) is invalid because it does not correspond to the expected start ({from.coordinates.x}, {from.coordinates.y})."));
-            return new List<CellData>();
+            return null;
         }
 
         if (path[^1].coordinates != to.coordinates)
         {
             Debug.LogError(string.Format($"Destination cell ({path[^1].coordinates.x}, {path[^1].coordinates.y}) is invalid because it does not correspond to the expected destination ({to.coordinates.x}, {to.coordinates.y})."));
-            return new List<CellData>();
+            return null;
         }
 
         return path;

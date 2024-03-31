@@ -941,7 +941,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -6, z: 0}
   m_Size: {x: 354, y: 69, z: 1}
-  m_TileAnchor: {x: 0, y: 0, z: 0}
+  m_TileAnchor: {x: 0, y: -0.25, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -1606,6 +1606,7 @@ MonoBehaviour:
   additionalWaterTileAmount: 3
   activateClustering: 1
   activateIsolatedCellsRemoval: 1
+  troop: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
 --- !u!4 &732722165
 Transform:
   m_ObjectHideFlags: 0
@@ -3350,7 +3351,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -6, y: -6, z: 0}
   m_Size: {x: 360, y: 69, z: 1}
-  m_TileAnchor: {x: 0, y: 0, z: 0}
+  m_TileAnchor: {x: 0, y: -0.25, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -4586,7 +4587,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -6, z: 0}
   m_Size: {x: 354, y: 69, z: 1}
-  m_TileAnchor: {x: 0, y: 0, z: 0}
+  m_TileAnchor: {x: 0, y: -0.25, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -5725,7 +5726,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -6, z: 0}
   m_Size: {x: 354, y: 69, z: 1}
-  m_TileAnchor: {x: 0, y: 0, z: 0}
+  m_TileAnchor: {x: 0, y: -0.25, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1

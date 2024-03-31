@@ -73,7 +73,7 @@ public class BuildingFactory : MonoBehaviour
     {
         foreach (Building building in buildingsConstructed)
         {
-            if (building.GetCoordinates() != targetCoordinates) continue;
+            if (building.GetPosition() != targetCoordinates) continue;
 
             if (!building.CanBeDeconstructed())
             {
