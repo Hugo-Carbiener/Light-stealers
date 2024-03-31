@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class Fight
 {
-    public List<FightModule> belligerents{ get; private set; }
+    public List<FightModule> belligerents { get; private set; }
+
+
 }
