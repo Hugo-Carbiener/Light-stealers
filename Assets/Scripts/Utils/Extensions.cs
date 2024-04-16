@@ -11,4 +11,12 @@ public static class Extensions
         int j = Array.IndexOf<T>(Arr, src) + 1;
         return (Arr.Length == j) ? Arr[0] : Arr[j];
     }
+
+    public static T GetRandomValue<T>(this T src) where T : struct
+    {
+        Random rnd = new Random();
+        if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argument {0} is not an Enum", typeof(T).FullName));
+        T[] Arr = (T[])Enum.GetValues(src.GetType());
+        return (T)Enum.ToObject(typeof(T), rnd.Next(Arr.Length));
+    }
 }

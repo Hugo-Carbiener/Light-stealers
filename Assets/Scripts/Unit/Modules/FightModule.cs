@@ -22,7 +22,6 @@ public class FightModule : MonoBehaviour
             return false;
         }
 
-
         List<FightModule> belligerentsOnCell = FightUtils.GetBelligerentsOnCell(location);
         List<FightModule> ennemiesOnCell = belligerentsOnCell.Where(fighter => fighter.faction != faction).ToList();
 
@@ -34,15 +33,17 @@ public class FightModule : MonoBehaviour
 
         if (fightCell.fight != null)
         {
-            fightCell.fight.belligerents.Add(this);
+            fightCell.fight.belligerents[faction].Add(this);
             return true;
         }
 
-        fightCell.fight = new Fight();
-        fightCell.fight.belligerents.Add(this);
+        Fight fight = new Fight();
+        FightManager.Instance.fights.Add(fight);
+        fightCell.fight = fight;
+        fightCell.fight.belligerents[faction].Add(this);
         foreach (FightModule fighter in belligerentsOnCell)
         {
-            fightCell.fight.belligerents.Add(fighter);
+            fightCell.fight.belligerents[fighter.GetFaction()].Add(fighter);
         }
         return true;
     }

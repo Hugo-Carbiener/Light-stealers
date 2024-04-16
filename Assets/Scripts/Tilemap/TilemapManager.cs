@@ -27,12 +27,13 @@ public class TilemapManager : MonoBehaviour
     [SerializeField] private int columns;
     [SerializeField] private int rows;
     [SerializeField] private int additionalWaterTileAmount;
-    private List<CellData> cells = new List<CellData>();
+    private List<CellData> cells;
 
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
     private void Awake()
     {
+        cells = new List<CellData>();
         // define tilemaps
         grid = GameObject.Find("Grid").GetComponent<Grid>();
         groundTilemap = grid.transform.Find("GroundTilemap").GetComponent<Tilemap>();
