@@ -3,6 +3,8 @@ using System.Collections;
 
 public static class Extensions
 {
+    static Random _R = new Random();
+
     public static T Next<T>(this T src) where T : struct
     {
         if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argument {0} is not an Enum", typeof(T).FullName));
@@ -12,11 +14,9 @@ public static class Extensions
         return (Arr.Length == j) ? Arr[0] : Arr[j];
     }
 
-    public static T GetRandomValue<T>(this T src) where T : struct
+    public static T RandomValue<T>()
     {
-        Random rnd = new Random();
-        if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argument {0} is not an Enum", typeof(T).FullName));
-        T[] Arr = (T[])Enum.GetValues(src.GetType());
-        return (T)Enum.ToObject(typeof(T), rnd.Next(Arr.Length));
+        var v = Enum.GetValues(typeof(T));
+        return (T)v.GetValue(_R.Next(v.Length));
     }
 }
