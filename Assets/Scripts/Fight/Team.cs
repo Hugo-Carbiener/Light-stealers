@@ -20,6 +20,12 @@ public class Team
     {
         yield return fighters[currentFighterIndex].PlayTurn(ennemyTeam);
         currentFighterIndex++;
+        if (currentFighterIndex == fighters.Count) currentFighterIndex = 0;
+    }
+
+    public void OnFightEnd()
+    {
+        fighters.ForEach(fighter => fighter.OnFightEnd());
     }
 
     public void AddFighter(FightModule fighter)

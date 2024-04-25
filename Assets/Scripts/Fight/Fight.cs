@@ -46,16 +46,21 @@ public class Fight : MonoBehaviour
     private IEnumerator MainLoopCoroutine()
     {
         Factions currentFaction = Extensions.RandomValue<Factions>();
-        int turnCount = 0;
         while (TeamsAreAlive())
         {
             for (int i = 0; i < Enum.GetValues(typeof(Factions)).Length; i++)
             {
                 Team currentTeam = teams[currentFaction];
-                currentTeam.PlayTurn(teams[currentFaction.Next()]);
+                yield return currentTeam.PlayTurn(teams[currentFaction.Next()]);
                 currentFaction = currentFaction.Next();
             }
         }
+        OnFightEnd();
+    }
+
+    private void OnFightEnd()
+    {
+        teams.Values.ToList().ForEach(team => team.OnFightEnd());
     }
 
     public void AddFighter(FightModule fighter)

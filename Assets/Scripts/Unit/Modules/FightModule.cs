@@ -7,6 +7,7 @@ using System.Linq;
 public class FightModule : MonoBehaviour
 {
     [Header("General")]
+    [SerializeField] private Unit unit;
     [SerializeField] private bool attackable;
     [SerializeField] private Factions faction;
 
@@ -20,6 +21,7 @@ public class FightModule : MonoBehaviour
 
     private void Awake()
     {
+        if (!unit) unit = gameObject.GetComponent<Unit>();
         health = maxHealth;
     }
 
@@ -82,6 +84,14 @@ public class FightModule : MonoBehaviour
         {
             timer += Time.deltaTime;
             yield return null;
+        }
+    }
+
+    public void OnFightEnd()
+    {
+        if (health <= 0)
+        {
+            unit.OnDeath();
         }
     }
 

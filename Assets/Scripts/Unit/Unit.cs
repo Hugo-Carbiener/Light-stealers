@@ -32,7 +32,7 @@ public class Unit : MonoBehaviour, ITargettable
         }
     }
     
-    public void die()
+    public void OnDeath()
     {
         UnitManager.Instance.DeactivateUnit(this);
     }

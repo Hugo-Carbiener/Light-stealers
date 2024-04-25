@@ -130,7 +130,7 @@ public class UnitManager : MonoBehaviour
         {
             if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -unit.getFoodConsummed()))
             {
-                unit.die();
+                unit.OnDeath();
             }
         }
     }
@@ -152,7 +152,7 @@ public class UnitManager : MonoBehaviour
                 while (i < armySize - housingSize)
                 {
                     Unit unit = activeUnits[faction][0];
-                    unit.die();
+                    unit.OnDeath();
                     i++;
                 }
             } else if (armySize < housingSize)
