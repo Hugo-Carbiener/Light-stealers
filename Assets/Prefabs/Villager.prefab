@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 5286206008081295959}
   - component: {fileID: 4594566945932583997}
   - component: {fileID: 6136510234279031636}
-  - component: {fileID: 6010738002771868863}
   - component: {fileID: -7417980173734181173}
   m_Layer: 0
-  m_Name: Unit
+  m_Name: Villager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf796e5a16e90d74ab9191e2370de295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviorModule: {fileID: 6010738002771868863}
+  behaviorModule: {fileID: 0}
   movementModule: {fileID: 6136510234279031636}
   fightModule: {fileID: -7417980173734181173}
   foodAmount: 1
@@ -117,19 +116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToCrossCell: 0.8
---- !u!114 &6010738002771868863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020503169509181199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92d88e8b9693758449487af170fa3c05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unit: {fileID: 4594566945932583997}
 --- !u!114 &-7417980173734181173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,5 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b715d82d46f144c9764b47f6ceadb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unit: {fileID: 4594566945932583997}
   attackable: 1
   faction: 0
+  turnDuration: 2
+  maxHealth: 3
+  attack: 1

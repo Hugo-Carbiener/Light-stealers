@@ -6,20 +6,24 @@ using System.Linq;
 public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 {
     private ITargettable target;
+    private FightModule fightModule;
 
     private void Update()
     {
         UpdateMovementDestination(assignedTask);
     }
 
-    protected override void ExecuteAction(Task task)
-    {
-        throw new System.NotImplementedException();
-    }
-
     protected override void InitAction(Vector2Int targetCell)
     {
-        throw new System.NotImplementedException();
+        if (!fightModule) fightModule = gameObject.GetComponent<FightModule>();
+        if (!fightModule) return;
+
+        ExecuteAction(targetCell);
+    }
+
+    protected override void ExecuteAction(Vector2Int targetCell)
+    {
+        fightModule.Attack(targetCell);
     }
 
     public Task GenerateTask(Unit unit)
@@ -33,7 +37,7 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         ITargettable closestTarget = null;
         int distanceToTarget = TilemapManager.Instance.GetTilemapColumns() * TilemapManager.Instance.GetTilemapRows();
 
-        List<ITargettable> targets = Enumerable.Concat<ITargettable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.armyUnits).ToList();
+        List<ITargettable> targets = Enumerable.Concat<ITargettable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.GetAllActiveUnits()).ToList();
         foreach (ITargettable target in targets)
         {
             if (target == null || target.GetFightModule().IsAttackable()) continue;

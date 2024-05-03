@@ -9,8 +9,7 @@ using UnityEngine.Assertions;
 public abstract class BehaviorModule : MonoBehaviour
 {
     [SerializeField] protected Unit unit;
-
-    private List<TaskType> acceptedTasks;
+    [SerializeField] private List<TaskType> acceptedTasks;
     protected Task assignedTask { get; private set; }
 
     private void Awake()
@@ -54,7 +53,7 @@ public abstract class BehaviorModule : MonoBehaviour
         unit.GetMovementModule().StartMovement();
     }
     protected abstract void InitAction(Vector2Int targetCell);
-    protected abstract void ExecuteAction(Task task);
+    protected abstract void ExecuteAction(Vector2Int targetCell);
     public bool IsIdle() { return assignedTask == null; }
     public bool GeneratesOwnTasks => this is ITaskAutoGeneration;
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }

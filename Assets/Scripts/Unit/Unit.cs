@@ -14,22 +14,35 @@ public class Unit : MonoBehaviour, ITargettable
     [SerializeField] private FightModule fightModule;
     [Header("Consumption")]
     [SerializeField] private int foodAmount;
+    [Header("Spawn")]
+    [SerializeField] private DayNightCyclePhases troopAppearAtStartOfPhase;
 
     private void Awake()
     {
-        Assert.IsNotNull(behaviorModule);
+        //Assert.IsNotNull(behaviorModule);
         Assert.IsNotNull(movementModule);
         Assert.IsNotNull(fightModule);
     }
 
     public Vector2Int position
     {
-        get { return this.position; }
+        get { return position; }
 
         set
         {
             movementModule.currentCell = value;
         }
+    }
+
+    public void OnApparition(Vector2Int startingPos)
+    {
+        if (fightModule.GetFaction() == Factions.Monsters)
+        {
+            System.Random rnd = new System.Random();
+            position = FractureManager.Instance.fractures[rnd.Next(0, FractureManager.Instance.fractures.Count)].coordinates;
+            return;
+        }
+        position = startingPos;
     }
     
     public void OnDeath()
@@ -37,13 +50,13 @@ public class Unit : MonoBehaviour, ITargettable
         UnitManager.Instance.DeactivateUnit(this);
     }
 
-    public int getFoodConsummed() { return foodAmount; }
+    public int GetFoodConsummed() { return foodAmount; }
 
     public BehaviorModule GetBehaviorModule() { return behaviorModule; }   
     public MovementModule GetMovementModule() { return movementModule; }
     public FightModule GetFightModule() { return fightModule; }
-
     public Vector2Int GetPosition() { return position; }
+    public DayNightCyclePhases GetTroopApparitionPhase() { return troopAppearAtStartOfPhase; }
 
     public bool Attack(Vector2Int location)
     {

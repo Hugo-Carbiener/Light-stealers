@@ -26,7 +26,6 @@ public class UnitManager : MonoBehaviour
     [Header("Unit prefabs")]
     [SerializeField] private SerializableDictionary<Factions, GameObject> unitPrefabs;
     [Header("Misc")]
-    [SerializeField] private DayNightCyclePhases createTroopsAtStartOfPhase;
     [SerializeField] private Vector3Int startingPos; // will be bound to the building generation troops in the future
 
     // pool variables
@@ -37,6 +36,11 @@ public class UnitManager : MonoBehaviour
     {
         units = new Dictionary<Factions, List<Unit>>();
         activeUnits = new Dictionary<Factions, List<Unit>>();
+        foreach (Factions faction in Factions.GetValues(typeof(Factions)))
+        {
+            units.Add(faction, new List<Unit>());
+            activeUnits.Add(faction, new List<Unit>());
+        }
         InitArmyPools();
     }
 
@@ -57,7 +61,6 @@ public class UnitManager : MonoBehaviour
             {
                 InstantiateUnit(faction);
             }
-
         }
     }
 
@@ -116,8 +119,8 @@ public class UnitManager : MonoBehaviour
         if (unit.gameObject.activeInHierarchy) return;
 
         unit.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
-        unit.position = (Vector2Int) startingPos;
         unit.gameObject.SetActive(true);
+        unit.OnApparition((Vector2Int)startingPos);
         activeUnits[unit.GetFightModule().GetFaction()].Add(unit);
     }
 
@@ -128,7 +131,7 @@ public class UnitManager : MonoBehaviour
     {
         foreach (Unit unit in activeUnits[Factions.Villagers])
         {
-            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -unit.getFoodConsummed()))
+            if (!ResourceManager.Instance.modifyResources(ResourceTypes.Food, -unit.GetFoodConsummed()))
             {
                 unit.OnDeath();
             }
@@ -140,35 +143,38 @@ public class UnitManager : MonoBehaviour
      */
     private void DailyArmyUpdate(DayNightCyclePhases phaseToInstanciateArmy)
     {
-        Factions faction = Factions.Villagers;
-        int housingSize = HousingManager.Instance.housingSizes[faction];
-        int armySize = activeUnits[faction].Count;
-        if (phaseToInstanciateArmy == createTroopsAtStartOfPhase)
+        foreach (Factions faction in Factions.GetValues(typeof(Factions)))
         {
-            // army cannot be housed, house must have been destroyed during the day
-            if (armySize > housingSize)
+            int housingSize = HousingManager.Instance.housingSizes[faction];
+            int armySize = activeUnits[faction].Count;
+            if (phaseToInstanciateArmy == unitPrefabs[faction].GetComponent<Unit>().GetTroopApparitionPhase())
             {
-                int i = 0;
-                while (i < armySize - housingSize)
+                // army cannot be housed, house must have been destroyed during the day
+                if (armySize > housingSize)
                 {
-                    Unit unit = activeUnits[faction][0];
-                    unit.OnDeath();
-                    i++;
-                }
-            } else if (armySize < housingSize)
-            {
-                while (armySize < housingSize)
-                {
-                    Unit unit = GetFirstAvailableUnit(faction);
-                    if (unit == null)
+                    int i = 0;
+                    while (i < armySize - housingSize)
                     {
-                        Debug.LogError("Could not find active unit, pool is not big enough.");
-                        return;
+                        Unit unit = activeUnits[faction][0];
+                        unit.OnDeath();
+                        i++;
                     }
-                    WakeUnit(unit);
                 }
+                else if (armySize < housingSize)
+                {
+                    while (activeUnits[faction].Count < housingSize)
+                    {
+                        Unit unit = GetFirstAvailableUnit(faction);
+                        if (unit == null)
+                        {
+                            Debug.LogError("Could not find active unit, pool is not big enough.");
+                            return;
+                        }
+                        WakeUnit(unit);
+                    }
+                }
+                ArmyConsumption();
             }
-            ArmyConsumption();
         }
     }
 
@@ -176,5 +182,15 @@ public class UnitManager : MonoBehaviour
     {
         unit.gameObject.SetActive(false);
         UnitManager.Instance.activeUnits[unit.GetFightModule().GetFaction()].Remove(unit);
+    }
+    
+    public List<Unit> GetAllActiveUnits()
+    {
+        List<Unit> units = new List<Unit>();
+        foreach (List<Unit> unitList in activeUnits.Values)
+        {
+            units.AddRange(unitList);
+        }
+        return units;
     }
 }

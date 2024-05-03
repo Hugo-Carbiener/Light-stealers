@@ -27,12 +27,13 @@ public class FractureGenerator : Generator
 
     private void ApplyFractures(List<CellData> fracturedCells)
     {
+        FractureManager fractureManager = FractureManager.Instance;
         foreach(CellData fracturedCell in fracturedCells)
         {
-            CellData cell = TilemapManager.Instance.GetCellData(fracturedCell.coordinates);
-            cell.environment = null;
+            fractureManager.fractures.Add(fracturedCell);
+            fracturedCell.environment = null;
             GameObject instantiatedLight = GameObject.Instantiate(fractureLight);
-            instantiatedLight.transform.position = TilemapManager.Instance.groundTilemap.layoutGrid.CellToWorld(cell.GetVector3Coordinates());
+            instantiatedLight.transform.position = TilemapManager.Instance.groundTilemap.layoutGrid.CellToWorld(fracturedCell.GetVector3Coordinates());
         }
     }
 }

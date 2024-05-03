@@ -960,6 +960,100 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &281280356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 281280357}
+  - component: {fileID: 281280358}
+  m_Layer: 0
+  m_Name: HousingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &281280357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281280356}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691929620}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &281280358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281280356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca691dec71f4b6d42a3040cc3aeb620f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialHousingSizes:
+    elements:
+    - key: 0
+      value: 5
+    - key: 1
+      value: 10
+--- !u!1 &310909803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 310909804}
+  - component: {fileID: 310909805}
+  m_Layer: 0
+  m_Name: FractureManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &310909804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310909803}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691929620}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &310909805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310909803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a389d49d3fdb48a419ebf6eaf8e35d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &353966158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,6 +1663,8 @@ Transform:
   - {fileID: 1974943857}
   - {fileID: 1901719541}
   - {fileID: 1892972769}
+  - {fileID: 310909804}
+  - {fileID: 281280357}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1606,7 +1702,6 @@ MonoBehaviour:
   additionalWaterTileAmount: 3
   activateClustering: 1
   activateIsolatedCellsRemoval: 1
-  troop: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
 --- !u!4 &732722165
 Transform:
   m_ObjectHideFlags: 0
@@ -7428,7 +7523,7 @@ GameObject:
   - component: {fileID: 1974943857}
   - component: {fileID: 1974943858}
   m_Layer: 0
-  m_Name: ArmyManager
+  m_Name: UnitManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7461,11 +7556,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d45834c5d935644a825a87a2133adb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ArmyPoolContainer: {fileID: 644228488}
-  initialHousingSize: 1
-  basicTroopPrefab: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
-  createTroopsAtStartOfPhase: 0
-  startingPos: {x: 24, y: 24, z: 0}
+  unitContainer: {fileID: 644228488}
+  unitPrefabs:
+    elements:
+    - key: 0
+      value: {fileID: 7020503169509181199, guid: 8435b7e08672c6740a06993759bef427, type: 3}
+    - key: 1
+      value: {fileID: 7020503169509181199, guid: a960f73977a33cd41ac6c20a9ab7d681, type: 3}
+  startingPos: {x: 25, y: 25, z: 0}
 --- !u!1 &1985455004
 GameObject:
   m_ObjectHideFlags: 0
