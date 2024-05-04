@@ -31,6 +31,7 @@ public class Unit : MonoBehaviour, ITargettable
         set
         {
             movementModule.currentCell = value;
+            transform.position = TilemapManager.Instance.groundTilemap.CellToWorld((Vector3Int) value);
         }
     }
 
@@ -39,7 +40,8 @@ public class Unit : MonoBehaviour, ITargettable
         if (fightModule.GetFaction() == Factions.Monsters)
         {
             System.Random rnd = new System.Random();
-            position = FractureManager.Instance.fractures[rnd.Next(0, FractureManager.Instance.fractures.Count)].coordinates;
+            int index = rnd.Next(FractureManager.Instance.fractures.Count);
+            position = FractureManager.Instance.fractures[index].coordinates;
             return;
         }
         position = startingPos;

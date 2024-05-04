@@ -55,7 +55,7 @@ public abstract class BehaviorModule : MonoBehaviour
     protected abstract void InitAction(Vector2Int targetCell);
     protected abstract void ExecuteAction(Vector2Int targetCell);
     public bool IsIdle() { return assignedTask == null; }
-    public bool GeneratesOwnTasks => this is ITaskAutoGeneration;
+    public virtual bool GeneratesOwnTasks() { return false; }
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
 
     public void EndTask()

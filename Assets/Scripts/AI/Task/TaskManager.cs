@@ -65,7 +65,7 @@ public class TaskManager : MonoBehaviour
     {
         BehaviorModule behavior = unit.GetBehaviorModule();
 
-        if (behavior.GeneratesOwnTasks)
+        if (behavior.GeneratesOwnTasks())
         {
             Task task = ((ITaskAutoGeneration)behavior).GenerateTask(unit);
             RegisterNewTask(task);

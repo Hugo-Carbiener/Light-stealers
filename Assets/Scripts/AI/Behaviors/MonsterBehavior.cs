@@ -53,7 +53,7 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 
     private void UpdateMovementDestination(Task task)
     {
-        if (task.location == target.GetPosition()) return;
+        if (task == null || target == null || task.location == target.GetPosition()) return;
         
         unit.GetMovementModule().CancelMovement();
         task.location = target.GetPosition();
@@ -67,4 +67,5 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
             EndTask();
         }   
     }
+    public override bool GeneratesOwnTasks() { return true; }
 }

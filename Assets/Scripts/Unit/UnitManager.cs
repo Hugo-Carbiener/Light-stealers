@@ -117,8 +117,6 @@ public class UnitManager : MonoBehaviour
     private void WakeUnit(Unit unit)
     {
         if (unit.gameObject.activeInHierarchy) return;
-
-        unit.transform.position = TilemapManager.Instance.groundTilemap.CellToWorld(startingPos);
         unit.gameObject.SetActive(true);
         unit.OnApparition((Vector2Int)startingPos);
         activeUnits[unit.GetFightModule().GetFaction()].Add(unit);
