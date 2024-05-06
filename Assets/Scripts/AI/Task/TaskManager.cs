@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /**
  * Manager responsible for all the ordered tasks in the current game
@@ -31,13 +32,7 @@ public class TaskManager : MonoBehaviour
 
     private void PollTasks()
     {
-        foreach (Task task in tasks)
-        {
-            if (task == null || task.status == Status.Done)
-            {
-                tasks.Remove(task);
-            }
-        }
+        tasks = tasks.Where(task => task != null && task.status != Status.Done).ToList();
     }
 
     private void PollUnits()

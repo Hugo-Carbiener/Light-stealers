@@ -18,6 +18,7 @@ public class Team
 
     public IEnumerator PlayTurn(Team ennemyTeam)
     {
+        Debug.Log("FIGHT : " + fighters + " team starts " + currentFighterIndex + "nth fighter turn");
         yield return fighters[currentFighterIndex].PlayTurn(ennemyTeam);
         currentFighterIndex++;
         if (currentFighterIndex == fighters.Count) currentFighterIndex = 0;
@@ -35,6 +36,6 @@ public class Team
 
     public bool IsAlive()
     {
-        return fighters.Any(fighter => fighter.IsAlive());
+        return fighters.Exists(fighter => fighter.IsAlive());
     }
 }

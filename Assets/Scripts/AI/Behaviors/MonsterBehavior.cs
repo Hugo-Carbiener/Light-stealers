@@ -5,8 +5,13 @@ using System.Linq;
 
 public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 {
-    private ITargettable target;
+    private IFightable target;
     private FightModule fightModule;
+
+    private void Awake()
+    {
+        fightModule = unit.GetFightModule();
+    }
 
     private void Update()
     {
@@ -15,7 +20,6 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 
     protected override void InitAction(Vector2Int targetCell)
     {
-        if (!fightModule) fightModule = gameObject.GetComponent<FightModule>();
         if (!fightModule) return;
 
         ExecuteAction(targetCell);
@@ -32,21 +36,25 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         return target == null ? null : new Task(target.GetPosition(), TaskType.MonsterAttack);
     }
 
-    private ITargettable GetTarget(MovementModule movementModule)
+    private IFightable GetTarget(MovementModule movementModule)
     {
-        ITargettable closestTarget = null;
+        IFightable closestTarget = null;
         int distanceToTarget = TilemapManager.Instance.GetTilemapColumns() * TilemapManager.Instance.GetTilemapRows();
 
-        List<ITargettable> targets = Enumerable.Concat<ITargettable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.GetAllActiveUnits()).ToList();
-        foreach (ITargettable target in targets)
+        List<IFightable> targets = Enumerable.Concat<IFightable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.GetAllActiveUnits())
+            .Where(target => target.GetFightModule() != null)
+            .Where(target => target.GetFightModule().GetFaction() != fightModule.GetFaction())
+            .ToList();
+       
+        foreach (IFightable currentTarget in targets)
         {
-            if (target == null || target.GetFightModule().IsAttackable()) continue;
+            if (currentTarget == null || !currentTarget.GetFightModule().IsAttackable()) continue;
 
-            int distanceToThisTarget = Utils.GetTileDistance(movementModule.currentCell, target.GetPosition());
+            int distanceToThisTarget = Utils.GetTileDistance(movementModule.currentCell, currentTarget.GetPosition());
             if (distanceToThisTarget >= distanceToTarget) continue;
 
             distanceToTarget = distanceToThisTarget;
-            closestTarget = target;
+            closestTarget = currentTarget;
         }
         return closestTarget;
     }

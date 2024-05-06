@@ -20,7 +20,6 @@ public class FightManager : MonoBehaviour
 
     [Header("Fight cooldowns")]
     [SerializeField] private float setupDuration;
-    [SerializeField] private float actionCooldown;
 
     public List<Fight> fights { get; private set; }
 
@@ -29,5 +28,11 @@ public class FightManager : MonoBehaviour
         fights = new List<Fight>();
     }
 
+    public void StartFight(List<Team> teams, CellData fightCell)
+    {
+        Fight fight = new Fight(teams);
+        fightCell.fight = fight;
+        FightManager.Instance.fights.Add(fight);
+    }
     public float getSetupDuration() { return setupDuration; }
 }

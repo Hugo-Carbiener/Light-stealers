@@ -7,7 +7,7 @@ using System.Linq;
 public class FightModule : MonoBehaviour
 {
     [Header("General")]
-    [SerializeField] private Unit unit;
+    [SerializeField] private IFightable actor;
     [SerializeField] private bool attackable;
     [SerializeField] private Factions faction;
 
@@ -21,7 +21,7 @@ public class FightModule : MonoBehaviour
 
     private void Awake()
     {
-        if (!unit) unit = gameObject.GetComponent<Unit>();
+        if (actor == null) actor = (IFightable) gameObject.GetComponent(typeof(IFightable));
         health = maxHealth;
     }
 
@@ -40,7 +40,7 @@ public class FightModule : MonoBehaviour
         List<FightModule> belligerentsOnCell = FightUtils.GetBelligerentsOnCell(location);
         List<FightModule> ennemiesOnCell = belligerentsOnCell.Where(fighter => fighter.faction != faction).ToList();
 
-        if (ennemiesOnCell == null || ennemiesOnCell.Count == 0)
+        if (ennemiesOnCell.Count == 0)
         {
             Debug.LogError(string.Format($"{gameObject.name} attemping to start a fight on cell with no opponents"));
             return false;
@@ -50,30 +50,32 @@ public class FightModule : MonoBehaviour
         if (fightCell.fight == null)
         {
             List<Team> teams = new List<Team>();
-            foreach (Factions faction in Factions.GetValues(typeof(Factions)))
+            foreach (Factions currentFaction in Factions.GetValues(typeof(Factions)))
             {
-                teams.Add(new Team(faction, belligerentsOnCell.Where(fighter => fighter.faction == faction).ToList()));
+                teams.Add(new Team(currentFaction, belligerentsOnCell.Where(fighter => fighter.faction == currentFaction).ToList()));
             }
-            Fight fight = new Fight(teams);
-            fightCell.fight = fight;
-            FightManager.Instance.fights.Add(fight);
+            FightManager.Instance.StartFight(teams, fightCell);
+            Debug.Log(this.gameObject.name + " started a fight on " + fightCell.coordinates + " with " + teams);
             return true;
         }
 
         // join an existing fight
         fightCell.fight.AddFighter(this);
+        Debug.Log(this.gameObject.name + " joined a fight on " + fightCell.coordinates);
         return true;
     }
 
     private void Attack(FightModule ennemyFighter)
     {
+        Debug.Log("FIGHT : " + this.gameObject.name + " attacks " + ennemyFighter.gameObject.name + " for " + attack + "hp");
         ennemyFighter.health -= attack;
     }
 
     public IEnumerator PlayTurn(Team ennemyTeam)
     {
-        if (!IsAlive()) yield return null;
+        Debug.Log("FIGHT : " + this.gameObject.name + " starts their turn. (" + health + "hp)");
 
+        if (!IsAlive()) yield break;
         System.Random random = new System.Random();
         int randomIndex = random.Next(ennemyTeam.fighters.Count());
         FightModule ennemyFighter = ennemyTeam.fighters[randomIndex];
@@ -91,12 +93,13 @@ public class FightModule : MonoBehaviour
     {
         if (health <= 0)
         {
-            unit.OnDeath();
+            actor.OnDeath();
         }
     }
 
     public bool IsAlive()
     {
+        if (health <= 0) Debug.Log("FIGHT : " + this.gameObject.name + " was unalived, skipping their turn. (" + health + "hp)");
         return health > 0;
     }
 }

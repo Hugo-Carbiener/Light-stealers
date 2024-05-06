@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Assertions;
 using System;
 
-public class Building : MonoBehaviour, ITargettable
+public class Building : MonoBehaviour, IFightable
 {
 
     private Vector2Int coordinates;
@@ -44,6 +44,7 @@ public class Building : MonoBehaviour, ITargettable
     private void Awake()
     {
         Assert.AreNotEqual(costs.Count(), 0);
+        if (!fightModule) fightModule = GetComponent<FightModule>();
     }
 
     private void Start()
@@ -167,4 +168,9 @@ public class Building : MonoBehaviour, ITargettable
     public  FightModule GetFightModule() { return fightModule; }
 
     public Vector2Int GetPosition() { return coordinates; }
+
+    public void OnDeath()
+    {
+        throw new NotImplementedException();
+    }
 }

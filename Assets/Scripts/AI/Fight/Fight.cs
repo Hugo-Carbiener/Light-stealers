@@ -4,16 +4,10 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class Fight : MonoBehaviour
+public class Fight
 {
-    public Dictionary<Factions, Team> teams { get; private set; }
-
+    public Dictionary<Factions, Team> teams { get; private set; } = new Dictionary<Factions, Team>();
     public Status status { get; private set; }
-
-    private void Update()
-    {
-        
-    }
 
     public Fight(List<Team> teams)
     {
@@ -27,7 +21,7 @@ public class Fight : MonoBehaviour
 
     public void Init()
     {
-        StartCoroutine("SetupCoroutine");
+        FightManager.Instance.StartCoroutine(SetupCoroutine());
     }
 
     private IEnumerator SetupCoroutine()
@@ -40,7 +34,7 @@ public class Fight : MonoBehaviour
             yield return null;
         }
         status = Status.InProgress;
-        StartCoroutine("MainLoopCoroutine");
+        FightManager.Instance.StartCoroutine(MainLoopCoroutine());
     }
 
     private IEnumerator MainLoopCoroutine()

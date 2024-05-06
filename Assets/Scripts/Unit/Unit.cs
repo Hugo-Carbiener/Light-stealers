@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 /**
  * Basic component for game agents
  */
-public class Unit : MonoBehaviour, ITargettable
+public class Unit : MonoBehaviour, IFightable
 {
     [Header("Modules")]
     [SerializeField] private BehaviorModule behaviorModule;
@@ -24,16 +24,7 @@ public class Unit : MonoBehaviour, ITargettable
         Assert.IsNotNull(fightModule);
     }
 
-    public Vector2Int position
-    {
-        get { return position; }
-
-        set
-        {
-            movementModule.currentCell = value;
-            transform.position = TilemapManager.Instance.groundTilemap.CellToWorld((Vector3Int) value);
-        }
-    }
+    private Vector2Int position;
 
     public void OnApparition(Vector2Int startingPos)
     {
@@ -41,7 +32,7 @@ public class Unit : MonoBehaviour, ITargettable
         {
             System.Random rnd = new System.Random();
             int index = rnd.Next(FractureManager.Instance.fractures.Count);
-            position = FractureManager.Instance.fractures[index].coordinates;
+            SetPosition(FractureManager.Instance.fractures[index].coordinates);
             return;
         }
         position = startingPos;
@@ -49,6 +40,7 @@ public class Unit : MonoBehaviour, ITargettable
     
     public void OnDeath()
     {
+        Debug.Log("FIGHT : " + this.gameObject.name + " died during the fight(" + fightModule.health + "hp)");
         UnitManager.Instance.DeactivateUnit(this);
     }
 
@@ -58,6 +50,12 @@ public class Unit : MonoBehaviour, ITargettable
     public MovementModule GetMovementModule() { return movementModule; }
     public FightModule GetFightModule() { return fightModule; }
     public Vector2Int GetPosition() { return position; }
+    public void SetPosition(Vector2Int position)
+    {
+        this.position = position;
+        movementModule.currentCell = position;
+        transform.position = TilemapManager.Instance.groundTilemap.CellToWorld((Vector3Int) position);
+    }
     public DayNightCyclePhases GetTroopApparitionPhase() { return troopAppearAtStartOfPhase; }
 
     public bool Attack(Vector2Int location)
