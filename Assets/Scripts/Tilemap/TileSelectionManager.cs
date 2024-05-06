@@ -92,8 +92,8 @@ public class TileSelectionManager : MonoBehaviour
     public List<Building> GetValidBuildings(CellData cell)
     {
         List<Building> validBuildings = new List<Building>();
-        SerializableDictionary<BuildingType, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
-        Dictionary<BuildingType, GameObject> buildingPrefabsDictionnary = buildingPrefabs.ToDictionnary();
+        SerializableDictionary<BuildingTypes, GameObject> buildingPrefabs = BuildingFactory.Instance.GetBuildingPrefabs();
+        Dictionary<BuildingTypes, GameObject> buildingPrefabsDictionnary = buildingPrefabs.ToDictionnary();
 
         foreach(GameObject building in buildingPrefabsDictionnary.Values)
         {

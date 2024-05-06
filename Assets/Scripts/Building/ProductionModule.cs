@@ -26,7 +26,7 @@ class ProductionModule : MonoBehaviour
 
     private void executeTask(DayNightCyclePhases phaseToReceiveResources)
     {
-        if (phaseToReceiveResources == produceResourceAtStartOfphase && building.activated)
+        if (phaseToReceiveResources == produceResourceAtStartOfphase && building.status == BuildingStatus.Active)
         {
             ResourceManager.Instance.modifyResources(resourceType, amount);
         }

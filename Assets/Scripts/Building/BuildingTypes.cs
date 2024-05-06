@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BuildingType
+public enum BuildingTypes
 {
     Sawmill,
     Farm,

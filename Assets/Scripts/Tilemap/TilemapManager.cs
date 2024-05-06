@@ -278,7 +278,7 @@ public class TilemapManager : MonoBehaviour
         {
             if (cell.building)
             {
-                Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles()[cell.building.type];
+                Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles()[cell.building.GetBuildingType()];
                 buildingsTilemap.SetTile(cell.GetVector3Coordinates(), buildingTile);
             }
         }
@@ -302,7 +302,7 @@ public class TilemapManager : MonoBehaviour
                 environmentTile = BuildingFactory.Instance.GetEnvironmentTiles()[cellEnvironment.Value];
                 groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
 
-                Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles()[cellData.building.type] : null;
+                Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles()[cellData.building.GetBuildingType()] : null;
                 if (buildingTile == null) return;
                 buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
                 return;

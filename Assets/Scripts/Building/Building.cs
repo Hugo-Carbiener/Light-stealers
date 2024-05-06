@@ -8,18 +8,16 @@ using System;
 
 public class Building : MonoBehaviour, IFightable
 {
-
-    private Vector2Int coordinates;
-
     [Header("General")]
-    public BuildingType type;
+    [SerializeField] private BuildingTypes type;
+    public BuildingStatus status { get; private set; }
+    private Vector2Int coordinates;
 
     [Header("Cost")]
     [SerializeField] private SerializableDictionary<ResourceTypes, int> costs;
 
     [Header("Construction")]
     [SerializeField] private float constructionDuration;
-    public bool isConstructed { private set; get; } = false;
     public UnityEvent OnConstructionFinished { private set; get; } = new UnityEvent();
     private float constructionTimer = 0;
 
@@ -38,13 +36,11 @@ public class Building : MonoBehaviour, IFightable
     [Header("Fight")]
     [SerializeField] private FightModule fightModule;
 
-    public bool activated { private set; get; }
-
-
     private void Awake()
     {
         Assert.AreNotEqual(costs.Count(), 0);
         if (!fightModule) fightModule = GetComponent<FightModule>();
+        status = BuildingStatus.Programmed;
     }
 
     private void Start()
@@ -86,7 +82,7 @@ public class Building : MonoBehaviour, IFightable
             constructionTimer += Time.deltaTime;
             yield return null;
         }
-        isConstructed = true;
+        status = BuildingStatus.Inactive;
         OnConstructionFinished.Invoke();
     }
 
@@ -116,9 +112,9 @@ public class Building : MonoBehaviour, IFightable
     /**
      * Update the status of the building and enable/disable components accordingly
      */
-    public void UpdateActivationStatus(bool targetStatus)
+    public void UpdateActivationStatus(bool isActive)
     {
-        activated = targetStatus;
+        status = isActive ? BuildingStatus.Active : BuildingStatus.Inactive;
     }
 
     private bool BuildingCanBePayedFor()
@@ -147,30 +143,21 @@ public class Building : MonoBehaviour, IFightable
         }
     }
 
-    public void SetCoordinates(Vector2Int coords)
+    public void OnDeath()
     {
-        coordinates = coords;
+        status = BuildingStatus.Destroyed;
     }
 
+    public BuildingTypes GetBuildingType() { return type; }
+    public Vector2Int GetPosition() { return coordinates; }
+    public void SetPosition(Vector2Int coordinates) { this.coordinates = coordinates; }
     public int GetCost(ResourceTypes resourceType) { 
         int cost = costs[resourceType];
         return cost == null ? 0 : cost;
     }
-
     public float GetConstructionDuration() { return constructionDuration; }
-
     public float GetConstructionProgression() { return constructionTimer / constructionDuration; }
-
     public bool CanBeDeconstructed() { return canBeDeconstructed; }
-
     public bool IsTerraforming() { return isTerraforming; }
-
     public  FightModule GetFightModule() { return fightModule; }
-
-    public Vector2Int GetPosition() { return coordinates; }
-
-    public void OnDeath()
-    {
-        throw new NotImplementedException();
-    }
 }

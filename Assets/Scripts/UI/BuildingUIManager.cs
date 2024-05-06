@@ -18,7 +18,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
     [Header("Button template")]
     [SerializeField] private VisualTreeAsset button;
     [Header("Icons")]
-    [SerializeField] SerializableDictionary<BuildingType, Sprite> iconDictionnary;
+    [SerializeField] SerializableDictionary<BuildingTypes, Sprite> iconDictionnary;
     [Header("Deconstruction menu")]
     [SerializeField] private string deconstructionButtonLabel;
     [SerializeField] private Sprite deconstructionIcon;
@@ -39,7 +39,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
 
     void Start()
     {
-        Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingType)).Length);
+        Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingTypes)).Length);
         root = document.rootVisualElement;
         SetVisibility(DisplayStyle.None);
     }
@@ -74,7 +74,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
             Debug.LogError("Could not find Button element in Building construction panel button");
             return;
         }
-        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type, cellPosition); };  
+        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.GetBuildingType(), cellPosition); };  
         buttonElement.clickable.clicked += delegate { CloseUIComponent(); };
         buttonContainer.Add(buttonToAdd);
     }
@@ -117,8 +117,8 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY);
         Label stoneAmountLabel = button.Q<Label>(BUTTON_COST_STONE_TEXT_KEY);
 
-        icon.style.backgroundImage = new StyleBackground(iconDictionnary[building.type]);
-        buildingName.text = building.type.ToString();
+        icon.style.backgroundImage = new StyleBackground(iconDictionnary[building.GetBuildingType()]);
+        buildingName.text = building.GetBuildingType().ToString();
         foodAmountLabel.text = building.GetCost(ResourceTypes.Food).ToString();
         woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
         stoneAmountLabel.text = building.GetCost(ResourceTypes.Stone).ToString();

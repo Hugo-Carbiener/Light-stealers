@@ -14,8 +14,8 @@ public class BuildingAmountRule : Rule
         base.ComparatorIsAuthorized();
 
         int buildingAmount = BuildingFactory.Instance.buildingsConstructed
-                                            .Select(building => building.type)
-                                            .Count(buildingType => buildingType == building.type);
+                                            .Select(building => building.GetBuildingType())
+                                            .Count(buildingType => buildingType == building.GetBuildingType());
         switch(comparator)
         {
             case Comparator.EQUAL:
