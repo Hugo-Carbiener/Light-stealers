@@ -3,6 +3,7 @@
     -unity-text-outline-color: rgb(131, 102, 77);
     -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
     -unity-font-definition: none;
+    white-space: normal;
 }
 
 .subtext-writing {
@@ -19,6 +20,10 @@
 
 .font-size-auto {
     font-size: 60%;
+}
+
+.font-size-14 {
+    font-size: 14px;
 }
 
 .font-size-12 {

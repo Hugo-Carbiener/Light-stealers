@@ -30,11 +30,17 @@ public class TaskManager : MonoBehaviour
         PollUnits();
     }
 
+    /**
+     * Goes over the tasks and remove obsolete ones
+     */
     private void PollTasks()
     {
         tasks = tasks.Where(task => task != null && task.status != Status.Done).ToList();
     }
 
+    /**
+     * Goes over units and assign tasks to idle ones.
+     */ 
     private void PollUnits()
     {
         List<Unit> units = UnitManager.Instance.GetAllActiveUnits();
@@ -56,6 +62,9 @@ public class TaskManager : MonoBehaviour
         }
     }
      
+    /**
+     * Finds an appropriate task for an idle unit. Self generating units are required to generate one themselves.
+     */
     private Task GetTaskForUnit(Unit unit)
     {
         BehaviorModule behavior = unit.GetBehaviorModule();
@@ -79,6 +88,9 @@ public class TaskManager : MonoBehaviour
         return null;
     }
 
+    /**
+     * Adds a new task to the pile
+     */
     public void RegisterNewTask(Task task)
     {
         tasks.Add(task);

@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using System.Linq;
 
+/**
+ * IFightable module watching over everything related to the fight.
+ */
 public class FightModule : MonoBehaviour
 {
     [Header("General")]
@@ -64,13 +67,16 @@ public class FightModule : MonoBehaviour
         Debug.Log(this.gameObject.name + " joined a fight on " + fightCell.coordinates);
         return true;
     }
-
+    
     private void Attack(FightModule ennemyFighter)
     {
         Debug.Log("FIGHT : " + this.gameObject.name + " attacks " + ennemyFighter.gameObject.name + " for " + attack + "hp");
         ennemyFighter.health -= attack;
     }
 
+    /**
+     * Plays the turn of a IFightable. If the fighter is still alive, they inflict their attack to a random ennemy and stall the fight for a short duration.
+     */
     public IEnumerator PlayTurn(Team ennemyTeam)
     {
         Debug.Log("FIGHT : " + this.gameObject.name + " starts their turn. (" + health + "hp)");
@@ -89,6 +95,9 @@ public class FightModule : MonoBehaviour
         }
     }
 
+    /**
+     * Clears the teams from dead fighters
+     */
     public void OnFightEnd()
     {
         if (health <= 0)
