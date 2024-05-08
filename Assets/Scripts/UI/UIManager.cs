@@ -11,6 +11,8 @@ public abstract class UIManager : MonoBehaviour
         text.text = content;
     }
 
+    public bool IsVisible() { return root.style.display == DisplayStyle.Flex;  }
+
     protected void SetVisibility(DisplayStyle displayStyle)
     {
         root.style.display = displayStyle;

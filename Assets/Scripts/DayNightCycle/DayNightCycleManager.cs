@@ -37,7 +37,7 @@ public class DayNightCycleManager : MonoBehaviour
     [SerializeField] private float transitionDuration;
     private float travellingLightCruseIntensity;
 
-    private int day;
+    public int day { get; private set; }
     private DayNightCyclePhases phase;
 
     public static event CyclePhaseHandler OnCyclePhaseStart;

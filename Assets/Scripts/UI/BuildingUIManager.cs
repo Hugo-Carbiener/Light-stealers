@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
-public class BuildingUIManager : UIManager, ActiveUIInterface
+public class BuildingUIManager : UIManager, IActiveUI
 {
     private static readonly string BUTTON_CONTAINER_ELEMENT_KEY = "ButtonContainer";
     private static readonly string BUTTON_ELEMENT_KEY = "Button";
@@ -18,7 +18,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
     [Header("Button template")]
     [SerializeField] private VisualTreeAsset button;
     [Header("Icons")]
-    [SerializeField] SerializableDictionary<BuildingTypes, Sprite> iconDictionnary;
+    [SerializeField] private SerializableDictionary<BuildingTypes, Sprite> iconDictionnary;
     [Header("Deconstruction menu")]
     [SerializeField] private string deconstructionButtonLabel;
     [SerializeField] private Sprite deconstructionIcon;
@@ -199,4 +199,6 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         Vector3 worldPosition = TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition);
         SetPosition(worldPosition);
     }
+
+    public SerializableDictionary<BuildingTypes, Sprite> GetIconDictionnary() { return iconDictionnary; }
 }

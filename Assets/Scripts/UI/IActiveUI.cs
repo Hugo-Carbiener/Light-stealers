@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ActiveUIInterface
+public interface IActiveUI
 {
     public void OpenUIComponent();
     public void CloseUIComponent();

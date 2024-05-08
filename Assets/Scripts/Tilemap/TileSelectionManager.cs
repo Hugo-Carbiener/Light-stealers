@@ -72,7 +72,7 @@ public class TileSelectionManager : MonoBehaviour
     public CellData GetSelectedCellData() { return selectedCell; }
 
     /**
-     * Fetch the ist of avalibale buildings and display the building construction panel.
+     * Fetch the list of avalibale buildings and display the building construction panel.
      */
     public void UpdateBuildingConstructionUI()
     {

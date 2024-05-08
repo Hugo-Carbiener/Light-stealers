@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HousingUIManager : UIManager, PassiveUIInterface
+public class HousingUIManager : UIManager, IPassiveUI
 {
     private static readonly string HOUSING_CAPACITY_TEXT_KEY = "HousingAmount";
     private static readonly string POPULATION_SIZE_TEXT_KEY = "PopulationAmount";

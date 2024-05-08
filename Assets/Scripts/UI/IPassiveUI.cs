@@ -1,4 +1,4 @@
-public interface PassiveUIInterface
+public interface IPassiveUI
 {
     public void UpdateUIComponent();
 }

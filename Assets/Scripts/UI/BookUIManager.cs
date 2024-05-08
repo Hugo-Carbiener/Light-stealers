@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BookUIManager : UIManager, ActiveUIInterface
+public class BookUIManager : UIManager, IActiveUI
 {
     private static readonly string BOOK_BUTTON_KEY = "BookButton";
     private static readonly string BOOK_MENU_ELEMENT_KEY = "BookContainer";

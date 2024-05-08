@@ -24,9 +24,9 @@ public class Team
         if (currentFighterIndex == fighters.Count) currentFighterIndex = 0;
     }
 
-    public void OnFightEnd()
+    public void OnFightEnd(Fight fight)
     {
-        fighters.ForEach(fighter => fighter.OnFightEnd());
+        fighters.ForEach(fighter => fighter.OnFightEnd(fight));
     }
 
     public void AddFighter(FightModule fighter)

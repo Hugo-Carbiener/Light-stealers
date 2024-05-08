@@ -7,12 +7,16 @@ using System.Linq;
 public class Fight
 {
     public Dictionary<Factions, Team> teams { get; private set; } = new Dictionary<Factions, Team>();
+    public List<IFightable> casualties { get; private set; } = new List<IFightable>();
+    public int startDay { get; private set; }
+    public Factions winningFaction { get; private set; }
     public Status status { get; private set; }
 
     public Fight(List<Team> teams)
     {
         status = Status.Pending;
-        foreach(Team team in teams)
+        startDay = DayNightCycleManager.Instance.day;
+        foreach (Team team in teams)
         {
             this.teams.Add(team.faction, team);
         }
@@ -54,7 +58,12 @@ public class Fight
 
     private void OnFightEnd()
     {
-        teams.Values.ToList().ForEach(team => team.OnFightEnd());
+        foreach (Team team in teams.Values)
+        {
+            if (team.IsAlive() && winningFaction == null) winningFaction = team.faction;
+            team.OnFightEnd(this);
+        }
+        status = Status.Done;
     }
 
     public void AddFighter(FightModule fighter)

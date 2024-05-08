@@ -98,10 +98,14 @@ public class FightModule : MonoBehaviour
     /**
      * Clears the teams from dead fighters
      */
-    public void OnFightEnd()
+    public void OnFightEnd(Fight fight)
     {
         if (health <= 0)
         {
+            if (faction == Factions.Villagers)
+            {
+                fight.casualties.Add(actor);
+            }
             actor.OnDeath();
         }
     }
