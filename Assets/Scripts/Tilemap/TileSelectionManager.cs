@@ -38,6 +38,7 @@ public class TileSelectionManager : MonoBehaviour
         SetSelectCell(tilePos);
         tilemapManager.DispatchSelectionTilemap();
         MainMenuUIManager.Instance.UpdateUIComponent();
+        BuildingUIManager.Instance.CloseUIComponent();
     }
 
     /**
@@ -47,8 +48,7 @@ public class TileSelectionManager : MonoBehaviour
     {
         if (selectedCell != null && selectedCell.coordinates == coordinates)
         {
-            // unselect cell
-            selectedCell = null;
+            UnselectCell();
             return;
         } 
 
@@ -60,6 +60,7 @@ public class TileSelectionManager : MonoBehaviour
         selectedCell = null;
         tilemapManager.DispatchSelectionTilemap();
         MainMenuUIManager.Instance.UpdateUIComponent();
+        BuildingUIManager.Instance.UpdateVisibility();
     }
 
     public CellData GetSelectedCellData() { return selectedCell; }

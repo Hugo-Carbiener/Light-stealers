@@ -30,7 +30,7 @@ public class MainMenuUIManager : UIManager, IPassiveUI
         }
     }
 
-    void Start()
+    private void Awake()
     {
         root = document.rootVisualElement;
         bookButton = root.Q<Button>(BOOK_BUTTON_KEY);
@@ -42,7 +42,10 @@ public class MainMenuUIManager : UIManager, IPassiveUI
             { BuildingUIManager.Instance, buildingButton },
             { BattleReportUIManager.Instance, battleReportButton }
         };
+    }
 
+    void Start()
+    {
         InitButtons();
         UpdateUIComponent();
     }
@@ -70,15 +73,8 @@ public class MainMenuUIManager : UIManager, IPassiveUI
     /**
      * Enable buttons depending on the context
      */
-    public void UpdateButtonStates()
+    private  void UpdateButtonStates()
     {
-        SetEnabled(bookButton, !BuildingUIManager.Instance.IsVisible() 
-                            && !BattleReportUIManager.Instance.IsVisible());
-        SetEnabled(buildingButton, !BookUIManager.Instance.IsVisible() 
-                                && !BattleReportUIManager.Instance.IsVisible()
-                                && (TileSelectionManager.Instance.GetSelectedCellData().fight == null || TileSelectionManager.Instance.GetSelectedCellData().fight.status != Status.InProgress));
-        SetEnabled(battleReportButton, !BookUIManager.Instance.IsVisible() 
-                                    && !BuildingUIManager.Instance.IsVisible()
-                                    && TileSelectionManager.Instance.GetSelectedCellData().fight != null);
+        buttons.ToList().ForEach(element => SetEnabled(element.Value, element.Key.CanBeOpened()));
     }
 }

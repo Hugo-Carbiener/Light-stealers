@@ -13,11 +13,6 @@
     -unity-font-definition: none;
 }
 
-.interactible:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-    -unity-background-image-tint-color: rgb(128, 128, 128);
-}
-
 .font-size-auto {
     font-size: 60%;
 }
@@ -39,4 +34,14 @@
 }
 
 .interactible {
+    -unity-background-image-tint-color: rgba(166, 165, 165, 255);
+}
+
+.interactible:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.interactible:disabled {
+    -unity-background-image-tint-color: rgba(89, 89, 89, 255);
 }

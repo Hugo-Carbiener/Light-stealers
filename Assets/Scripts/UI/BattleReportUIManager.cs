@@ -15,8 +15,6 @@ public class BattleReportUIManager : UIManager, IActiveUI
     private static readonly string STAMP_ICON_CONTAINER_KEY = "StampIconContainer";
     private static readonly string STAMP_AMOUNT_LABEL_KEY = "StampAmountLabel";
 
-
-    private VisualElement battleReport;
     private Label dayCountLabel;
     private VisualElement allyStampsContainer;
     private VisualElement enemyStampsContainer;
@@ -49,7 +47,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
         }
     }
 
-    void Start()
+    private void Awake()
     {
         Assert.AreNotEqual(iconDictionnary.Count(), 0);
         Assert.IsNotNull(victoryStamp);
@@ -61,7 +59,11 @@ public class BattleReportUIManager : UIManager, IActiveUI
         troopCasualtiesStampsContainer = root.Q<VisualElement>(TROOP_CASUALTIES_STAMP_CONTAINER_KEY);
         buildingCasualtiesStampsContainer = root.Q<VisualElement>(BUILDING_CASUALTIES_STAMP_CONTAINER_KEY);
         outcomeStampContainer = root.Q<VisualElement>(OUTCOME_STAMP_CONTAINER_KEY);
-        SetVisibility(battleReport, DisplayStyle.None);
+    }
+
+    void Start()
+    {
+        SetVisibility(root, DisplayStyle.None);
     }
 
     public void GenerateNewBattleReport(Fight fight)
@@ -70,9 +72,15 @@ public class BattleReportUIManager : UIManager, IActiveUI
         OpenUIComponent();
     }
 
+    public void OpenUIComponent()
+    {
+        SetVisibility(root, DisplayStyle.Flex);
+        MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
     public void CloseUIComponent()
     {
-        SetVisibility(battleReport, DisplayStyle.None);
+        SetVisibility(root, DisplayStyle.None);
         ResetUIComponent();
     }
 
@@ -88,11 +96,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
         }
     }
 
-    public void OpenUIComponent()
-    {
-        SetVisibility(battleReport, DisplayStyle.Flex);
-        MainMenuUIManager.Instance.UpdateUIComponent();
-    }
+    public void UpdateVisibility() { }
 
     public void ResetUIComponent()
     {
@@ -102,6 +106,15 @@ public class BattleReportUIManager : UIManager, IActiveUI
         buildingCasualtiesStampsContainer.style.backgroundImage = null;
         outcomeStampContainer.style.backgroundImage = null;
         MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
+    public bool CanBeOpened()
+    {
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
+        return selectedCell != null 
+            && selectedCell.fight != null 
+            && !BookUIManager.Instance.IsVisible() 
+            && !BuildingUIManager.Instance.IsVisible(); 
     }
 
     public void InitBattleReport(Fight fight)

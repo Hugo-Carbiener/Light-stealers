@@ -31,11 +31,16 @@ public class BookUIManager : UIManager, IActiveUI
             return _instance;
         }
     }
-    void Start()
+
+    private void Awake()
     {
         root = document.rootVisualElement;
         bookMenu = root.Q<VisualElement>(BOOK_MENU_ELEMENT_KEY);
         bookSpriteContainer = root.Q<VisualElement>(BOOK_SPRITE_CONTAINER_ELEMENT_KEY);
+    }
+
+    void Start()
+    {
         InitBookmarks();
         SetVisibility(bookMenu, DisplayStyle.None);
     }
@@ -68,6 +73,8 @@ public class BookUIManager : UIManager, IActiveUI
         }
     }
 
+    public void UpdateVisibility() { }
+
     public void ResetUIComponent()
     {
         ResourceUIManager.Instance.UpdateUIComponent();
@@ -75,6 +82,12 @@ public class BookUIManager : UIManager, IActiveUI
         SetEnabled(MainMenuUIManager.Instance.bookButton, true);
         SetVisibility(bookMenu, DisplayStyle.None);
         MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
+    public bool CanBeOpened()
+    {
+        return !BuildingUIManager.Instance.IsVisible()
+            && !BattleReportUIManager.Instance.IsVisible();
     }
     private void InitBookmarks()
     {

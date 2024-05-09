@@ -58,12 +58,18 @@ public class Fight
 
     private void OnFightEnd()
     {
+        status = Status.Done;
         foreach (Team team in teams.Values)
         {
             if (team.IsAlive() && winningFaction == null) winningFaction = team.faction;
             team.OnFightEnd(this);
         }
-        status = Status.Done;
+
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();  
+        if (selectedCell != null && selectedCell.fight != null && selectedCell.fight == this)
+        {
+            MainMenuUIManager.Instance.UpdateUIComponent();
+        }
     }
 
     public void AddFighter(FightModule fighter)

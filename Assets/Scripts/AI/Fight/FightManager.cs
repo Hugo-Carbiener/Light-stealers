@@ -32,6 +32,8 @@ public class FightManager : MonoBehaviour
     {
         Fight fight = new Fight(teams);
         fightCell.fight = fight;
+        MainMenuUIManager.Instance.UpdateUIComponent();
+        BuildingUIManager.Instance.UpdateVisibility();
         FightManager.Instance.fights.Add(fight);
     }
     public float getSetupDuration() { return setupDuration; }

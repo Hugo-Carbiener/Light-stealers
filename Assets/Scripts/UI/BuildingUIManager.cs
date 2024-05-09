@@ -37,10 +37,14 @@ public class BuildingUIManager : UIManager, IActiveUI
         }
     }
 
-    void Start()
+    private void Awake()
     {
         Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingTypes)).Length);
         root = document.rootVisualElement;
+    }
+
+    void Start()
+    {
         SetVisibility(DisplayStyle.None);
     }
 
@@ -198,11 +202,31 @@ public class BuildingUIManager : UIManager, IActiveUI
         }
     }
 
+    public void UpdateVisibility()
+    {
+        if (!IsVisible()) return;
+
+        if (!CanBeOpened())
+        {
+            CloseUIComponent();
+        }
+    }
+
     public void ResetUIComponent()
     {
         VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         buttonContainer.Clear();
         MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
+    public bool CanBeOpened()
+    {
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
+        return selectedCell != null
+            && (selectedCell.fight == null || selectedCell.fight.status == Status.Done)
+            && (selectedCell.building == null || (selectedCell.building != null && selectedCell.building.CanBeDeconstructed()))
+            && !BookUIManager.Instance.IsVisible()
+            && !BattleReportUIManager.Instance.IsVisible();
     }
 
     public void UpdateWorldPosition()
