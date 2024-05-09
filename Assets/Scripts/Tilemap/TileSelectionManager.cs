@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
-using UnityEngine.UIElements;
 
 public class TileSelectionManager : MonoBehaviour
 {
-    private Vector2Int frameSelect = new Vector2Int(0, 0);
-
     [SerializeField] private TilemapManager tilemapManager;
     [SerializeField] private Tilemap selectionTilemap;
     private CellData selectedCell;
@@ -36,15 +33,11 @@ public class TileSelectionManager : MonoBehaviour
 
     private void SelectCell(Vector2 mousePosition)
     {
-        Vector2Int oldFrameSelect = new Vector2Int(0, 0);
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
-        oldFrameSelect = frameSelect;
-        frameSelect = tilePos;
-
         SetSelectCell(tilePos);
         tilemapManager.DispatchSelectionTilemap();
-        UpdateBuildingConstructionUI();
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     /**
@@ -66,25 +59,10 @@ public class TileSelectionManager : MonoBehaviour
     {
         selectedCell = null;
         tilemapManager.DispatchSelectionTilemap();
-        UpdateBuildingConstructionUI();
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     public CellData GetSelectedCellData() { return selectedCell; }
-
-    /**
-     * Fetch the list of avalibale buildings and display the building construction panel.
-     */
-    public void UpdateBuildingConstructionUI()
-    {
-        BuildingUIManager buildingUI = BuildingUIManager.Instance;
-        if (selectedCell == null)
-        {
-            buildingUI.CloseUIComponent();
-            return;
-        }
-
-        buildingUI.OpenUIComponent();
-    }
 
     /**
      * Generates the list of building types that are valid to be built on a given tile.

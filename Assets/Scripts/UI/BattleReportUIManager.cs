@@ -73,11 +73,25 @@ public class BattleReportUIManager : UIManager, IActiveUI
     public void CloseUIComponent()
     {
         SetVisibility(battleReport, DisplayStyle.None);
+        ResetUIComponent();
+    }
+
+    public void ToggleUIComponent()
+    {
+        if (IsVisible())
+        {
+            CloseUIComponent();
+        }
+        else
+        {
+            OpenUIComponent();
+        }
     }
 
     public void OpenUIComponent()
     {
         SetVisibility(battleReport, DisplayStyle.Flex);
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     public void ResetUIComponent()
@@ -87,6 +101,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
         troopCasualtiesStampsContainer.Clear();
         buildingCasualtiesStampsContainer.style.backgroundImage = null;
         outcomeStampContainer.style.backgroundImage = null;
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     public void InitBattleReport(Fight fight)

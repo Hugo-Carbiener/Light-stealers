@@ -107,6 +107,7 @@ public class BuildingUIManager : UIManager, IActiveUI
         }
         SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld(cell.GetVector3Coordinates()));
         SetVisibility(DisplayStyle.Flex);
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     private void InitBuildingButton(TemplateContainer button, Building building)
@@ -185,10 +186,23 @@ public class BuildingUIManager : UIManager, IActiveUI
         ResetUIComponent();
     }
 
+    public void ToggleUIComponent()
+    {
+        if (IsVisible())
+        {
+            CloseUIComponent();
+        }
+        else
+        {
+            OpenUIComponent();
+        }
+    }
+
     public void ResetUIComponent()
     {
         VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         buttonContainer.Clear();
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     public void UpdateWorldPosition()
