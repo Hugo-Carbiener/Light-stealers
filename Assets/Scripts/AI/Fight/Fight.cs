@@ -61,7 +61,7 @@ public class Fight
         status = Status.Done;
         foreach (Team team in teams.Values)
         {
-            if (team.IsAlive() && winningFaction == null) winningFaction = team.faction;
+            if (team.IsAlive()) winningFaction = team.faction;
             team.OnFightEnd(this);
         }
 
