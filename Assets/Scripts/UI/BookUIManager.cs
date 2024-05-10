@@ -5,10 +5,8 @@ using UnityEngine.UIElements;
 
 public class BookUIManager : UIManager, IActiveUI
 {
-    private static readonly string BOOK_MENU_ELEMENT_KEY = "BookContainer";
     private static readonly string BOOK_SPRITE_CONTAINER_ELEMENT_KEY = "Book";
     private static readonly string BOOKMARK_RETURN_BUTTON_KEY = "ReturnBookmark";
-    private VisualElement bookMenu;
     private VisualElement bookSpriteContainer;
 
     [Header("Background colors")]
@@ -35,19 +33,18 @@ public class BookUIManager : UIManager, IActiveUI
     private void Awake()
     {
         root = document.rootVisualElement;
-        bookMenu = root.Q<VisualElement>(BOOK_MENU_ELEMENT_KEY);
         bookSpriteContainer = root.Q<VisualElement>(BOOK_SPRITE_CONTAINER_ELEMENT_KEY);
     }
 
     void Start()
     {
         InitBookmarks();
-        SetVisibility(bookMenu, DisplayStyle.None);
+        SetVisibility(root, DisplayStyle.None);
     }
 
     public void CloseUIComponent()
     {
-        SetVisibility(bookMenu, DisplayStyle.None);
+        SetVisibility(root, DisplayStyle.None);
         root.style.backgroundColor = closedMenuColor;
         ResetUIComponent();
     }
@@ -59,7 +56,7 @@ public class BookUIManager : UIManager, IActiveUI
         MainMenuUIManager.Instance.UpdateUIComponent();
         TileSelectionManager.Instance.UnselectCell();
         root.style.backgroundColor = openedMenuColor;
-        SetVisibility(bookMenu, DisplayStyle.Flex);
+        SetVisibility(root, DisplayStyle.Flex);
     }
 
     public void ToggleUIComponent()
@@ -80,7 +77,7 @@ public class BookUIManager : UIManager, IActiveUI
         ResourceUIManager.Instance.UpdateUIComponent();
         HousingUIManager.Instance.UpdateUIComponent();
         SetEnabled(MainMenuUIManager.Instance.bookButton, true);
-        SetVisibility(bookMenu, DisplayStyle.None);
+        SetVisibility(root, DisplayStyle.None);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 

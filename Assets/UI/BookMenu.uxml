@@ -1,41 +1,37 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/StyleSheet.uss?fileID=7433441132597879392&amp;guid=eabd16b289558dc49a9a18bb58286d87&amp;type=3#StyleSheet" />
     <Style src="project://database/Assets/UI/Reset.uss?fileID=7433441132597879392&amp;guid=544cdb56d39be8147b2e624ed6d7fb42&amp;type=3#Reset" />
-    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; -unity-background-image-tint-color: rgb(0, 0, 0); flex-direction: column; display: flex;">
-        <ui:VisualElement name="BookContainer" style="padding-top: 15%; padding-bottom: 0; position: relative; flex-direction: row; flex-grow: 1; padding-left: 0; padding-right: 0; max-width: 100%; max-height: 100%; display: flex;">
-            <ui:VisualElement name="PlaceHolder" style="width: 160px; height: 160px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-grow: 1; display: flex;" />
-            <ui:VisualElement name="Book" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_book-main.png?fileID=2800000&amp;guid=a6959e3f0c033ef4ab7d051d57644196&amp;type=3#UI_book-main&apos;); width: 160px; height: 160px; flex-direction: column; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: 160px;">
-                <ui:VisualElement name="Pages" style="background-image: none; width: auto; height: 140px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: auto; flex-grow: 1;">
-                    <ui:VisualElement name="CensusPageContainer" style="flex-grow: 1; padding-left: 10%; padding-right: 5%; width: 50%; padding-top: 22%; padding-bottom: 20%; justify-content: space-around;">
-                        <ui:VisualElement name="PageRow" style="flex-direction: row;">
-                            <ui:VisualElement name="HousingIcon" style="width: 8px; height: 8px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_census-housing-icon.png?fileID=2800000&amp;guid=ca7222e222007fb43b0fb8582715da40&amp;type=3#UI_census-housing-icon&apos;);" />
-                            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="HousingAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="PageRow" style="flex-direction: row;">
-                            <ui:VisualElement name="PopulationIcon" style="width: 8px; height: 8px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_census-troop-icon.png?fileID=2800000&amp;guid=2cc605218c3e6ab4b8d4c29aa15d300b&amp;type=3#UI_census-troop-icon&apos;);" />
-                            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="PopulationAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
-                        </ui:VisualElement>
+    <ui:VisualElement name="BookContainer" style="position: relative; flex-direction: row; flex-grow: 1; max-width: 100%; max-height: 100%; display: flex; align-items: center; justify-content: center; visibility: hidden;">
+        <ui:VisualElement name="Book" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_book-main.png?fileID=2800000&amp;guid=a6959e3f0c033ef4ab7d051d57644196&amp;type=3#UI_book-main&apos;); width: 160px; height: 160px; flex-direction: column; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: 160px; visibility: visible;">
+            <ui:VisualElement name="Pages" style="background-image: none; width: auto; height: 140px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 160px; min-height: auto; flex-grow: 1;">
+                <ui:VisualElement name="CensusPageContainer" style="flex-grow: 1; padding-left: 10%; padding-right: 5%; width: 50%; padding-top: 22%; padding-bottom: 20%; justify-content: space-around;">
+                    <ui:VisualElement name="PageRow" style="flex-direction: row;">
+                        <ui:VisualElement name="HousingIcon" style="width: 8px; height: 8px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_census-housing-icon.png?fileID=2800000&amp;guid=ca7222e222007fb43b0fb8582715da40&amp;type=3#UI_census-housing-icon&apos;);" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="HousingAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="LedgerPageContainer" style="flex-grow: 1; width: 50%; padding-left: 5%; padding-right: 10%; padding-top: 22%; padding-bottom: 15%; justify-content: space-around;">
-                        <ui:VisualElement name="PageRow" style="flex-direction: row;">
-                            <ui:VisualElement name="FoodIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_food.png?fileID=2800000&amp;guid=3c003a79a68017547b37b2d8b0ecc6f8&amp;type=3#resources_food&apos;);" />
-                            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="FoodAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="PageRow" style="flex-direction: row;">
-                            <ui:VisualElement name="WoodIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_wood.png?fileID=2800000&amp;guid=01c7fbfa1d480a8408d3afd82af3d8bd&amp;type=3#resources_wood&apos;);" />
-                            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="WoodAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
-                        </ui:VisualElement>
-                        <ui:VisualElement name="PageRow" style="flex-direction: row;">
-                            <ui:VisualElement name="StoneIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_rock.png?fileID=2800000&amp;guid=fff01d9646f9cee46b370bd4a265b96b&amp;type=3#resources_rock&apos;);" />
-                            <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="StoneAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
-                        </ui:VisualElement>
+                    <ui:VisualElement name="PageRow" style="flex-direction: row;">
+                        <ui:VisualElement name="PopulationIcon" style="width: 8px; height: 8px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_census-troop-icon.png?fileID=2800000&amp;guid=2cc605218c3e6ab4b8d4c29aa15d300b&amp;type=3#UI_census-troop-icon&apos;);" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="PopulationAmount" class="subtext-writing font-s font-size-10" style="margin-left: 5%;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="Bookmarks" style="flex-grow: 1; max-height: none; height: 20px; flex-direction: row;">
-                    <ui:Button display-tooltip-when-elided="true" name="ReturnBookmark" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 12px; margin-right: 0; margin-top: 0; margin-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; background-color: rgba(0, 0, 0, 0); width: 18px; height: 20px;" />
+                <ui:VisualElement name="LedgerPageContainer" style="flex-grow: 1; width: 50%; padding-left: 5%; padding-right: 10%; padding-top: 22%; padding-bottom: 15%; justify-content: space-around;">
+                    <ui:VisualElement name="PageRow" style="flex-direction: row;">
+                        <ui:VisualElement name="FoodIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_food.png?fileID=2800000&amp;guid=3c003a79a68017547b37b2d8b0ecc6f8&amp;type=3#resources_food&apos;);" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="FoodAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="PageRow" style="flex-direction: row;">
+                        <ui:VisualElement name="WoodIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_wood.png?fileID=2800000&amp;guid=01c7fbfa1d480a8408d3afd82af3d8bd&amp;type=3#resources_wood&apos;);" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="WoodAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="PageRow" style="flex-direction: row;">
+                        <ui:VisualElement name="StoneIcon" style="width: 24px; height: 24px; background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/resources_rock.png?fileID=2800000&amp;guid=fff01d9646f9cee46b370bd4a265b96b&amp;type=3#resources_rock&apos;);" />
+                        <ui:Label tabindex="-1" text="00" display-tooltip-when-elided="true" name="StoneAmount" class="subtext-writing font-size-12" style="-unity-text-align: middle-left; margin-left: 5%;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="PlaceHolder" style="width: 160px; height: 160px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-grow: 1; display: flex;" />
+            <ui:VisualElement name="Bookmarks" style="flex-grow: 1; max-height: none; height: 20px; flex-direction: row;">
+                <ui:Button display-tooltip-when-elided="true" name="ReturnBookmark" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 12px; margin-right: 0; margin-top: 0; margin-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; background-color: rgba(0, 0, 0, 0); width: 18px; height: 20px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

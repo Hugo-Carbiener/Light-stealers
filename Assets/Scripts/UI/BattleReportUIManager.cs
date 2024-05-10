@@ -54,7 +54,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
         Assert.IsNotNull(defeatStamp);
         root = document.rootVisualElement;
         dayCountLabel = root.Q<Label>(DAY_COUNT_LABEL_KEY);
-        allyStampsContainer = root.Q<Button>(ALLY_STAMP_CONTAINER_KEY);
+        allyStampsContainer = root.Q<VisualElement>(ALLY_STAMP_CONTAINER_KEY);
         enemyStampsContainer = root.Q<VisualElement>(ENEMY_STAMP_CONTAINER_KEY);
         troopCasualtiesStampsContainer = root.Q<VisualElement>(TROOP_CASUALTIES_STAMP_CONTAINER_KEY);
         buildingCasualtiesStampsContainer = root.Q<VisualElement>(BUILDING_CASUALTIES_STAMP_CONTAINER_KEY);
@@ -66,22 +66,20 @@ public class BattleReportUIManager : UIManager, IActiveUI
         SetVisibility(root, DisplayStyle.None);
     }
 
-    public void GenerateNewBattleReport(Fight fight)
-    {
-        InitBattleReport(fight);
-        OpenUIComponent();
-    }
-
     public void OpenUIComponent()
     {
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
+        if (selectedCell == null || selectedCell.fight == null) return;
+
+        InitBattleReport(selectedCell.fight);
         SetVisibility(root, DisplayStyle.Flex);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     public void CloseUIComponent()
     {
-        SetVisibility(root, DisplayStyle.None);
         ResetUIComponent();
+        SetVisibility(root, DisplayStyle.None);
     }
 
     public void ToggleUIComponent()
@@ -143,7 +141,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
         Label stampAmountLabel = censusToAdd.Q<Label>(STAMP_AMOUNT_LABEL_KEY);
         stampIconContainer.style.backgroundImage = new StyleBackground(iconDictionnary[team.faction]);
         UpdateText(stampAmountLabel, troopAmount.ToString());
-        troopCasualtiesStampsContainer.Add(censusToAdd);
+        stampsContainer.Add(censusToAdd);
     }
 
     private void ApplyCasualtiesStamps(List<IFightable> fighters)
