@@ -22,8 +22,6 @@ public class BattleReportUIManager : UIManager, IActiveUI
     private VisualElement buildingCasualtiesStampsContainer;
     private VisualElement outcomeStampContainer;
 
-
-
     [Header("Stamp template")]
     [SerializeField] private VisualTreeAsset stampTemplate;
     [Header("Icons")]
@@ -31,7 +29,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
     [SerializeField] private Sprite victoryStamp;
     [SerializeField] private Sprite defeatStamp;
 
-    public Fight currentRegisteredFight { get; private set; }
+    public Fight fight { get; private set; }
 
     private static BattleReportUIManager _instance;
     public static BattleReportUIManager Instance
@@ -71,7 +69,8 @@ public class BattleReportUIManager : UIManager, IActiveUI
         CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
         if (selectedCell == null || selectedCell.fight == null) return;
 
-        InitBattleReport(selectedCell.fight);
+        GenerateBattleReport(selectedCell.fight);
+        GenerateBattleReportOutcome(selectedCell.fight);
         SetVisibility(root, DisplayStyle.Flex);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
@@ -98,6 +97,7 @@ public class BattleReportUIManager : UIManager, IActiveUI
 
     public void ResetUIComponent()
     {
+        fight = null;
         allyStampsContainer.Clear();
         enemyStampsContainer.Clear();
         troopCasualtiesStampsContainer.Clear();
@@ -115,11 +115,16 @@ public class BattleReportUIManager : UIManager, IActiveUI
             && !BuildingUIManager.Instance.IsVisible(); 
     }
 
-    public void InitBattleReport(Fight fight)
+    private void GenerateBattleReport(Fight fight)
     {
+        this.fight = fight;
         SetDay(fight);
         ApplyStamps(fight.teams[Factions.Villagers], allyStampsContainer);
         ApplyStamps(fight.teams[Factions.Monsters], enemyStampsContainer);
+    }
+
+    public void GenerateBattleReportOutcome(Fight fight)
+    {
         if (fight.status == Status.Done)
         {
             ApplyCasualtiesStamps(fight.casualties);

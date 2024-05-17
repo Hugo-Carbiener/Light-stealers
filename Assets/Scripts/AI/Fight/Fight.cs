@@ -70,6 +70,12 @@ public class Fight
         {
             MainMenuUIManager.Instance.UpdateUIComponent();
         }
+
+        BattleReportUIManager battleReportUI = BattleReportUIManager.Instance;
+        if (this == battleReportUI.fight && battleReportUI.IsVisible())
+        {
+            battleReportUI.GenerateBattleReportOutcome(this);
+        }
     }
 
     public void AddFighter(FightModule fighter)

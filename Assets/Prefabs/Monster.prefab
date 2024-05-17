@@ -144,9 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b715d82d46f144c9764b47f6ceadb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 4594566945932583997}
   attackable: 1
   faction: 1
-  turnDuration: 2
+  turnDuration: 0.5
   maxHealth: 3
   attack: 1
