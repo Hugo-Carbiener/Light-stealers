@@ -22,6 +22,8 @@ public class TaskManager : MonoBehaviour
         }
     }
 
+    public static readonly int INFINITE_CAPACITY = -1;
+
     public List<Task> tasks { get; private set; } = new List<Task>();
 
     private void Update()
@@ -54,7 +56,7 @@ public class TaskManager : MonoBehaviour
 
             if (unit.GetBehaviorModule().IsIdle())
             {
-                Task task = GetTaskForUnit(unit);
+                Task task = FindTaskForUnit(unit);
                 if (task == null) continue;
 
                 behaviorModule.AssignNewTask(task);
@@ -65,7 +67,7 @@ public class TaskManager : MonoBehaviour
     /**
      * Finds an appropriate task for an idle unit. Self generating units are required to generate one themselves.
      */
-    private Task GetTaskForUnit(Unit unit)
+    private Task FindTaskForUnit(Unit unit)
     {
         BehaviorModule behavior = unit.GetBehaviorModule();
 
@@ -86,6 +88,11 @@ public class TaskManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Task GetTask(Vector2Int location, TaskType type)
+    {
+        return tasks.Find(task => task.location == location && task.type == type);
     }
 
     /**

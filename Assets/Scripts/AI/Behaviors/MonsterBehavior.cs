@@ -40,7 +40,10 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
     public Task GenerateTask(Unit unit)
     {
         target = GetTarget(unit.GetMovementModule());
-        return target == null ? null : new Task(target.GetPosition(), TaskType.MonsterAttack);
+        if (target == null) return null;
+
+        Task existingTask = TaskManager.Instance.GetTask(target.GetPosition(), TaskType.MonsterAttack);
+        return existingTask != null ? existingTask : new Task(target.GetPosition(), TaskManager.INFINITE_CAPACITY, TaskType.MonsterAttack);
     }
 
     private IFightable GetTarget(MovementModule movementModule)

@@ -38,7 +38,7 @@ public class FightManager : MonoBehaviour
         BuildingUIManager.Instance.UpdateVisibility();
 
         // defense task
-        Task defenseTask = new Task(fightCell.coordinates, TaskType.Defense);
+        Task defenseTask = new Task(fightCell.coordinates, TaskManager.INFINITE_CAPACITY, TaskType.Defense);
         TaskManager.Instance.RegisterNewTask(defenseTask);
 
         fights.Add(fight);
