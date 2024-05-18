@@ -35,7 +35,7 @@ public class Unit : MonoBehaviour, IFightable
             SetPosition(FractureManager.Instance.fractures[index].coordinates);
             return;
         }
-        position = startingPos;
+        SetPosition(startingPos);
     }
     
     public void OnDeath()

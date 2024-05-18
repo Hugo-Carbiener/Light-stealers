@@ -16,8 +16,7 @@ public class MovementModule : MonoBehaviour
     public List<CellData> path { get; private set; }
     public Status status { get; private set; } = Status.ToBeProgrammed;
 
-    public event MovementHandler OnArrival;
-    public delegate void MovementHandler(Vector2Int destination);
+    public UnityEvent<Vector2Int> OnArrivalEvent { get; private set; } = new UnityEvent<Vector2Int>();
 
     private void Start()
     {
@@ -76,7 +75,7 @@ public class MovementModule : MonoBehaviour
 
         path = null;
         status = Status.Done;
-        OnArrival.Invoke(destination);
+        OnArrivalEvent.Invoke(destination);
     }
 
     /**

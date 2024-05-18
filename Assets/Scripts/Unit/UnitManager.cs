@@ -179,7 +179,7 @@ public class UnitManager : MonoBehaviour
     public void DeactivateUnit(Unit unit)
     {
         unit.gameObject.SetActive(false);
-        UnitManager.Instance.activeUnits[unit.GetFightModule().GetFaction()].Remove(unit);
+        activeUnits[unit.GetFightModule().GetFaction()].Remove(unit);
     }
     
     public List<Unit> GetAllActiveUnits()

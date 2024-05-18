@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.Events;
 
 public class Fight
 {
@@ -11,6 +12,8 @@ public class Fight
     public int startDay { get; private set; }
     public Factions winningFaction { get; private set; }
     public Status status { get; private set; }
+    
+    public UnityEvent OnFightEndEvent { get; private set; } = new UnityEvent();
 
     public Fight(List<Team> teams)
     {
@@ -76,6 +79,8 @@ public class Fight
         {
             battleReportUI.GenerateBattleReportOutcome(this);
         }
+
+        OnFightEndEvent.Invoke();
     }
 
     public void AddFighter(FightModule fighter)

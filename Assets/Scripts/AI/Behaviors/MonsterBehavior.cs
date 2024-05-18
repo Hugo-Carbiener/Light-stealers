@@ -27,7 +27,14 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {
-        fightModule.Attack(targetCell);
+        if (fightModule.Attack(targetCell))
+        {
+            TilemapManager.Instance.GetCellData(targetCell).fight.OnFightEndEvent.AddListener(EndTask);
+        }
+        else
+        {
+            EndTask();
+        }
     }
 
     public Task GenerateTask(Unit unit)
@@ -75,5 +82,6 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
             EndTask();
         }   
     }
+
     public override bool GeneratesOwnTasks() { return true; }
 }

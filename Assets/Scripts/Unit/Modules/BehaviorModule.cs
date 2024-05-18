@@ -10,6 +10,7 @@ public abstract class BehaviorModule : MonoBehaviour
 {
     [SerializeField] protected Unit unit;
     [SerializeField] private List<TaskType> acceptedTasks;
+
     protected Task assignedTask { get; private set; }
 
     private void Awake()
@@ -35,16 +36,10 @@ public abstract class BehaviorModule : MonoBehaviour
 
     protected bool InitMovement(Task task)
     {
-        if (task.location == null)
-        {
-            Debug.LogError(string.Format($"Monster ({unit.GetMovementModule().currentCell}) attempting attack on null cell"));
-            return false;
-        }
-
         // check if the destination is accessible
 
         unit.GetMovementModule().SetDestination(task.location);
-        unit.GetMovementModule().OnArrival += InitAction;
+        unit.GetMovementModule().OnArrivalEvent.AddListener(InitAction);
         return true;
     }
 
@@ -60,7 +55,7 @@ public abstract class BehaviorModule : MonoBehaviour
 
     public void EndTask()
     {
-        assignedTask = null;
         assignedTask.Finish();
+        assignedTask = null;
     }
 }

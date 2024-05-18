@@ -20,7 +20,8 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-
+    [Header("General")]
+    [SerializeField] private DayNightCyclePhases startingPhase;
     [Header("Durations")]
     [SerializeField] private SerializableDictionary<DayNightCyclePhases, float> phasesDurations;
     [Header("Global lighting colors")]
@@ -74,9 +75,9 @@ public class DayNightCycleManager : MonoBehaviour
     private void InitializeCycle()
     {
         day = 0;
-        phase = DayNightCyclePhases.Day;
+        phase = startingPhase;
 
-        Start(DayNightCyclePhases.Day);
+        Start(phase);
     }
 
     private void Start(DayNightCyclePhases phase)
