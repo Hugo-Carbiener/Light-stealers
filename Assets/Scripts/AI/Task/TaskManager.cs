@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 /**
  * Manager responsible for all the ordered tasks in the current game
@@ -22,9 +23,11 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    public static readonly int INFINITE_CAPACITY = -1;
+    public static readonly int INFINITE_CAPACITY = Int32.MaxValue;
 
     public List<Task> tasks { get; private set; } = new List<Task>();
+    public List<Task> assignedtasks { get; private set; } = new List<Task>();
+
 
     private void Update()
     {
@@ -37,7 +40,7 @@ public class TaskManager : MonoBehaviour
      */
     private void PollTasks()
     {
-        tasks = tasks.Where(task => task != null && task.status != Status.Done).ToList();
+        tasks = assignedtasks.Where(task => task != null && task.status != Status.Done).ToList();
     }
 
     /**
@@ -59,7 +62,7 @@ public class TaskManager : MonoBehaviour
                 Task task = FindTaskForUnit(unit);
                 if (task == null) continue;
 
-                behaviorModule.AssignNewTask(task);
+                AssignNewTask(task, behaviorModule);
             }
         }
     }
@@ -71,13 +74,6 @@ public class TaskManager : MonoBehaviour
     {
         BehaviorModule behavior = unit.GetBehaviorModule();
 
-        if (behavior.GeneratesOwnTasks())
-        {
-            Task task = ((ITaskAutoGeneration)behavior).GenerateTask(unit);
-            RegisterNewTask(task);
-            return task;
-        }
-
         foreach (Task task in tasks)
         {
             if (task == null || 
@@ -87,7 +83,21 @@ public class TaskManager : MonoBehaviour
             return task;
         }
 
+        if (behavior.GeneratesOwnTasks())
+        {
+            Task task = ((ITaskAutoGeneration)behavior).GenerateTask(unit);
+            RegisterNewTask(task);
+            return task;
+        }
+
+
         return null;
+    }
+
+    private void AssignNewTask(Task task, BehaviorModule behaviorModule)
+    {
+        task.capacity++;
+        behaviorModule.AssignNewTask(task);
     }
 
     public Task GetTask(Vector2Int location, TaskType type)
@@ -101,5 +111,11 @@ public class TaskManager : MonoBehaviour
     public void RegisterNewTask(Task task)
     {
         tasks.Add(task);
+    }
+
+    public void OnTaskFullyAssigned(Task task)
+    {
+        tasks.Remove(task);
+        assignedtasks.Add(task);
     }
 }
