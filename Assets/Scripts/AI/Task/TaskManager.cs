@@ -26,7 +26,7 @@ public class TaskManager : MonoBehaviour
     public static readonly double INFINITE_CAPACITY = Double.MaxValue;
 
     public List<Task> tasks { get; private set; } = new List<Task>();
-    public List<Task> assignedtasks { get; private set; } = new List<Task>();
+    public List<Task> assignedTasks { get; private set; } = new List<Task>();
 
     private void Update()
     {
@@ -39,7 +39,7 @@ public class TaskManager : MonoBehaviour
      */
     private void PollTasks()
     {
-        tasks = assignedtasks.Where(task => task != null && task.status != Status.Done).ToList();
+        assignedTasks = assignedTasks.Where(task => task != null && task.status != Status.Done).ToList();
     }
 
     /**
@@ -106,11 +106,7 @@ public class TaskManager : MonoBehaviour
      */
     public void RegisterNewTask(Task task)
     {
-        Debug.Log("Register new task " + task.type + ", capacity " + task.capacity);
-        if (tasks.Contains(task) && !task.capacity.IsMaxed())
-        {
-
-        }
+        Debug.Log("Register new task " + task.type + ", capacity " + task.capacity + " at " + task.location);
         tasks.Add(task);
     }
 
@@ -124,6 +120,6 @@ public class TaskManager : MonoBehaviour
     public void OnTaskFullyAssigned(Task task)
     {
         tasks.Remove(task);
-        assignedtasks.Add(task);
+        assignedTasks.Add(task);
     }
 }
