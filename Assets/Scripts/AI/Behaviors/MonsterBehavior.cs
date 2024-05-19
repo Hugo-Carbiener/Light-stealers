@@ -13,6 +13,11 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         fightModule = unit.GetFightModule();
     }
 
+    private void Start()
+    {
+        DayNightCycleManager.OnCyclePhaseEnd.AddListener(Flee);
+    }
+
     private void Update()
     {
         UpdateMovementDestination(assignedTask);
@@ -74,6 +79,11 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
             closestTarget = currentTarget;
         }
         return closestTarget;
+    }
+
+    private void Flee(DayNightCyclePhases phase)
+    {
+        assignedTask == new Task()
     }
 
     private void UpdateMovementDestination(Task task)

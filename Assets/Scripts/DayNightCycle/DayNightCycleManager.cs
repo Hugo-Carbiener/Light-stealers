@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Events;
 
 public class DayNightCycleManager : MonoBehaviour
 {
@@ -41,18 +42,16 @@ public class DayNightCycleManager : MonoBehaviour
     public int day { get; private set; }
     private DayNightCyclePhases phase;
 
-    public static event CyclePhaseHandler OnCyclePhaseStart;
-    public static event CyclePhaseHandler OnCyclePhaseEnd;
-    public delegate void CyclePhaseHandler(DayNightCyclePhases phase);
-
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseStart;
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseEnd;
 
     private void Awake()
     {
         if (!globalLight) globalLight = GetComponent<Light2D>();
-        OnCyclePhaseStart += OnPhaseStart;
-        OnCyclePhaseStart += InitTravellingLight;
-        OnCyclePhaseEnd += OnPhaseEnd;
-        OnCyclePhaseEnd += ResetTravellingLight;
+        OnCyclePhaseStart.AddListener(OnPhaseStart);
+        OnCyclePhaseStart.AddListener(InitTravellingLight);
+        OnCyclePhaseEnd.AddListener(OnPhaseEnd);
+        OnCyclePhaseEnd.AddListener(ResetTravellingLight);
         Assert.AreNotEqual(phasesDurations.Count(), 0);
     }
 

@@ -5,7 +5,8 @@ using UnityEngine;
 public enum TaskType
 {
     MonsterAttack,
-    Defense
+    Defense,
+    Flee
 
 }
 
