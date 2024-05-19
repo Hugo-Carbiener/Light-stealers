@@ -51,11 +51,18 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         IFightable closestTarget = null;
         int distanceToTarget = TilemapManager.Instance.GetTilemapColumns() * TilemapManager.Instance.GetTilemapRows();
 
-        List<IFightable> targets = Enumerable.Concat<IFightable>(BuildingFactory.Instance.buildingsConstructed, UnitManager.Instance.GetAllActiveUnits())
+        List<IFightable> buildingTargets = BuildingFactory.Instance.buildingsConstructed
             .Where(target => target.GetFightModule() != null)
-            .Where(target => target.GetFightModule().GetFaction() != fightModule.GetFaction())
+            .Where(building => building.IsValidTargetForFight(fightModule.GetFaction()))
+            .Select(building => (IFightable) building)
             .ToList();
-       
+        List <IFightable> unitTargets = UnitManager.Instance.GetAllActiveUnits()
+            .Where(target => target.GetFightModule() != null)
+            .Where(unit => unit.IsValidTargetForFight(fightModule.GetFaction()))
+            .Select(unit => (IFightable)unit)
+            .ToList();
+        List<IFightable> targets = Enumerable.Concat<IFightable>(buildingTargets, unitTargets).ToList();
+         
         foreach (IFightable currentTarget in targets)
         {
             if (currentTarget == null || !currentTarget.GetFightModule().IsAttackable()) continue;

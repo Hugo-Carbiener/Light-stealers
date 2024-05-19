@@ -7,4 +7,6 @@ public interface IFightable
     public void OnDeath();
     public FightModule GetFightModule();
     public Vector2Int GetPosition();
+
+    public bool IsValidTargetForFight(Factions attackerFaction);
 }

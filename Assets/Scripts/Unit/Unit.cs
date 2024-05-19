@@ -63,4 +63,10 @@ public class Unit : MonoBehaviour, IFightable
         if (movementModule.currentCell != location) return false;
         return fightModule.Attack(location);
     }
+
+    public bool IsValidTargetForFight(Factions attackerFaction)
+    {
+        return fightModule.IsValidTarget()
+            && attackerFaction != fightModule.GetFaction();
+    }
 }

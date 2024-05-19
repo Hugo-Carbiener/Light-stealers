@@ -160,4 +160,10 @@ public class Building : MonoBehaviour, IFightable
     public bool CanBeDeconstructed() { return canBeDeconstructed; }
     public bool IsTerraforming() { return isTerraforming; }
     public  FightModule GetFightModule() { return fightModule; }
+
+    public bool IsValidTargetForFight(Factions attackerFaction)
+    {
+        return status != BuildingStatus.Destroyed 
+            && fightModule.GetFaction() != attackerFaction;
+    }
 }
