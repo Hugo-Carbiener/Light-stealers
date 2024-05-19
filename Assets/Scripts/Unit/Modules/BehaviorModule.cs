@@ -26,7 +26,7 @@ public abstract class BehaviorModule : MonoBehaviour
             Debug.LogError(string.Format($"Attempting to assign wrong task ({task.type}) to behavior {this.name}"));
             return;
         }
-        task.status = Status.ToBeProgrammed;
+        task.status = Status.InProgress;
         assignedTask = task;
         if (InitMovement(task))
         {

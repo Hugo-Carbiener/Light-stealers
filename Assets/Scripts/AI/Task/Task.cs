@@ -12,7 +12,7 @@ public class Task
     public TaskType type { get; private set; }
     public Status status { get; set; } 
 
-    public Task(Vector2Int location, int capacity, TaskType type)
+    public Task(Vector2Int location, double capacity, TaskType type)
     {
         this.location = location;
         this.capacity = new BoundCounter(capacity);

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class BoundCounter
 {
-    private double currentValue { get; set; }
+    public double currentValue { get; set; }
     public double minValue { get; private set; }
     public double maxValue { get; private set; }
 
@@ -17,21 +17,21 @@ public class BoundCounter
     {
         this.currentValue = 0;
         this.minValue = 0;
-        this.minValue = maxValue;
+        this.maxValue = maxValue;
     }
 
     public BoundCounter(double currentValue, double maxValue)
     {
         this.currentValue = currentValue;
         this.minValue = 0;
-        this.minValue = maxValue;
+        this.maxValue = maxValue;
     }
 
     public BoundCounter(double currentValue, double minValue, double maxValue)
     {
         this.currentValue = currentValue;
-        this.minValue = maxValue;
         this.minValue = minValue;
+        this.maxValue = maxValue;
     }
 
     public static BoundCounter operator ++(BoundCounter counter)
@@ -82,9 +82,23 @@ public class BoundCounter
         return currentValue + "/" + maxValue;
     }
 
+    public bool IsMaxed()
+    {
+        return currentValue >= maxValue;
+    }
+
     private void CheckBounds()
     {
-        if (currentValue >= maxValue) OnMaxValueReachedOrExceeded.Invoke();
-        if (currentValue <= minValue) OnMinValueReachedOrExceeded.Invoke();
+        if (currentValue >= maxValue)
+        {
+            OnMaxValueReachedOrExceeded.Invoke();
+            currentValue = maxValue;
+        }
+
+        if (currentValue <= minValue)
+        {
+            OnMinValueReachedOrExceeded.Invoke();
+            currentValue = minValue;
+        }
     }
 }

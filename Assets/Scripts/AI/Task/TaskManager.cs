@@ -23,11 +23,10 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    public static readonly int INFINITE_CAPACITY = Int32.MaxValue;
+    public static readonly double INFINITE_CAPACITY = Double.MaxValue;
 
     public List<Task> tasks { get; private set; } = new List<Task>();
     public List<Task> assignedtasks { get; private set; } = new List<Task>();
-
 
     private void Update()
     {
@@ -76,10 +75,7 @@ public class TaskManager : MonoBehaviour
 
         foreach (Task task in tasks)
         {
-            if (task == null || 
-                task.status != Status.Pending || 
-                !behavior.GetAcceptedTasks().Contains(task.type)) continue;
-
+            if (!IsValidFor(task, behavior)) continue;
             return task;
         }
 
@@ -110,7 +106,19 @@ public class TaskManager : MonoBehaviour
      */
     public void RegisterNewTask(Task task)
     {
+        Debug.Log("Register new task " + task.type + ", capacity " + task.capacity);
+        if (tasks.Contains(task) && !task.capacity.IsMaxed())
+        {
+
+        }
         tasks.Add(task);
+    }
+
+    private bool IsValidFor(Task task, BehaviorModule behavior)
+    {
+        return task != null
+            && (task.status == Status.Pending || task.status == Status.InProgress) 
+            && behavior.GetAcceptedTasks().Contains(task.type);
     }
 
     public void OnTaskFullyAssigned(Task task)
