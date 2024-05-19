@@ -79,13 +79,16 @@ public class FightModule : MonoBehaviour
      */
     public IEnumerator PlayTurn(Team ennemyTeam)
     {
-        Debug.Log("FIGHT : " + this.gameObject.name + " starts their turn. (" + health + "hp)");
-
         if (!IsAlive()) yield break;
+
         System.Random random = new System.Random();
-        int randomIndex = random.Next(ennemyTeam.fighters.Count());
-        FightModule ennemyFighter = ennemyTeam.fighters[randomIndex];
+        List<FightModule> validTargets = ennemyTeam.fighters.Where(fighter => fighter.IsValidTarget()).ToList();
+        if (validTargets.Count == 0) yield break;
+
+        int randomIndex = random.Next(validTargets.Count);
+        FightModule ennemyFighter = validTargets[randomIndex];
         Attack(ennemyFighter);
+        Debug.Log("FIGHT : " + this.gameObject.name + " (" + health + ") attacked " + ennemyFighter.gameObject.name + " (" + health + "hp)");
 
         float timer = 0;
         while (timer < turnDuration)
@@ -114,5 +117,10 @@ public class FightModule : MonoBehaviour
     {
         if (health <= 0) Debug.Log("FIGHT : " + this.gameObject.name + " was unalived, skipping their turn. (" + health + "hp)");
         return health > 0;
+    }
+
+    public bool IsValidTarget()
+    {
+        return IsAlive();
     }
 }
