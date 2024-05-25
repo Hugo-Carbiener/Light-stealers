@@ -71,7 +71,7 @@ public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey
     }
 
     public List<TKey> GetKeys() { return elements.Select(elem => elem.key).ToList(); }
-    public List<TValue> GetValue() { return elements.Select(elem => elem.value).ToList(); }
+    public List<TValue> GetValues() { return elements.Select(elem => elem.value).ToList(); }
 
     public Dictionary<TKey, TValue> ToDictionnary()
     {

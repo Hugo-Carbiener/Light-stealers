@@ -11,14 +11,14 @@ using UnityEngine.Assertions;
 public abstract class AIAgent : MonoBehaviour
 {
     [SerializeField] protected Unit unit;
-    [SerializeField] private SerializableDictionary<int, TaskType> acceptedTasks;
+    [SerializeField] private SerializableDictionary<int, TaskType> weightedAcceptedTasks;
 
     protected Behavior behavior { get; set; }
     protected Task assignedTask { get; private set; }
 
     private void Awake()
     {
-        Assert.IsTrue(acceptedTasks != null && acceptedTasks.Count() > 0);
+        Assert.IsTrue(weightedAcceptedTasks != null && weightedAcceptedTasks.Count() > 0);
         Assert.IsTrue(unit != null);
     }
 
@@ -32,7 +32,7 @@ public abstract class AIAgent : MonoBehaviour
 
     public void AssignNewTask(Task task)
     {
-        if (!acceptedTasks.ContainsValue(task.type))
+        if (!weightedAcceptedTasks.ContainsValue(task.type))
         {
             Debug.LogError(string.Format($"Attempting to assign wrong task ({task.type}) to behavior {this.name}"));
             return;
@@ -45,7 +45,7 @@ public abstract class AIAgent : MonoBehaviour
     protected abstract void AssignNewBehavior();
     public Unit GetUnit() { return unit; }
     public bool IsIdle() { return assignedTask == null; }
-    public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
+    public List<TaskType> GetAcceptedTasks() { return weightedAcceptedTasks.GetValues(); }
     public virtual bool GeneratesOwnTasks() { return false; }
     public void EndTask()
     {
