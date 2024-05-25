@@ -74,7 +74,12 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
 
     protected override void AssignNewBehavior()
     {
-        if (assignedTask == null) return;
+        if (assignedTask == null)
+        {
+            behavior = new IdleBehavior(this);
+            return;
+        }
+
         switch (assignedTask.type)
         {
             case TaskType.Attack:
@@ -85,8 +90,8 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
                 behavior = new FleeBehavior(this);
                 break;
             default:
-                Debug.LogError(string.Format($"Attempting to assign behavior to unsupported task type : {assignedTask.type}"));
-                return;
+                behavior = new IdleBehavior(this);
+                break;
         }
         behavior.StartBehavior(assignedTask, unit);
     }

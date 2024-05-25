@@ -13,13 +13,21 @@ public abstract class AIAgent : MonoBehaviour
     [SerializeField] protected Unit unit;
     [SerializeField] private List<TaskType> acceptedTasks;
 
-    protected Behavior behavior { get; protected set; }
+    protected Behavior behavior { get; set; }
     protected Task assignedTask { get; private set; }
 
     private void Awake()
     {
         Assert.IsTrue(acceptedTasks != null && acceptedTasks.Count > 0);
         Assert.IsTrue(unit != null);
+    }
+
+    private void Update()
+    {
+        if (assignedTask == null)
+        {
+            AssignNewBehavior();
+        }
     }
 
     public void AssignNewTask(Task task)
@@ -31,6 +39,7 @@ public abstract class AIAgent : MonoBehaviour
         }
         task.status = Status.InProgress;
         assignedTask = task;
+        AssignNewBehavior();
     }
 
     protected abstract void AssignNewBehavior();

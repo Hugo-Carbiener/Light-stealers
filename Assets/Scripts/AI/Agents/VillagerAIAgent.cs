@@ -28,4 +28,25 @@ public class VillagerAIAgent : AIAgent
             EndTask();
         }
     }
+
+    protected override void AssignNewBehavior()
+    {
+        if (assignedTask == null)
+        {
+            behavior = new IdleBehavior(this);
+            return;
+        }
+
+        switch (assignedTask.type)
+        {
+            case TaskType.Attack:
+            case TaskType.Defense:
+                behavior = new AttackBehavior(this, fightModule, assignedTask.location);
+                break;
+            default:
+                behavior = new IdleBehavior(this);
+                break;
+        }
+        behavior.StartBehavior(assignedTask, unit);
+    }
 }
