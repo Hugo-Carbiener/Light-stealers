@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VillagerBehavior : BehaviorModule
+public class VillagerAIAgent : AIAgent
 {
     private FightModule fightModule;
 
@@ -14,24 +14,6 @@ public class VillagerBehavior : BehaviorModule
     private void Update()
     {
         UpdateMovementDestination(assignedTask);
-    }
-
-    protected override void InitAction(Vector2Int targetCell)
-    {
-        if (!fightModule) return;
-
-        ExecuteAction(targetCell);
-    }
-
-    protected override void ExecuteAction(Vector2Int targetCell)
-    {
-        if (fightModule.Attack(targetCell))
-        {
-            TilemapManager.Instance.GetCellData(targetCell).fight.OnFightEndEvent.AddListener(EndTask);
-        } else
-        {
-            EndTask();
-        }
     }
 
     private void UpdateMovementDestination(Task task)

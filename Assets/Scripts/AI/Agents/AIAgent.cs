@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
 /**
- * Parent class for behaviors. A behavior holds the logic for executing each task. Each behavior decomposes tasks into a movement and an action.
- */ 
-public abstract class BehaviorModule : MonoBehaviour
+ * An AI Agent holds the logic to assign the right behavior on a unit.
+ * Each agent accepts a certain types of task.
+ */
+public abstract class AIAgent : MonoBehaviour
 {
     [SerializeField] protected Unit unit;
     [SerializeField] private List<TaskType> acceptedTasks;
 
+    protected Behavior behavior { get; protected set; }
     protected Task assignedTask { get; private set; }
 
     private void Awake()
@@ -28,31 +31,13 @@ public abstract class BehaviorModule : MonoBehaviour
         }
         task.status = Status.InProgress;
         assignedTask = task;
-        if (InitMovement(task))
-        {
-            ExecuteMovement(task);
-        }
     }
 
-    protected bool InitMovement(Task task)
-    {
-        // check if the destination is accessible
-
-        unit.GetMovementModule().SetDestination(task.location);
-        unit.GetMovementModule().OnArrivalEvent.AddListener(InitAction);
-        return true;
-    }
-
-    protected void ExecuteMovement(Task task)
-    {
-        unit.GetMovementModule().StartMovement();
-    }
-    protected abstract void InitAction(Vector2Int targetCell);
-    protected abstract void ExecuteAction(Vector2Int targetCell);
+    protected abstract void AssignNewBehavior();
+    public Unit GetUnit() { return unit; }
     public bool IsIdle() { return assignedTask == null; }
-    public virtual bool GeneratesOwnTasks() { return false; }
     public List<TaskType> GetAcceptedTasks() { return acceptedTasks; }
-
+    public virtual bool GeneratesOwnTasks() { return false; }
     public void EndTask()
     {
         assignedTask.Finish();

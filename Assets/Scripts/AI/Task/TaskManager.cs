@@ -53,15 +53,15 @@ public class TaskManager : MonoBehaviour
         foreach (Unit unit in units)
         {
             if (unit == null) continue;
-            BehaviorModule behaviorModule = unit.GetBehaviorModule();
-            if (behaviorModule == null) continue;
+            AIAgent agent = unit.GetAgent();
+            if (agent == null) continue;
 
-            if (unit.GetBehaviorModule().IsIdle())
+            if (unit.GetAgent().IsIdle())
             {
                 Task task = FindTaskForUnit(unit);
                 if (task == null) continue;
 
-                AssignNewTask(task, behaviorModule);
+                AssignNewTask(task, agent);
             }
         }
     }
@@ -71,29 +71,28 @@ public class TaskManager : MonoBehaviour
      */
     private Task FindTaskForUnit(Unit unit)
     {
-        BehaviorModule behavior = unit.GetBehaviorModule();
+        AIAgent agent = unit.GetAgent();
 
         foreach (Task task in tasks)
         {
-            if (!IsValidFor(task, behavior)) continue;
+            if (!IsValidFor(task, agent)) continue;
             return task;
         }
 
-        if (behavior.GeneratesOwnTasks())
+        if (agent.GeneratesOwnTasks())
         {
-            Task task = ((ITaskAutoGeneration)behavior).GenerateTask(unit);
+            Task task = ((ITaskAutoGeneration)agent).GenerateTask(unit);
             RegisterNewTask(task);
             return task;
         }
 
-
         return null;
     }
 
-    private void AssignNewTask(Task task, BehaviorModule behaviorModule)
+    private void AssignNewTask(Task task, AIAgent agent)
     {
         task.capacity++;
-        behaviorModule.AssignNewTask(task);
+        agent.AssignNewTask(task);
     }
 
     public Task GetTask(Vector2Int location, TaskType type)
@@ -110,11 +109,11 @@ public class TaskManager : MonoBehaviour
         tasks.Add(task);
     }
 
-    private bool IsValidFor(Task task, BehaviorModule behavior)
+    private bool IsValidFor(Task task, AIAgent agent)
     {
         return task != null
             && (task.status == Status.Pending || task.status == Status.InProgress) 
-            && behavior.GetAcceptedTasks().Contains(task.type);
+            && agent.GetAcceptedTasks().Contains(task.type);
     }
 
     public void OnTaskFullyAssigned(Task task)

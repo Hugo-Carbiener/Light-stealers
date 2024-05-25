@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
+public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
 {
     private IFightable target;
     private FightModule fightModule;
@@ -23,32 +23,13 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         UpdateMovementDestination(assignedTask);
     }
 
-    protected override void InitAction(Vector2Int targetCell)
-    {
-        if (!fightModule) return;
-
-        ExecuteAction(targetCell);
-    }
-
-    protected override void ExecuteAction(Vector2Int targetCell)
-    {
-        if (fightModule.Attack(targetCell))
-        {
-            TilemapManager.Instance.GetCellData(targetCell).fight.OnFightEndEvent.AddListener(EndTask);
-        }
-        else
-        {
-            EndTask();
-        }
-    }
-
     public Task GenerateTask(Unit unit)
     {
         target = GetTarget(unit.GetMovementModule());
         if (target == null) return null;
 
-        Task existingTask = TaskManager.Instance.GetTask(target.GetPosition(), TaskType.MonsterAttack);
-        return existingTask != null ? existingTask : new Task(target.GetPosition(), TaskManager.INFINITE_CAPACITY, TaskType.MonsterAttack);
+        Task existingTask = TaskManager.Instance.GetTask(target.GetPosition(), TaskType.Attack);
+        return existingTask != null ? existingTask : new Task(target.GetPosition(), TaskManager.INFINITE_CAPACITY, TaskType.Attack);
     }
 
     private IFightable GetTarget(MovementModule movementModule)
@@ -81,27 +62,39 @@ public class MonsterBehavior : BehaviorModule, ITaskAutoGeneration
         return closestTarget;
     }
 
-    private void Flee(DayNightCyclePhases phase)
-    {
-        assignedTask == new Task()
-    }
-
     private void UpdateMovementDestination(Task task)
     {
         if (task == null || target == null || task.location == target.GetPosition()) return;
-        
+
         unit.GetMovementModule().CancelMovement();
         task.location = target.GetPosition();
 
-        if (InitMovement(task))
-        {
-            ExecuteMovement(task);
-        }
-        else
-        {
-            EndTask();
-        }   
+        behavior.StartBehavior(task, unit);
     }
 
+    protected override void AssignNewBehavior()
+    {
+        if (assignedTask == null) return;
+        switch (assignedTask.type)
+        {
+            case TaskType.Attack:
+            case TaskType.Defense:
+                behavior = new AttackBehavior(this, fightModule, assignedTask.location);
+                break;
+            case TaskType.Flee:
+                behavior = new FleeBehavior(this);
+                break;
+            default:
+                Debug.LogError(string.Format($"Attempting to assign behavior to unsupported task type : {assignedTask.type}"));
+                return;
+        }
+        behavior.StartBehavior(assignedTask, unit);
+    }
+
+    private void Flee(DayNightCyclePhases phase)
+    {
+        assignedTask == new Task();
+    }
     public override bool GeneratesOwnTasks() { return true; }
+
 }

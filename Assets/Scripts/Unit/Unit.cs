@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 public class Unit : MonoBehaviour, IFightable
 {
     [Header("Modules")]
-    [SerializeField] private BehaviorModule behaviorModule;
+    [SerializeField] private AIAgent agent;
     [SerializeField] private MovementModule movementModule;
     [SerializeField] private FightModule fightModule;
     [Header("Consumption")]
@@ -46,7 +46,7 @@ public class Unit : MonoBehaviour, IFightable
 
     public int GetFoodConsummed() { return foodAmount; }
 
-    public BehaviorModule GetBehaviorModule() { return behaviorModule; }   
+    public AIAgent GetAgent() { return agent; }   
     public MovementModule GetMovementModule() { return movementModule; }
     public FightModule GetFightModule() { return fightModule; }
     public Vector2Int GetPosition() { return position; }
