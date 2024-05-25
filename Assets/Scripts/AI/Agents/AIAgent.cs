@@ -11,14 +11,14 @@ using UnityEngine.Assertions;
 public abstract class AIAgent : MonoBehaviour
 {
     [SerializeField] protected Unit unit;
-    [SerializeField] private List<TaskType> acceptedTasks;
+    [SerializeField] private SerializableDictionary<int, TaskType> acceptedTasks;
 
     protected Behavior behavior { get; set; }
     protected Task assignedTask { get; private set; }
 
     private void Awake()
     {
-        Assert.IsTrue(acceptedTasks != null && acceptedTasks.Count > 0);
+        Assert.IsTrue(acceptedTasks != null && acceptedTasks.Count() > 0);
         Assert.IsTrue(unit != null);
     }
 
@@ -32,7 +32,7 @@ public abstract class AIAgent : MonoBehaviour
 
     public void AssignNewTask(Task task)
     {
-        if (!acceptedTasks.Contains(task.type))
+        if (!acceptedTasks.ContainsValue(task.type))
         {
             Debug.LogError(string.Format($"Attempting to assign wrong task ({task.type}) to behavior {this.name}"));
             return;
