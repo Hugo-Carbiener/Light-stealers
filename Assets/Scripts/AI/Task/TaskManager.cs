@@ -72,6 +72,8 @@ public class TaskManager : MonoBehaviour
     private Task FindTaskForUnit(Unit unit)
     {
         AIAgent agent = unit.GetAgent();
+        // sort task by priority
+        tasks.OrderBy(task => agent.GetTaskTypeWeight(task.type));
 
         foreach (Task task in tasks)
         {

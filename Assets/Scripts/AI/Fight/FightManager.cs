@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FightManager : MonoBehaviour
 {
@@ -46,4 +47,9 @@ public class FightManager : MonoBehaviour
     }
 
     public float getSetupDuration() { return setupDuration; }
+
+    public Fight GetFight(FightModule fighter)
+    {
+        return fights.First(fight => fight.ContainsFighter(fighter));
+    }
 }

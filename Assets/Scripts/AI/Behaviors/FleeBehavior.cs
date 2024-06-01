@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class FleeBehavior : Behavior
 {
+
     public FleeBehavior(AIAgent agent) : base(agent)
     {
     }
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {
-        throw new System.NotImplementedException();
+        UnitManager.Instance.DeactivateUnit(agent.GetUnit());
     }
 
     protected override void InitAction(Vector2Int targetCell)
     {
-        throw new System.NotImplementedException();
+        ExecuteAction(targetCell);
     }
 }

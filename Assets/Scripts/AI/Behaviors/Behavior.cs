@@ -25,7 +25,7 @@ public abstract class Behavior : MonoBehaviour
         }
     }
 
-    protected bool InitMovement(Task task, Unit unit)
+    protected virtual bool InitMovement(Task task, Unit unit)
     {
         // check if the destination is accessible
         unit.GetMovementModule().SetDestination(task.location);

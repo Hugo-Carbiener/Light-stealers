@@ -25,17 +25,37 @@ public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey
     {
         get
         {
-            return At(key);
+            return GetValue(key);
         }
     }
 
-    private TValue At(TKey key)
+    public TKey this[TValue value]
+    {
+        get
+        {
+            return GetKey(value);
+        }
+    }
+
+    private TValue GetValue(TKey key)
     {
         foreach(DictionaryItem item in elements)
         {
             if (item.key.Equals(key))
             {
                 return item.value;
+            }
+        }
+        return default;
+    }
+
+    private TKey GetKey(TValue value)
+    {
+        foreach (DictionaryItem item in elements)
+        {
+            if (item.value.Equals(value))
+            {
+                return item.key;
             }
         }
         return default;

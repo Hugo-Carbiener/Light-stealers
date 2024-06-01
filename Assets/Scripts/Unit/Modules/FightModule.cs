@@ -11,16 +11,14 @@ public class FightModule : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private IFightable actor;
-    [SerializeField] private bool attackable;
     [SerializeField] private Factions faction;
+    [SerializeField] private bool attackable;
 
     [Header("Fight values")]
     [SerializeField] private float turnDuration;
     public int health { get; private set; }
     [SerializeField] private int maxHealth;
     [SerializeField] private int attack;
-    public bool IsAttackable() { return attackable; }
-    public Factions GetFaction() { return faction; }
 
     private void Awake()
     {
@@ -112,6 +110,9 @@ public class FightModule : MonoBehaviour
             actor.OnDeath();
         }
     }
+
+    public bool IsAttackable() { return attackable; }
+    public Factions GetFaction() { return faction; }
 
     public bool IsAlive()
     {

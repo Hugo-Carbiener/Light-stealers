@@ -15,7 +15,7 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
 
     private void Start()
     {
-        DayNightCycleManager.OnCyclePhaseEnd.AddListener(Flee);
+        DayNightCycleManager.OnCyclePhaseEnd.AddListener(SetupFleeBehavior);
     }
 
     private void Update()
@@ -84,22 +84,32 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         {
             case TaskType.Attack:
             case TaskType.Defense:
+            default:
                 behavior = new AttackBehavior(this, fightModule, assignedTask.location);
                 break;
             case TaskType.Flee:
                 behavior = new FleeBehavior(this);
                 break;
-            default:
-                behavior = new IdleBehavior(this);
-                break;
         }
         behavior.StartBehavior(assignedTask, unit);
     }
 
-    private void Flee(DayNightCyclePhases phase)
+    /**
+     * Removes fighter from fight, set the agent as idle and generate a new idle task that will be assigned by the task manager.
+     */
+    private void SetupFleeBehavior(DayNightCyclePhases phase)
     {
-        assignedTask == new Task();
+        if (phase != DayNightCyclePhases.Night) return;
+        Fight fight = FightManager.Instance.GetFight(fightModule);
+        if (fight != null)
+        {
+            fight.RemoveFighter(fightModule);
+        }
+        CellData destination = FractureManager.Instance.GetRandomFracture();
+        TaskManager.Instance.RegisterNewTask(new Task(destination.coordinates, 1, TaskType.Flee));
+        SetIdle();
     }
+
     public override bool GeneratesOwnTasks() { return true; }
 
 }

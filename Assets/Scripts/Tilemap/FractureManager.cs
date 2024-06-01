@@ -24,4 +24,10 @@ public class FractureManager : MonoBehaviour
     {
         fractures = new List<CellData>();
     }
+
+    public CellData GetRandomFracture()
+    {
+        System.Random rd = new System.Random();
+        return fractures[rd.Next(fractures.Count)];
+    }
 }

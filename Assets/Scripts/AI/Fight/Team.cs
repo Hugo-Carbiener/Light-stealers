@@ -34,6 +34,16 @@ public class Team
         fighters.Add(fighter);
     }
 
+    public void RemoveFighter(FightModule fighter)
+    {
+        fighters.Remove(fighter);
+    }
+
+    public bool ContainsFighter(FightModule fighter)
+    {
+        return fighters.Contains(fighter);
+    }
+
     public bool IsAlive()
     {
         return fighters.Exists(fighter => fighter.IsAlive());

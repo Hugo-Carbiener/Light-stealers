@@ -88,6 +88,21 @@ public class Fight
         teams[fighter.GetFaction()].AddFighter(fighter);
     }
 
+    public void RemoveFighter(FightModule fighter)
+    {
+        GetTeamByFighter(fighter).RemoveFighter(fighter);
+    }
+
+    public Team GetTeamByFighter(FightModule fighter)
+    {
+        return teams.Values.First(team => team.ContainsFighter(fighter));
+    }
+
+    public bool ContainsFighter(FightModule fighter)
+    {
+        return teams.Values.Any(team => team.ContainsFighter(fighter));
+    }
+
     private bool TeamsAreAlive()
     {
         return teams.Values.All(team => team.IsAlive());

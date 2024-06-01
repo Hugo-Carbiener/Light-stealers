@@ -45,7 +45,13 @@ public abstract class AIAgent : MonoBehaviour
     protected abstract void AssignNewBehavior();
     public Unit GetUnit() { return unit; }
     public bool IsIdle() { return assignedTask == null; }
+    public void SetIdle() 
+    { 
+        this.assignedTask = null;
+        AssignNewBehavior();
+    }
     public List<TaskType> GetAcceptedTasks() { return weightedAcceptedTasks.GetValues(); }
+    public int GetTaskTypeWeight(TaskType type) { return weightedAcceptedTasks[type]; } 
     public virtual bool GeneratesOwnTasks() { return false; }
     public void EndTask()
     {
