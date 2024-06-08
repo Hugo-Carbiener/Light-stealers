@@ -5,9 +5,7 @@ using UnityEngine;
 public class FleeBehavior : Behavior
 {
 
-    public FleeBehavior(AIAgent agent) : base(agent)
-    {
-    }
+    public FleeBehavior(AIAgent agent) : base(agent) {}
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {

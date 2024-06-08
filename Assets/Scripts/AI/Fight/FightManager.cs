@@ -52,7 +52,6 @@ public class FightManager : MonoBehaviour
         Task existingTask = TaskManager.Instance.GetTask(fightCell.coordinates, TaskType.Defense);
         Task defenseTask = existingTask != null ? existingTask : new Task(fightCell.coordinates, TaskManager.INFINITE_CAPACITY, TaskType.Defense);
         TaskManager.Instance.RegisterNewTask(defenseTask);
-        fight.OnFightEndEvent.AddListener(defenseTask.Finish);
     }
 
     public float getSetupDuration() { return setupDuration; }
