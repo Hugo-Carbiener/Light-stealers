@@ -39,11 +39,20 @@ public class FightManager : MonoBehaviour
         BuildingUIManager.Instance.UpdateVisibility();
 
         // defense task
+        CreateDefenseTask(fightCell, fight);
+
+        fights.Add(fight);
+    }
+
+    /**
+     * To be called when creating a new fight to creating the corresponding defense task.
+     */
+    private void CreateDefenseTask(CellData fightCell, Fight fight)
+    {
         Task existingTask = TaskManager.Instance.GetTask(fightCell.coordinates, TaskType.Defense);
         Task defenseTask = existingTask != null ? existingTask : new Task(fightCell.coordinates, TaskManager.INFINITE_CAPACITY, TaskType.Defense);
         TaskManager.Instance.RegisterNewTask(defenseTask);
-
-        fights.Add(fight);
+        fight.OnFightEndEvent.AddListener(defenseTask.Finish);
     }
 
     public float getSetupDuration() { return setupDuration; }

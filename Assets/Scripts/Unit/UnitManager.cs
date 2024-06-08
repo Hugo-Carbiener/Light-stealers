@@ -46,7 +46,7 @@ public class UnitManager : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnCyclePhaseStart += DailyArmyUpdate;
+        DayNightCycleManager.OnCyclePhaseStart.AddListener(DailyArmyUpdate);
     }
 
 

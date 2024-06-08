@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf796e5a16e90d74ab9191e2370de295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviorModule: {fileID: 3214436884184306871}
+  agent: {fileID: 3214436884184306871}
   movementModule: {fileID: 6136510234279031636}
   fightModule: {fileID: -7417980173734181173}
   foodAmount: 1
@@ -118,7 +118,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 4594566945932583997}
-  acceptedTasks: 01000000
+  weightedAcceptedTasks:
+    elements:
+    - key: 1
+      value: 1
 --- !u!114 &6136510234279031636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b715d82d46f144c9764b47f6ceadb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackable: 1
   faction: 0
+  attackable: 1
   turnDuration: 2
   maxHealth: 3
   attack: 1

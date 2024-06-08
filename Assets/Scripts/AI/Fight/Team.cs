@@ -18,10 +18,10 @@ public class Team
 
     public IEnumerator PlayTurn(Team ennemyTeam)
     {
+        if (currentFighterIndex >= fighters.Count) currentFighterIndex = 0;
         Debug.Log("FIGHT : " + fighters + " team starts " + currentFighterIndex + "nth fighter turn");
         yield return fighters[currentFighterIndex].PlayTurn(ennemyTeam);
         currentFighterIndex++;
-        if (currentFighterIndex == fighters.Count) currentFighterIndex = 0;
     }
 
     public void OnFightEnd(Fight fight)

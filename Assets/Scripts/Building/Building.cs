@@ -90,7 +90,7 @@ public class Building : MonoBehaviour, IFightable
     private void LinkConsumptionToCycle()
     {
         Debug.Log(name + " is constructed. Linking to the resource consumption.");
-        DayNightCycleManager.OnCyclePhaseStart += ConsumeResources;
+        DayNightCycleManager.OnCyclePhaseStart.AddListener(ConsumeResources);
     }
 
     private void ConsumeResources(DayNightCyclePhases phaseToConsumeResources)
@@ -152,8 +152,7 @@ public class Building : MonoBehaviour, IFightable
     public Vector2Int GetPosition() { return coordinates; }
     public void SetPosition(Vector2Int coordinates) { this.coordinates = coordinates; }
     public int GetCost(ResourceTypes resourceType) { 
-        int cost = costs[resourceType];
-        return cost == null ? 0 : cost;
+        return costs[resourceType];
     }
     public float GetConstructionDuration() { return constructionDuration; }
     public float GetConstructionProgression() { return constructionTimer / constructionDuration; }

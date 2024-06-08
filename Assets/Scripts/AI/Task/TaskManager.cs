@@ -73,9 +73,9 @@ public class TaskManager : MonoBehaviour
     {
         AIAgent agent = unit.GetAgent();
         // sort task by priority
-        tasks.OrderBy(task => agent.GetTaskTypeWeight(task.type));
+        List<Task> orderTasks = tasks.OrderBy(task => agent.GetTaskTypeWeight(task.type)).ToList();
 
-        foreach (Task task in tasks)
+        foreach (Task task in orderTasks)
         {
             if (!IsValidFor(task, agent)) continue;
             return task;

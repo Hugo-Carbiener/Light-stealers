@@ -21,7 +21,7 @@ class ProductionModule : MonoBehaviour
     private void linkProductionToCycle()
     {
         Debug.Log(name + " is constructed. Linking to the resource production.");
-        DayNightCycleManager.OnCyclePhaseStart += executeTask;
+        DayNightCycleManager.OnCyclePhaseStart.AddListener(executeTask);
     }
 
     private void executeTask(DayNightCyclePhases phaseToReceiveResources)
