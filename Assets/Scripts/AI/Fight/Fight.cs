@@ -52,6 +52,7 @@ public class Fight
             for (int i = 0; i < Enum.GetValues(typeof(Factions)).Length; i++)
             {
                 Team currentTeam = teams[currentFaction];
+                if (!currentTeam.IsAlive()) break;
                 yield return currentTeam.PlayTurn(teams[currentFaction.Next()]);
                 currentFaction = currentFaction.Next();
             }
