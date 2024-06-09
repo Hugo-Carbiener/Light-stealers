@@ -155,6 +155,8 @@ public class BattleReportUIManager : UIManager, IActiveUI
         int casualtyAmount = fighters.Count;
         foreach (IFightable fighter in fighters)
         {
+            if (fighter.GetFightModule().GetFaction() != Factions.Villagers) continue;
+
             if (fighter is Building building)
             {
                 Sprite buildingIcon = BuildingUIManager.Instance.GetIconDictionnary()[building.GetBuildingType()];

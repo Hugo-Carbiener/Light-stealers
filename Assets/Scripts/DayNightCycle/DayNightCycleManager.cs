@@ -42,8 +42,8 @@ public class DayNightCycleManager : MonoBehaviour
     public int day { get; private set; }
     private DayNightCyclePhases phase;
 
-    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseStart;
-    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseEnd;
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseStart { get; set; } = new UnityEvent<DayNightCyclePhases>();
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseEnd { get; set; } = new UnityEvent<DayNightCyclePhases>();
 
     private void Awake()
     {

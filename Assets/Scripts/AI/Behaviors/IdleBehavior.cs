@@ -10,11 +10,9 @@ public class IdleBehavior : Behavior
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void InitAction(Vector2Int targetCell)
     {
-        throw new System.NotImplementedException();
     }
 }

@@ -16,14 +16,15 @@ public class FightModule : MonoBehaviour
 
     [Header("Fight values")]
     [SerializeField] private float turnDuration;
-    public int health { get; private set; }
+    public BoundCounter health { get; private set; }
     [SerializeField] private int maxHealth;
     [SerializeField] private int attack;
 
     private void Awake()
     {
         if (actor == null) actor = (IFightable) gameObject.GetComponent(typeof(IFightable));
-        health = maxHealth;
+        health = new BoundCounter(maxHealth, maxHealth);
+        health.OnMinValueReachedOrExceeded.AddListener(actor.OnDeath);
     }
 
     /**
@@ -96,28 +97,14 @@ public class FightModule : MonoBehaviour
         }
     }
 
-    /**
-     * Clears the teams from dead fighters
-     */
-    public void OnFightEnd(Fight fight)
-    {
-        if (health <= 0)
-        {
-            if (faction == Factions.Villagers)
-            {
-                fight.casualties.Add(actor);
-            }
-            actor.OnDeath();
-        }
-    }
-
     public bool IsAttackable() { return attackable; }
+    public IFightable GetActor() { return actor;  }
     public Factions GetFaction() { return faction; }
 
     public bool IsAlive()
     {
-        if (health <= 0) Debug.Log("FIGHT : " + this.gameObject.name + " was unalived, skipping their turn. (" + health + "hp)");
-        return health > 0;
+        if (health.IsMined()) Debug.Log("FIGHT : " + this.gameObject.name + " was unalived, skipping their turn. (" + health + "hp)");
+        return !health.IsMined();
     }
 
     public bool IsValidTarget()

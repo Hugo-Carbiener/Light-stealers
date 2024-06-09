@@ -41,6 +41,14 @@ public class Unit : MonoBehaviour, IFightable
     public void OnDeath()
     {
         Debug.Log("FIGHT : " + this.gameObject.name + " died during the fight(" + fightModule.health + "hp)");
+        if (fightModule)
+        {
+            Fight fight = FightManager.Instance.GetFight(fightModule);
+            if (fight != null)
+            {
+                fight.RemoveFighter(fightModule);
+            }
+        }
         UnitManager.Instance.DeactivateUnit(this);
     }
 

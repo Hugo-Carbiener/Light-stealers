@@ -55,6 +55,8 @@ public abstract class AIAgent : MonoBehaviour
     public virtual bool GeneratesOwnTasks() { return false; }
     public void EndTask()
     {
+        if (assignedTask == null) return;
+
         assignedTask.Finish();
         assignedTask = null;
     }

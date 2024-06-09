@@ -5,7 +5,7 @@ using UnityEngine;
 /**
  * Parent class for behaviors. A behavior holds the logic for executing each task. Each behavior decomposes tasks into a movement and an action.
  */ 
-public abstract class Behavior : MonoBehaviour
+public abstract class Behavior
 {
     protected AIAgent agent;
 

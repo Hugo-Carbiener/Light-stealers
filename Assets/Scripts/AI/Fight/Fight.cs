@@ -62,11 +62,7 @@ public class Fight
     private void OnFightEnd()
     {
         status = Status.Done;
-        foreach (Team team in teams.Values)
-        {
-            if (team.IsAlive()) winningFaction = team.faction;
-            team.OnFightEnd(this);
-        }
+        winningFaction = teams.Values.First(team => team.IsAlive()).faction;
 
         CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();  
         if (selectedCell != null && selectedCell.fight != null && selectedCell.fight == this)
@@ -91,6 +87,7 @@ public class Fight
     public void RemoveFighter(FightModule fighter)
     {
         GetTeamByFighter(fighter).RemoveFighter(fighter);
+        casualties.Add(fighter.GetActor());
     }
 
     public Team GetTeamByFighter(FightModule fighter)

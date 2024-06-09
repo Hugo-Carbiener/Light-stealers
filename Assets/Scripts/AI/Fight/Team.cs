@@ -24,11 +24,6 @@ public class Team
         currentFighterIndex++;
     }
 
-    public void OnFightEnd(Fight fight)
-    {
-        fighters.ForEach(fighter => fighter.OnFightEnd(fight));
-    }
-
     public void AddFighter(FightModule fighter)
     {
         fighters.Add(fighter);

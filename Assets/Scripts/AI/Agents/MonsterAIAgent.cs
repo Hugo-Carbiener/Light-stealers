@@ -82,9 +82,13 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
 
         switch (assignedTask.type)
         {
-            case TaskType.Attack:
-            case TaskType.Defense:
             default:
+                behavior = new AttackBehavior(this, fightModule, assignedTask.location);
+                break;
+            case TaskType.Attack:
+                behavior = new AttackBehavior(this, fightModule, assignedTask.location);
+                break;
+            case TaskType.Defense:
                 behavior = new AttackBehavior(this, fightModule, assignedTask.location);
                 break;
             case TaskType.Flee:

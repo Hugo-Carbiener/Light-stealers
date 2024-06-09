@@ -87,6 +87,11 @@ public class BoundCounter
         return currentValue >= maxValue;
     }
 
+    public bool IsMined()
+    {
+        return currentValue <= minValue;
+    }
+
     private void CheckBounds()
     {
         if (currentValue >= maxValue)
