@@ -41,4 +41,10 @@ public class Task
     {
         Debug.LogError(string.Format($"Task of type {type} on cell {location} reached a negative capaity {capacity}"));
     }
+
+
+    public override string ToString()
+    {
+        return type + " at " + location + " for " + capacity;
+    }
 }

@@ -88,7 +88,10 @@ public class Fight
     public void RemoveFighter(FightModule fighter)
     {
         GetTeamByFighter(fighter).RemoveFighter(fighter);
-        casualties.Add(fighter.GetActor());
+        if (!fighter.IsAlive())
+        {
+            casualties.Add(fighter.GetActor());
+        }
     }
 
     public Team GetTeamByFighter(FightModule fighter)

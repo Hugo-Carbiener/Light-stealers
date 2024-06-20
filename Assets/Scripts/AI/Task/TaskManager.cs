@@ -39,6 +39,7 @@ public class TaskManager : MonoBehaviour
      */
     private void PollTasks()
     {
+        tasks = tasks.Where(task => task != null && task.status != Status.Done).ToList();
         assignedTasks = assignedTasks.Where(task => task != null && task.status != Status.Done).ToList();
     }
 
@@ -73,7 +74,7 @@ public class TaskManager : MonoBehaviour
     {
         AIAgent agent = unit.GetAgent();
         // sort task by priority
-        List<Task> orderTasks = tasks.OrderBy(task => agent.GetTaskTypeWeight(task.type)).ToList();
+        List<Task> orderTasks = tasks.OrderByDescending(task => agent.GetTaskTypeWeight(task.type)).ToList();
 
         foreach (Task task in orderTasks)
         {

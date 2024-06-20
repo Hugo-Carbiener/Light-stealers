@@ -13,9 +13,15 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         fightModule = unit.GetFightModule();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         DayNightCycleManager.OnCyclePhaseEnd.AddListener(SetupFleeBehavior);
+    }
+
+    private void OnDisable()
+    {
+        DayNightCycleManager.OnCyclePhaseEnd.RemoveListener(SetupFleeBehavior);
+
     }
 
     private void Update()
@@ -111,6 +117,7 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         }
         CellData destination = FractureManager.Instance.GetRandomFracture();
         TaskManager.Instance.RegisterNewTask(new Task(destination.coordinates, 1, TaskType.Flee));
+        target = null;
         SetIdle();
     }
 

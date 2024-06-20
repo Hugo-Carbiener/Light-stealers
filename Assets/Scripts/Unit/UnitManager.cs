@@ -85,6 +85,7 @@ public class UnitManager : MonoBehaviour
         if (units[faction].Count >= HousingManager.Instance.housingSizes[faction]) return;
 
         GameObject instantiatedObject = Instantiate(unitPrefabs[faction], unitContainer);
+        instantiatedObject.name = instantiatedObject.name + units[faction].Count;
         instantiatedObject.SetActive(false);
         
         Unit unit;
