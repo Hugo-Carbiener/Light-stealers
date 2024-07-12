@@ -47,7 +47,8 @@ public abstract class AIAgent : MonoBehaviour
     public bool IsIdle() { return assignedTask == null; }
     public void SetIdle() 
     { 
-        this.assignedTask = null;
+        assignedTask = null;
+        unit.GetMovementModule().OnArrivalEvent.RemoveAllListeners();
         AssignNewBehavior();
     }
     public List<TaskType> GetAcceptedTasks() { return weightedAcceptedTasks.GetValues(); }
@@ -58,6 +59,6 @@ public abstract class AIAgent : MonoBehaviour
         if (assignedTask == null) return;
 
         assignedTask.Finish();
-        assignedTask = null;
+        SetIdle();
     }
 }

@@ -9,6 +9,7 @@ public class FleeBehavior : Behavior
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {
+        agent.EndTask();
         UnitManager.Instance.DeactivateUnit(agent.GetUnit());
     }
 

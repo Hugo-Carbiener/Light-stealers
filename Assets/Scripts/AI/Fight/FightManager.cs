@@ -34,7 +34,7 @@ public class FightManager : MonoBehaviour
         // defense task
         Task defenseTask = CreateDefenseTask(fightCell);
 
-        Fight fight = new Fight(teams, attackTask, defenseTask);
+        Fight fight = new Fight(teams, fightCell, attackTask, defenseTask);
         fightCell.fight = fight;
 
         // UI

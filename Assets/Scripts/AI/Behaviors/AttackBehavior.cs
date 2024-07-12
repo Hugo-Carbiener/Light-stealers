@@ -34,6 +34,5 @@ public class AttackBehavior : Behavior
         {
             agent.EndTask();
         }
-
     }
 }

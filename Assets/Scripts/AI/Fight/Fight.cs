@@ -12,12 +12,13 @@ public class Fight
     public int startDay { get; private set; }
     public Factions winningFaction { get; private set; }
     public Status status { get; private set; }
+    public CellData cell { get; private set; }
     public Task attackTask { get; private set; }
     public Task defenseTask { get; private set; }
     
     public UnityEvent OnFightEndEvent { get; private set; } = new UnityEvent();
 
-    public Fight(List<Team> teams, Task attackTask, Task defenseTask)
+    public Fight(List<Team> teams, CellData cell, Task attackTask, Task defenseTask)
     {
         status = Status.Pending;
         startDay = DayNightCycleManager.Instance.day;
@@ -25,6 +26,7 @@ public class Fight
         {
             this.teams.Add(team.faction, team);
         }
+        this.cell = cell;
         this.attackTask = attackTask;
         this.defenseTask = defenseTask;
         Init();
@@ -80,6 +82,8 @@ public class Fight
         {
             battleReportUI.GenerateBattleReportOutcome(this);
         }
+
+        cell.fight = null;
 
         TaskManager.Instance.tasks.Remove(attackTask);
         TaskManager.Instance.tasks.Remove(defenseTask);
