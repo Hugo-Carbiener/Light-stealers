@@ -14,7 +14,7 @@ public abstract class AIAgent : MonoBehaviour
     [SerializeField] private SerializableDictionary<int, TaskType> weightedAcceptedTasks;
 
     protected Behavior behavior { get; set; }
-    protected Task assignedTask { get; private set; }
+    public Task assignedTask { get; private set; }
 
     private void Awake()
     {

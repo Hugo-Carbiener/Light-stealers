@@ -26,7 +26,7 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
 
     private void Update()
     {
-        UpdateMovementDestination(assignedTask);
+        //UpdateMovementDestination(assignedTask);
     }
 
     public Task GenerateTask(Unit unit)
@@ -68,7 +68,7 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         return closestTarget;
     }
 
-    private void UpdateMovementDestination(Task task)
+    /*private void UpdateMovementDestination(Task task)
     {
         if (task == null || target == null || task.location == target.GetPosition()) return;
 
@@ -76,7 +76,7 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         task.location = target.GetPosition();
 
         behavior.StartBehavior(task, unit);
-    }
+    }*/
 
     protected override void AssignNewBehavior()
     {
@@ -117,8 +117,6 @@ public class MonsterAIAgent : AIAgent, ITaskAutoGeneration
         }
         CellData destination = FractureManager.Instance.GetRandomFracture();
         TaskManager.Instance.RegisterNewTask(new Task(destination.coordinates, 1, TaskType.Flee));
-        target = null;
-        SetIdle();
     }
 
     public override bool GeneratesOwnTasks() { return true; }

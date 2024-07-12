@@ -33,4 +33,9 @@ public class CellData
 
         return neighborTravelWeight[neighborCellCoordinates - coordinates];
     }
+
+    public override string ToString()
+    {
+        return "Cell data at " + coordinates + " - " + environment.ToString();
+    }
 }

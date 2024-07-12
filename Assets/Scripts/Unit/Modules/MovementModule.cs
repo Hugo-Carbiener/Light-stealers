@@ -59,6 +59,7 @@ public class MovementModule : MonoBehaviour
         status = Status.InProgress;
         path = Pathfinder.GetPath(currentCell, destination);
         if (path == null) return;
+        Debug.Log(string.Join(";", path));
         StartCoroutine("MovementLoop");
     }
 

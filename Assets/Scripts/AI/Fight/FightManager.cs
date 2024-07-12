@@ -29,17 +29,18 @@ public class FightManager : MonoBehaviour
         fights = new List<Fight>();
     }
 
-    public void StartFight(List<Team> teams, CellData fightCell)
+    public void StartFight(List<Team> teams, CellData fightCell, Task attackTask)
     {
-        Fight fight = new Fight(teams);
+        // defense task
+        Task defenseTask = CreateDefenseTask(fightCell);
+
+        Fight fight = new Fight(teams, attackTask, defenseTask);
         fightCell.fight = fight;
 
         // UI
         MainMenuUIManager.Instance.UpdateUIComponent();
         BuildingUIManager.Instance.UpdateVisibility();
 
-        // defense task
-        CreateDefenseTask(fightCell, fight);
 
         fights.Add(fight);
     }
@@ -47,17 +48,18 @@ public class FightManager : MonoBehaviour
     /**
      * To be called when creating a new fight to creating the corresponding defense task.
      */
-    private void CreateDefenseTask(CellData fightCell, Fight fight)
+    private Task CreateDefenseTask(CellData fightCell)
     {
         Task existingTask = TaskManager.Instance.GetTask(fightCell.coordinates, TaskType.Defense);
         Task defenseTask = existingTask != null ? existingTask : new Task(fightCell.coordinates, TaskManager.INFINITE_CAPACITY, TaskType.Defense);
         TaskManager.Instance.RegisterNewTask(defenseTask);
+        return defenseTask;
     }
 
     public float getSetupDuration() { return setupDuration; }
 
     public Fight GetFight(FightModule fighter)
     {
-        return fights.First(fight => fight.ContainsFighter(fighter));
+        return fights.FirstOrDefault(fight => fight.ContainsFighter(fighter));
     }
 }

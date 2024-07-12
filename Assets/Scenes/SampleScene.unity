@@ -3700,9 +3700,9 @@ MonoBehaviour:
   phasesDurations:
     elements:
     - key: 0
-      value: 30
+      value: 20
     - key: 1
-      value: 30
+      value: 20
   phaseColorGradients:
     elements:
     - key: 0

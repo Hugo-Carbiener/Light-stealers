@@ -12,10 +12,12 @@ public class Fight
     public int startDay { get; private set; }
     public Factions winningFaction { get; private set; }
     public Status status { get; private set; }
+    public Task attackTask { get; private set; }
+    public Task defenseTask { get; private set; }
     
     public UnityEvent OnFightEndEvent { get; private set; } = new UnityEvent();
 
-    public Fight(List<Team> teams)
+    public Fight(List<Team> teams, Task attackTask, Task defenseTask)
     {
         status = Status.Pending;
         startDay = DayNightCycleManager.Instance.day;
@@ -23,6 +25,8 @@ public class Fight
         {
             this.teams.Add(team.faction, team);
         }
+        this.attackTask = attackTask;
+        this.defenseTask = defenseTask;
         Init();
     }
 
@@ -77,6 +81,9 @@ public class Fight
             battleReportUI.GenerateBattleReportOutcome(this);
         }
 
+        TaskManager.Instance.tasks.Remove(attackTask);
+        TaskManager.Instance.tasks.Remove(defenseTask);
+
         OnFightEndEvent.Invoke();
     }
 
@@ -101,11 +108,11 @@ public class Fight
 
     public bool ContainsFighter(FightModule fighter)
     {
-        return teams.Values.Any(team => team.ContainsFighter(fighter));
+        return teams[fighter.GetFaction()].ContainsFighter(fighter);
     }
 
     private bool TeamsAreAlive()
     {
-        return teams.Values.All(team => team.IsAlive());
+        return teams.Values.All(team => team.IsAlive() && team.HasFighters());
     }
 }

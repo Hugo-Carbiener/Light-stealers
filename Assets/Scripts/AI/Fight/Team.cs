@@ -39,6 +39,11 @@ public class Team
         return fighters.Contains(fighter);
     }
 
+    public bool HasFighters()
+    {
+        return fighters.Count > 0;
+    }
+
     public bool IsAlive()
     {
         return fighters.Exists(fighter => fighter.IsAlive());

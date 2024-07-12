@@ -26,7 +26,7 @@ public class AttackBehavior : Behavior
 
     protected override void ExecuteAction(Vector2Int targetCell)
     {
-        if (fightModule.Attack(targetCell))
+        if (fightModule.Attack(targetCell, agent.assignedTask))
         {
             TilemapManager.Instance.GetCellData(targetCell).fight.OnFightEndEvent.AddListener(agent.EndTask);
         }

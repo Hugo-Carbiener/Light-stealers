@@ -30,7 +30,7 @@ public class FightModule : MonoBehaviour
     /**
      * Starts a fight on a tile if there is an attackable opponent or joins an existing fight.
      */
-    public bool Attack(Vector2Int location)
+    public bool Attack(Vector2Int location, Task attackTask)
     {
         CellData fightCell = TilemapManager.Instance.GetCellData(location);
         if (fightCell == null)
@@ -56,7 +56,7 @@ public class FightModule : MonoBehaviour
             {
                 teams.Add(new Team(currentFaction, belligerentsOnCell.Where(fighter => fighter.faction == currentFaction).ToList()));
             }
-            FightManager.Instance.StartFight(teams, fightCell);
+            FightManager.Instance.StartFight(teams, fightCell, attackTask);
             Debug.Log(this.gameObject.name + " started a fight on " + fightCell.coordinates + " with " + teams);
             return true;
         }

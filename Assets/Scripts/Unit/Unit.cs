@@ -69,7 +69,7 @@ public class Unit : MonoBehaviour, IFightable
     public bool Attack(Vector2Int location)
     {
         if (movementModule.currentCell != location) return false;
-        return fightModule.Attack(location);
+        return fightModule.Attack(location, agent.assignedTask);
     }
 
     public bool IsValidTargetForFight(Factions attackerFaction)
