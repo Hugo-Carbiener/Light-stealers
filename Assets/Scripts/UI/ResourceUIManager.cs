@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ResourceUIManager : UIManager, PassiveUIInterface
+public class ResourceUIManager : UIManager, IPassiveUI
 {
     private static readonly string FOOD_AMOUNT_TEXT_KEY = "FoodAmount";
     private static readonly string WOOD_AMOUNT_TEXT_KEY = "WoodAmount";

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/**
+ * Rule working on the amount of a specific building.
+ */
 public class BuildingAmountRule : Rule
 {
     protected override List<Comparator> authorizedComparators => new List<Comparator> { Comparator.EQUAL, Comparator.NOT_EQUAL, Comparator.GREATER_THAN, Comparator.LESSER_THAN };
@@ -14,8 +17,8 @@ public class BuildingAmountRule : Rule
         base.ComparatorIsAuthorized();
 
         int buildingAmount = BuildingFactory.Instance.buildingsConstructed
-                                            .Select(building => building.type)
-                                            .Count(buildingType => buildingType == building.type);
+                                            .Select(building => building.GetBuildingType())
+                                            .Count(buildingType => buildingType == building.GetBuildingType());
         switch(comparator)
         {
             case Comparator.EQUAL:

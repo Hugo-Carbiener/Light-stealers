@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Events;
 
 public class DayNightCycleManager : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class DayNightCycleManager : MonoBehaviour
         }
     }
 
-
+    [Header("General")]
+    [SerializeField] private DayNightCyclePhases startingPhase;
     [Header("Durations")]
     [SerializeField] private SerializableDictionary<DayNightCyclePhases, float> phasesDurations;
     [Header("Global lighting colors")]
@@ -37,21 +39,19 @@ public class DayNightCycleManager : MonoBehaviour
     [SerializeField] private float transitionDuration;
     private float travellingLightCruseIntensity;
 
-    private int day;
+    public int day { get; private set; }
     private DayNightCyclePhases phase;
 
-    public static event CyclePhaseHandler OnCyclePhaseStart;
-    public static event CyclePhaseHandler OnCyclePhaseEnd;
-    public delegate void CyclePhaseHandler(DayNightCyclePhases phase);
-
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseStart { get; set; } = new UnityEvent<DayNightCyclePhases>();
+    public static UnityEvent<DayNightCyclePhases> OnCyclePhaseEnd { get; set; } = new UnityEvent<DayNightCyclePhases>();
 
     private void Awake()
     {
         if (!globalLight) globalLight = GetComponent<Light2D>();
-        OnCyclePhaseStart += OnPhaseStart;
-        OnCyclePhaseStart += InitTravellingLight;
-        OnCyclePhaseEnd += OnPhaseEnd;
-        OnCyclePhaseEnd += ResetTravellingLight;
+        OnCyclePhaseStart.AddListener(OnPhaseStart);
+        OnCyclePhaseStart.AddListener(InitTravellingLight);
+        OnCyclePhaseEnd.AddListener(OnPhaseEnd);
+        OnCyclePhaseEnd.AddListener(ResetTravellingLight);
         Assert.AreNotEqual(phasesDurations.Count(), 0);
     }
 
@@ -63,7 +63,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     private void OnPhaseStart(DayNightCyclePhases phase)
     {
-        Debug.Log("Phase " + phase.ToString() + " has started and will last for " + phasesDurations.At(phase));
+        Debug.Log("Phase " + phase.ToString() + " has started and will last for " + phasesDurations[phase]);
     }
 
     private void OnPhaseEnd(DayNightCyclePhases phase)
@@ -74,9 +74,9 @@ public class DayNightCycleManager : MonoBehaviour
     private void InitializeCycle()
     {
         day = 0;
-        phase = DayNightCyclePhases.Day;
+        phase = startingPhase;
 
-        Start(DayNightCyclePhases.Day);
+        Start(phase);
     }
 
     private void Start(DayNightCyclePhases phase)
@@ -95,7 +95,7 @@ public class DayNightCycleManager : MonoBehaviour
         }
 
         float timer = 0;
-        float phaseDuration = phasesDurations.At(phase);
+        float phaseDuration = phasesDurations[phase];
         while (timer < phaseDuration)
         {
             timer += Time.deltaTime;
@@ -116,7 +116,7 @@ public class DayNightCycleManager : MonoBehaviour
     {
         if (!light.enabled) return;
 
-        Gradient phaseColorGradient = phaseColorGradients.At(currentPhase);
+        Gradient phaseColorGradient = phaseColorGradients[currentPhase];
         if (phaseColorGradient == null)
         {
             Debug.LogError("Error : the phase color gradient does not exist for phase " + currentPhase);
@@ -129,7 +129,7 @@ public class DayNightCycleManager : MonoBehaviour
     {
         if (!light.enabled) return;
 
-        AnimationCurve phaseIntensityCurve = phaseIntensityGradients.At(currentPhase);
+        AnimationCurve phaseIntensityCurve = phaseIntensityGradients[currentPhase];
         if (phaseIntensityCurve == null)
         {
             Debug.LogError("Error : the phase intensity curve does not exist for phase " + currentPhase);

@@ -9,7 +9,7 @@ using UnityEngine;
 public class TownCenterGenerator : Generator
 {
     [SerializeField] private Vector2Int position;
-    [SerializeField] private BuildingType buildingType;
+    [SerializeField] private BuildingTypes buildingType;
 
     public override void Initialize()
     {

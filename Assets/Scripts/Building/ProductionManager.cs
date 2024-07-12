@@ -27,17 +27,17 @@ public class ProductionManager : MonoBehaviour
     [SerializeField] private int resourceCooldown;
 
     [Header("Maps")]
-    [SerializeField] private SerializableDictionary<BuildingType, ResourceTypes> buildingsProductions;
-    [SerializeField] private SerializableDictionary<BuildingType, int> buildingsProductionAmounts;
-    [SerializeField] private Dictionary<BuildingType, int> buildingsAmount;
+    [SerializeField] private SerializableDictionary<BuildingTypes, ResourceTypes> buildingsProductions;
+    [SerializeField] private SerializableDictionary<BuildingTypes, int> buildingsProductionAmounts;
+    [SerializeField] private Dictionary<BuildingTypes, int> buildingsAmount;
 
     void Start()
     {
         Assert.AreNotEqual(buildingsProductions.Count(), 0);
         Assert.AreNotEqual(buildingsProductionAmounts.Count(), 0);
-        buildingsAmount = new Dictionary<BuildingType, int>();
+        buildingsAmount = new Dictionary<BuildingTypes, int>();
 
-        foreach (BuildingType building in Enum.GetValues(typeof(BuildingType)))
+        foreach (BuildingTypes building in Enum.GetValues(typeof(BuildingTypes)))
         {
             buildingsAmount.Add(building, 0);
         }
@@ -47,13 +47,13 @@ public class ProductionManager : MonoBehaviour
 
     //ResourcePopUp.Create(building.getWorldCoordinates(), amount, resource);
 
-    public SerializableDictionary<BuildingType, int> getBuildingsProductionAmounts() { return buildingsProductionAmounts; }
+    public SerializableDictionary<BuildingTypes, int> getBuildingsProductionAmounts() { return buildingsProductionAmounts; }
 
-    public SerializableDictionary<BuildingType, ResourceTypes> getBuildingsProductions() { return buildingsProductions; }
+    public SerializableDictionary<BuildingTypes, ResourceTypes> getBuildingsProductions() { return buildingsProductions; }
 
-    public Dictionary<BuildingType, int> getBuildingAmount() { return buildingsAmount; }
+    public Dictionary<BuildingTypes, int> getBuildingAmount() { return buildingsAmount; }
 
-    public void AddBuilding(BuildingType building)
+    public void AddBuilding(BuildingTypes building)
     {
         int buildingAmount;
         if (buildingsAmount.TryGetValue(building, out buildingAmount)) {
@@ -61,7 +61,7 @@ public class ProductionManager : MonoBehaviour
         }
     }
 
-    public void DestroyBuilding(BuildingType building)
+    public void DestroyBuilding(BuildingTypes building)
     {
         int buildingAmount;
         if (buildingsAmount.TryGetValue(building, out buildingAmount))
@@ -75,10 +75,10 @@ public class ProductionManager : MonoBehaviour
      */
     public void GenerateResources()
     {
-        foreach (BuildingType buildingTypes in BuildingType.GetValues(typeof(BuildingType)))
+        foreach (BuildingTypes buildingTypes in BuildingTypes.GetValues(typeof(BuildingTypes)))
         {
-            ResourceTypes resourceToModify = buildingsProductions.At(buildingTypes);
-            int amountToAdd = buildingsAmount[buildingTypes] * buildingsProductionAmounts.At(buildingTypes);
+            ResourceTypes resourceToModify = buildingsProductions[buildingTypes];
+            int amountToAdd = buildingsAmount[buildingTypes] * buildingsProductionAmounts[buildingTypes];
 
             ResourceManager.Instance.modifyResources(resourceToModify, amountToAdd);
         }

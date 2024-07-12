@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StyleSheet.uss?fileID=7433441132597879392&amp;guid=eabd16b289558dc49a9a18bb58286d87&amp;type=3#StyleSheet" />
+    <Style src="project://database/Assets/UI/Reset.uss?fileID=7433441132597879392&amp;guid=544cdb56d39be8147b2e624ed6d7fb42&amp;type=3#Reset" />
+    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; -unity-background-image-tint-color: rgb(0, 0, 0); flex-direction: column-reverse; display: flex;">
+        <ui:VisualElement name="ReportContainer" style="padding-top: 15%; padding-bottom: 0; position: relative; flex-direction: row; flex-grow: 1; padding-left: 0; padding-right: 0; max-width: 100%; max-height: 100%; display: flex; flex-wrap: nowrap; justify-content: center;">
+            <ui:VisualElement name="Report" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_battle-report.png?fileID=2800000&amp;guid=55eb03627c48ac448969faa855520b06&amp;type=3#UI_battle-report&apos;); width: 128px; height: 176px; flex-direction: column; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 128px; min-height: 176px; align-items: flex-start; justify-content: flex-start;">
+                <ui:VisualElement name="DayCounter" style="margin-top: 24px; flex-direction: row; justify-content: flex-start; margin-left: 73px; margin-bottom: 6px;">
+                    <ui:Label tabindex="-1" text="99" display-tooltip-when-elided="true" enable-rich-text="true" name="DayCountLabel" class="text-writing font-size-14" style="min-height: 9px; height: 9px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="BelligerentStamps" style="flex-direction: row; margin-top: 1px; margin-left: 12px;">
+                    <ui:VisualElement name="AllyStampContainer" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 30px; min-height: 30px; width: 30px; height: 30px; max-width: 30px; max-height: 30px;" />
+                    <ui:VisualElement name="EnemyStampContainer" style="min-width: 30px; min-height: 30px; width: 30px; height: 30px; margin-left: 44px; max-width: 30px; max-height: 30px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="CasualtiesStamps" style="margin-top: 35px; flex-direction: row; margin-left: 12px;">
+                    <ui:VisualElement name="TroopCasualtiesStampContainer" style="min-width: 52px; min-height: 30px; width: 52px; height: 30px; margin-left: 0; max-width: 52px; max-height: 30px;" />
+                    <ui:VisualElement name="BuildingCasualtiesStampContainer" style="margin-left: 22px; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 30px; min-height: 30px; width: 30px; height: 30px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="OutcomeStamp" style="margin-top: 4px; align-items: center; justify-content: center; flex-direction: row; flex-grow: 1; margin-left: auto; margin-right: auto; padding-bottom: 10px;">
+                    <ui:VisualElement name="OutcomeStampContainer" style="width: 64px; height: 32px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

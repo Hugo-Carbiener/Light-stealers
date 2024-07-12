@@ -3,6 +3,7 @@
     -unity-text-outline-color: rgb(131, 102, 77);
     -unity-font: url('project://database/Assets/UI/Font/alagard.ttf?fileID=12800000&guid=beb1656c05d24f342b5ce57b13ccc135&type=3#alagard');
     -unity-font-definition: none;
+    white-space: normal;
 }
 
 .subtext-writing {
@@ -12,13 +13,12 @@
     -unity-font-definition: none;
 }
 
-.interactible:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-    -unity-background-image-tint-color: rgb(128, 128, 128);
-}
-
 .font-size-auto {
     font-size: 60%;
+}
+
+.font-size-14 {
+    font-size: 14px;
 }
 
 .font-size-12 {
@@ -34,4 +34,14 @@
 }
 
 .interactible {
+    -unity-background-image-tint-color: rgba(166, 165, 165, 255);
+}
+
+.interactible:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.interactible:disabled {
+    -unity-background-image-tint-color: rgba(89, 89, 89, 255);
 }

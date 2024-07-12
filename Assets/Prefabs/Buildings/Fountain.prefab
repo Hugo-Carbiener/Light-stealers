@@ -58,7 +58,7 @@ MonoBehaviour:
   resourceConsummed: 2
   amountConsummed: 0
   isTerraforming: 1
-  fightModule: {fileID: 0}
+  fightModule: {fileID: -5299869472064958015}
 --- !u!114 &-5299869472064958015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +71,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b715d82d46f144c9764b47f6ceadb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unit: {fileID: 0}
   attackable: 1
+  faction: 0
+  turnDuration: 0
+  maxHealth: 20
+  attack: 0
 --- !u!1 &5941718714019086800
 GameObject:
   m_ObjectHideFlags: 0

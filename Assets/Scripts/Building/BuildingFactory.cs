@@ -22,15 +22,15 @@ public class BuildingFactory : MonoBehaviour
     }
 
     [Header("Maps")]
-    [SerializeField] private SerializableDictionary<BuildingType, GameObject> buildingPrefabs;
-    [SerializeField] private SerializableDictionary<BuildingType, Tile> buildingTiles;
+    [SerializeField] private SerializableDictionary<BuildingTypes, GameObject> buildingPrefabs;
+    [SerializeField] private SerializableDictionary<BuildingTypes, Tile> buildingTiles;
     [SerializeField] private SerializableDictionary<Environment, Tile> environmentTiles;
 
     public event Action updateBuildingTilemapEvent;
     
     public List<Building> buildingsConstructed { get; private set; }
 
-    private BuildingType previouslyBuiltType;
+    private BuildingTypes previouslyBuiltType;
 
     private void Awake()
     {
@@ -41,18 +41,18 @@ public class BuildingFactory : MonoBehaviour
     /**
      * Method called by the radial menu to build a building of given type
      */
-    public void Build(BuildingType buildingType, Vector2Int coordinates)
+    public void Build(BuildingTypes buildingType, Vector2Int coordinates)
     {
         CellData targetCell = TilemapManager.Instance.GetCellData(coordinates);
         if (targetCell == null || targetCell.building) return;
         // instantiate the building prefab and store building information in cell data
-        GameObject instantiatedBuilding = Instantiate(buildingPrefabs.At(buildingType));        
+        GameObject instantiatedBuilding = Instantiate(buildingPrefabs[buildingType]);        
         previouslyBuiltType = buildingType;
 
         Building building;
         if (instantiatedBuilding.TryGetComponent(out building))
         {
-            building.SetCoordinates(targetCell.coordinates);
+            building.SetPosition(targetCell.coordinates);
             building.enabled = true;
         }
 
@@ -77,20 +77,20 @@ public class BuildingFactory : MonoBehaviour
 
             if (!building.CanBeDeconstructed())
             {
-                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because it is protected.");
+                Debug.LogError("Error - Could not deconstruct building " + building.GetBuildingType().ToString() + " because it is protected.");
                 continue;
             }
 
             CellData targetCell = TilemapManager.Instance.GetCellData(targetCoordinates);
             if (targetCell == null)
             {
-                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because its cell data is null.");
+                Debug.LogError("Error - Could not deconstruct building " + building.GetBuildingType().ToString() + " because its cell data is null.");
                 return;
             }
 
             if (targetCell.building == null)
             {
-                Debug.LogError("Error - Could not deconstruct building " + building.type.ToString() + " because its building is null.");
+                Debug.LogError("Error - Could not deconstruct building " + building.GetBuildingType().ToString() + " because its building is null.");
                 return;
             }
 
@@ -102,7 +102,7 @@ public class BuildingFactory : MonoBehaviour
             return;
         }
     }
-    public SerializableDictionary<BuildingType, GameObject> GetBuildingPrefabs() { return buildingPrefabs; }
-    public SerializableDictionary<BuildingType, Tile> GetBuildingTiles() { return buildingTiles; }
+    public SerializableDictionary<BuildingTypes, GameObject> GetBuildingPrefabs() { return buildingPrefabs; }
+    public SerializableDictionary<BuildingTypes, Tile> GetBuildingTiles() { return buildingTiles; }
     public SerializableDictionary<Environment, Tile> GetEnvironmentTiles() { return environmentTiles; }
 }

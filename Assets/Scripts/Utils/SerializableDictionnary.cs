@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey, TValue>>
@@ -20,13 +21,41 @@ public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey
 
     public List<DictionaryItem> elements = new List<DictionaryItem>();
 
-    public TValue At(TKey key)
+    public TValue this[TKey key]
+    {
+        get
+        {
+            return GetValue(key);
+        }
+    }
+
+    public TKey this[TValue value]
+    {
+        get
+        {
+            return GetKey(value);
+        }
+    }
+
+    private TValue GetValue(TKey key)
     {
         foreach(DictionaryItem item in elements)
         {
             if (item.key.Equals(key))
             {
                 return item.value;
+            }
+        }
+        return default;
+    }
+
+    private TKey GetKey(TValue value)
+    {
+        foreach (DictionaryItem item in elements)
+        {
+            if (item.value.Equals(value))
+            {
+                return item.key;
             }
         }
         return default;
@@ -53,27 +82,16 @@ public class SerializableDictionary<TKey, TValue>: IEnumerable<KeyValuePair<TKey
 
     public bool ContainsKey(TKey key)
     {
-        foreach (DictionaryItem item in elements)
-        {
-            if (item.key.Equals(key))
-            {
-                return true;
-            }
-        }
-        return false;
+        return elements.Exists(elem => elem.key.Equals(key));
     }
 
     public bool ContainsValue(TValue value)
     {
-        foreach (DictionaryItem item in elements)
-        {
-            if (item.value.Equals(value))
-            {
-                return true;
-            }
-        }
-        return false;
+        return elements.Exists(elem => elem.value.Equals(value));
     }
+
+    public List<TKey> GetKeys() { return elements.Select(elem => elem.key).ToList(); }
+    public List<TValue> GetValues() { return elements.Select(elem => elem.value).ToList(); }
 
     public Dictionary<TKey, TValue> ToDictionnary()
     {

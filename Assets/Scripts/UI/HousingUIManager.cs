@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HousingUIManager : UIManager, PassiveUIInterface
+public class HousingUIManager : UIManager, IPassiveUI
 {
     private static readonly string HOUSING_CAPACITY_TEXT_KEY = "HousingAmount";
     private static readonly string POPULATION_SIZE_TEXT_KEY = "PopulationAmount";
@@ -32,8 +32,8 @@ public class HousingUIManager : UIManager, PassiveUIInterface
 
     public void UpdateUIComponent()
     {
-        int housingAmount = ArmyManager.Instance.housingSize;
-        int populationAmount = ArmyManager.Instance.armySize;
+        int housingAmount = HousingManager.Instance.housingSizes[Factions.Villagers];
+        int populationAmount = UnitManager.Instance.activeUnits[Factions.Villagers].Count;
         UpdateText(housingLabel, housingAmount.ToString());
         UpdateText(populationLabel, populationAmount.ToString());
     }

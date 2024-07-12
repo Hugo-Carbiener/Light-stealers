@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BookUIManager : UIManager, ActiveUIInterface
+public class BookUIManager : UIManager, IActiveUI
 {
-    private static readonly string BOOK_BUTTON_KEY = "BookButton";
-    private static readonly string BOOK_MENU_ELEMENT_KEY = "BookContainer";
     private static readonly string BOOK_SPRITE_CONTAINER_ELEMENT_KEY = "Book";
     private static readonly string BOOKMARK_RETURN_BUTTON_KEY = "ReturnBookmark";
-    private Button bookButton;
-    private VisualElement bookMenu;
     private VisualElement bookSpriteContainer;
 
     [Header("Background colors")]
@@ -33,53 +29,62 @@ public class BookUIManager : UIManager, ActiveUIInterface
             return _instance;
         }
     }
-    void Start()
+
+    private void Awake()
     {
         root = document.rootVisualElement;
-        bookButton = root.Q<Button>(BOOK_BUTTON_KEY);
-        bookMenu = root.Q<VisualElement>(BOOK_MENU_ELEMENT_KEY);
         bookSpriteContainer = root.Q<VisualElement>(BOOK_SPRITE_CONTAINER_ELEMENT_KEY);
-        InitButton();
-        InitBookmarks();
-        SetVisibility(bookMenu, DisplayStyle.None);
     }
 
-    private void InitButton()
+    void Start()
     {
-        if (bookButton == null)
-        {
-            Debug.LogError("Could not find button element in Book menu.");
-            return;
-        }
-        bookButton.clickable.clicked += delegate { OpenUIComponent(); };
+        InitBookmarks();
+        SetVisibility(root, DisplayStyle.None);
     }
-
 
     public void CloseUIComponent()
     {
-        SetVisibility(bookMenu, DisplayStyle.None);
-        SetVisibility(bookButton, DisplayStyle.Flex);
+        SetVisibility(root, DisplayStyle.None);
         root.style.backgroundColor = closedMenuColor;
-        SetEnabled(bookButton, true);
+        ResetUIComponent();
     }
 
     public void OpenUIComponent()
     {
         ResourceUIManager.Instance.UpdateUIComponent();
         HousingUIManager.Instance.UpdateUIComponent();
+        MainMenuUIManager.Instance.UpdateUIComponent();
         TileSelectionManager.Instance.UnselectCell();
-        SetEnabled(bookButton, false);
         root.style.backgroundColor = openedMenuColor;
-        SetVisibility(bookMenu, DisplayStyle.Flex);
-        SetVisibility(bookButton, DisplayStyle.None);
+        SetVisibility(root, DisplayStyle.Flex);
     }
+
+    public void ToggleUIComponent()
+    {
+        if (IsVisible())
+        {
+            CloseUIComponent();
+        } else
+        {
+            OpenUIComponent();
+        }
+    }
+
+    public void UpdateVisibility() { }
 
     public void ResetUIComponent()
     {
         ResourceUIManager.Instance.UpdateUIComponent();
         HousingUIManager.Instance.UpdateUIComponent();
-        SetEnabled(bookButton, true);
-        SetVisibility(bookMenu, DisplayStyle.None);
+        SetEnabled(MainMenuUIManager.Instance.bookButton, true);
+        SetVisibility(root, DisplayStyle.None);
+        MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
+    public bool CanBeOpened()
+    {
+        return !BuildingUIManager.Instance.IsVisible()
+            && !BattleReportUIManager.Instance.IsVisible();
     }
     private void InitBookmarks()
     {

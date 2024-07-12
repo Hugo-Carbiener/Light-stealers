@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
-public class BuildingUIManager : UIManager, ActiveUIInterface
+public class BuildingUIManager : UIManager, IActiveUI
 {
     private static readonly string BUTTON_CONTAINER_ELEMENT_KEY = "ButtonContainer";
     private static readonly string BUTTON_ELEMENT_KEY = "Button";
@@ -18,7 +18,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
     [Header("Button template")]
     [SerializeField] private VisualTreeAsset button;
     [Header("Icons")]
-    [SerializeField] SerializableDictionary<BuildingType, Sprite> iconDictionnary;
+    [SerializeField] private SerializableDictionary<BuildingTypes, Sprite> iconDictionnary;
     [Header("Deconstruction menu")]
     [SerializeField] private string deconstructionButtonLabel;
     [SerializeField] private Sprite deconstructionIcon;
@@ -37,10 +37,14 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         }
     }
 
+    private void Awake()
+    {
+        Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingTypes)).Length);
+        root = document.rootVisualElement;
+    }
+
     void Start()
     {
-        Assert.AreEqual(iconDictionnary.Count(), Enum.GetNames(typeof(BuildingType)).Length);
-        root = document.rootVisualElement;
         SetVisibility(DisplayStyle.None);
     }
 
@@ -74,7 +78,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
             Debug.LogError("Could not find Button element in Building construction panel button");
             return;
         }
-        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.type, cellPosition); };  
+        buttonElement.clickable.clicked += delegate { BuildingFactory.Instance.Build(buildingType.GetBuildingType(), cellPosition); };  
         buttonElement.clickable.clicked += delegate { CloseUIComponent(); };
         buttonContainer.Add(buttonToAdd);
     }
@@ -107,6 +111,7 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         }
         SetPosition(TilemapManager.Instance.selectionTilemap.CellToWorld(cell.GetVector3Coordinates()));
         SetVisibility(DisplayStyle.Flex);
+        MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
     private void InitBuildingButton(TemplateContainer button, Building building)
@@ -117,8 +122,8 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY);
         Label stoneAmountLabel = button.Q<Label>(BUTTON_COST_STONE_TEXT_KEY);
 
-        icon.style.backgroundImage = new StyleBackground(iconDictionnary.At(building.type));
-        buildingName.text = building.type.ToString();
+        icon.style.backgroundImage = new StyleBackground(iconDictionnary[building.GetBuildingType()]);
+        buildingName.text = building.GetBuildingType().ToString();
         foodAmountLabel.text = building.GetCost(ResourceTypes.Food).ToString();
         woodAmountLabel.text = building.GetCost(ResourceTypes.Wood).ToString();
         stoneAmountLabel.text = building.GetCost(ResourceTypes.Stone).ToString();
@@ -185,10 +190,43 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         ResetUIComponent();
     }
 
+    public void ToggleUIComponent()
+    {
+        if (IsVisible())
+        {
+            CloseUIComponent();
+        }
+        else
+        {
+            OpenUIComponent();
+        }
+    }
+
+    public void UpdateVisibility()
+    {
+        if (!IsVisible()) return;
+
+        if (!CanBeOpened())
+        {
+            CloseUIComponent();
+        }
+    }
+
     public void ResetUIComponent()
     {
         VisualElement buttonContainer = root.Q<VisualElement>(BUTTON_CONTAINER_ELEMENT_KEY);
         buttonContainer.Clear();
+        MainMenuUIManager.Instance.UpdateUIComponent();
+    }
+
+    public bool CanBeOpened()
+    {
+        CellData selectedCell = TileSelectionManager.Instance.GetSelectedCellData();
+        return selectedCell != null
+            && (selectedCell.fight == null || selectedCell.fight.status == Status.Done)
+            && (selectedCell.building == null || (selectedCell.building != null && selectedCell.building.CanBeDeconstructed()))
+            && !BookUIManager.Instance.IsVisible()
+            && !BattleReportUIManager.Instance.IsVisible();
     }
 
     public void UpdateWorldPosition()
@@ -199,4 +237,6 @@ public class BuildingUIManager : UIManager, ActiveUIInterface
         Vector3 worldPosition = TilemapManager.Instance.selectionTilemap.CellToWorld(cellPosition);
         SetPosition(worldPosition);
     }
+
+    public SerializableDictionary<BuildingTypes, Sprite> GetIconDictionnary() { return iconDictionnary; }
 }

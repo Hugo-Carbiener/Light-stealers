@@ -27,12 +27,13 @@ public class TilemapManager : MonoBehaviour
     [SerializeField] private int columns;
     [SerializeField] private int rows;
     [SerializeField] private int additionalWaterTileAmount;
-    private List<CellData> cells = new List<CellData>();
+    private List<CellData> cells;
 
     public bool activateClustering;
     public bool activateIsolatedCellsRemoval;
     private void Awake()
     {
+        cells = new List<CellData>();
         // define tilemaps
         grid = GameObject.Find("Grid").GetComponent<Grid>();
         groundTilemap = grid.transform.Find("GroundTilemap").GetComponent<Tilemap>();
@@ -277,7 +278,7 @@ public class TilemapManager : MonoBehaviour
         {
             if (cell.building)
             {
-                Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles().At(cell.building.type);
+                Tile buildingTile = BuildingFactory.Instance.GetBuildingTiles()[cell.building.GetBuildingType()];
                 buildingsTilemap.SetTile(cell.GetVector3Coordinates(), buildingTile);
             }
         }
@@ -294,14 +295,14 @@ public class TilemapManager : MonoBehaviour
                 groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
                 return;
             case Environment.water:
-                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(Environment.water);
+                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles()[Environment.water];
                 waterTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
                 return;
             default:
-                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles().At(cellEnvironment.Value);
+                environmentTile = BuildingFactory.Instance.GetEnvironmentTiles()[cellEnvironment.Value];
                 groundTilemap.SetTile(cellData.GetVector3Coordinates(), environmentTile);
 
-                Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles().At(cellData.building.type) : null;
+                Tile buildingTile = cellData.building ? BuildingFactory.Instance.GetBuildingTiles()[cellData.building.GetBuildingType()] : null;
                 if (buildingTile == null) return;
                 buildingsTilemap.SetTile(cellData.GetVector3Coordinates(), buildingTile);
                 return;

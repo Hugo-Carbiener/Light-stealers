@@ -10,6 +10,7 @@ public class CellData
     public Vector2Int coordinates { get; private set; }
     public Environment? environment { get; set; } = null;
     public Building? building { get; set; }
+    public Fight? fight { get; set; }
     public bool isSelected { get; set; } = false;
 
     public Dictionary<Vector2Int, int> neighborTravelWeight { get; private set; }
@@ -31,5 +32,10 @@ public class CellData
         }
 
         return neighborTravelWeight[neighborCellCoordinates - coordinates];
+    }
+
+    public override string ToString()
+    {
+        return "Cell data at " + coordinates + " - " + environment.ToString();
     }
 }
