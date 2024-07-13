@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering.Universal;
@@ -31,13 +31,12 @@ public class DayNightCycleManager : MonoBehaviour
     [SerializeField] private SerializableDictionary<DayNightCyclePhases, AnimationCurve> phaseIntensityGradients;
     [Header("Lights")]
     [SerializeField] private Light2D globalLight;
-    [SerializeField] private Light2D travellingLight;
+    [SerializeField] private SerializableDictionary<DayNightCyclePhases, Light2D> travellingLights;
     [Header("Travelling light positions")]
-    [SerializeField] private Vector3 start;
-    [SerializeField] private Vector3 destination;
-    [SerializeField] private DayNightCyclePhases activePhase;
+    [SerializeField] private Vector3 easternPoint;
+    [SerializeField] private Vector3 westernPoint;
     [SerializeField] private float transitionDuration;
-    private float travellingLightCruseIntensity;
+    private Dictionary<DayNightCyclePhases, float> travellingLightCruseIntensity;
 
     public int day { get; private set; }
     private DayNightCyclePhases phase;
@@ -52,12 +51,16 @@ public class DayNightCycleManager : MonoBehaviour
         OnCyclePhaseStart.AddListener(InitTravellingLight);
         OnCyclePhaseEnd.AddListener(OnPhaseEnd);
         OnCyclePhaseEnd.AddListener(ResetTravellingLight);
+        travellingLightCruseIntensity = new Dictionary<DayNightCyclePhases, float>();
         Assert.AreNotEqual(phasesDurations.Count(), 0);
     }
 
     private void Start()
     {
-        travellingLightCruseIntensity = travellingLight.intensity;
+        foreach (DayNightCyclePhases phases in DayNightCyclePhases.GetValues(typeof(DayNightCyclePhases)))
+        {
+            travellingLightCruseIntensity[phases] = travellingLights[phases].intensity;
+        }
         InitializeCycle();
     }
 
@@ -76,15 +79,15 @@ public class DayNightCycleManager : MonoBehaviour
         day = 0;
         phase = startingPhase;
 
-        Start(phase);
+        StartNewPhaseCycle();
     }
 
-    private void Start(DayNightCyclePhases phase)
+    private void StartNewPhaseCycle()
     {
-        StartCoroutine(StartCycleCoroutine(phase));
+        StartCoroutine(StartCycleCoroutine());
     }
 
-    private IEnumerator StartCycleCoroutine(DayNightCyclePhases phase)
+    private IEnumerator StartCycleCoroutine()
     {
         // invoke phase start event
         OnCyclePhaseStart.Invoke(phase);
@@ -100,65 +103,92 @@ public class DayNightCycleManager : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            UpdateLightIntensity(globalLight, phase, timer / phaseDuration);
-            UpdateLightColor(globalLight, phase, timer / phaseDuration);
-            UpdateLightColor(travellingLight, phase, timer / phaseDuration);
-            UpdateLightTravel(phase, timer / phaseDuration);
+            UpdateLights(timer / phaseDuration);
+           
             yield return null;
         }
 
         OnCyclePhaseEnd.Invoke(phase);
-        DayNightCyclePhases nextPhase = phase.Next();
-        Start(nextPhase);
+        phase = phase.Next();
+        StartNewPhaseCycle();
     }
 
-    private void UpdateLightColor(Light2D light, DayNightCyclePhases currentPhase, float phaseProgress)
+    private void UpdateLights(float phaseProgress)   {
+        // global light
+        UpdateLightIntensity(globalLight, phaseProgress);
+        UpdateLightColor(globalLight, phaseProgress);
+
+        // travelling lights
+        foreach (DayNightCyclePhases currentPhase in DayNightCyclePhases.GetValues(typeof(DayNightCyclePhases)))
+        {
+            UpdateLightTravel(phaseProgress);
+        }
+    }
+
+    /**
+     * Lerps the color of a given light.
+     */
+    private void UpdateLightColor(Light2D light, float phaseProgress)
     {
         if (!light.enabled) return;
 
-        Gradient phaseColorGradient = phaseColorGradients[currentPhase];
+        Gradient phaseColorGradient = phaseColorGradients[phase];
         if (phaseColorGradient == null)
         {
-            Debug.LogError("Error : the phase color gradient does not exist for phase " + currentPhase);
+            Debug.LogError("Error : the phase color gradient does not exist for phase " + phase);
             return;
         }
         light.color = phaseColorGradient.Evaluate(phaseProgress);
     }
 
-    private void UpdateLightIntensity(Light2D light, DayNightCyclePhases currentPhase, float phaseProgress)
+    /**
+     * Lerps the intensity of a given light.
+     */ 
+    private void UpdateLightIntensity(Light2D light, float phaseProgress)
     {
         if (!light.enabled) return;
 
-        AnimationCurve phaseIntensityCurve = phaseIntensityGradients[currentPhase];
+        AnimationCurve phaseIntensityCurve = phaseIntensityGradients[phase];
         if (phaseIntensityCurve == null)
         {
-            Debug.LogError("Error : the phase intensity curve does not exist for phase " + currentPhase);
+            Debug.LogError("Error : the phase intensity curve does not exist for phase " + phase);
             return;
         }
         light.intensity = phaseIntensityCurve.Evaluate(phaseProgress);
     }
 
-    private void UpdateLightTravel(DayNightCyclePhases phase, float phaseProgress)
+    /**
+     * Lerps the position of the active travelling light.
+     */
+    private void UpdateLightTravel(float phaseProgress)
     {
-        if (phase != DayNightCyclePhases.Day) return;
-
-        travellingLight.transform.position = Vector3.Lerp(start, destination, phaseProgress);
+        Light2D light = travellingLights[phase];
+        light.transform.position = Vector3.Lerp(easternPoint, westernPoint, phaseProgress);
     }
 
-    private void InitTravellingLight(DayNightCyclePhases phase)
+
+    /**
+     * Called on phase start, init the active travelling light.
+     */
+    private void InitTravellingLight(DayNightCyclePhases eventPhase)
     {
-        if (phase != DayNightCyclePhases.Day) return;
-        travellingLight.transform.position = start;
-        StartCoroutine(FadeLightIntensity(travellingLight, 0, travellingLightCruseIntensity, transitionDuration));
+        Light2D travellingLight = travellingLights[eventPhase];
+        travellingLight.transform.position = easternPoint;
+        StartCoroutine(FadeLightIntensity(travellingLight, 0, travellingLightCruseIntensity[eventPhase], transitionDuration));
     }
 
-    private void ResetTravellingLight(DayNightCyclePhases phase)
+    /**
+     * Called on phase end, fade out all inactive travelling lights.
+     */
+    private void ResetTravellingLight(DayNightCyclePhases eventPhase)
     {
-        if (phase != DayNightCyclePhases.Day) return;
-        StartCoroutine(FadeLightIntensity(travellingLight, travellingLightCruseIntensity, 0, transitionDuration));
-
+        Light2D travellingLight = travellingLights[eventPhase];
+        StartCoroutine(FadeLightIntensity(travellingLight, travellingLightCruseIntensity[eventPhase], 0, transitionDuration));
     }
 
+    /**
+     * Lerps light intensity and disables it if destination intensity is 0 or enables it if the start intensity is 0.
+     */
     private IEnumerator FadeLightIntensity(Light2D light, float from, float to, float duration)
     {
         if (from == 0) light.gameObject.SetActive(true);
