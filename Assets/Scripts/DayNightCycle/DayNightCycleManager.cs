@@ -171,6 +171,7 @@ public class DayNightCycleManager : MonoBehaviour
         float x = Mathf.Lerp(easternPoint.x, westernPoint.x, SmoothLerpProgress(phaseProgress));
         float y = easternPoint.y + Mathf.Sin(phaseProgress * Mathf.PI) * radius;
         light.transform.position = new Vector3(x, y, 0);
+        light.transform.rotation = Quaternion.Euler(0, 0, AngleProgress(phaseProgress));
     }
     
     private float SmoothLerpProgress(float progress)
@@ -178,6 +179,10 @@ public class DayNightCycleManager : MonoBehaviour
         return (Mathf.Sin((progress * Mathf.PI) - (Mathf.PI / 2)) + 1) / 2;
     }
 
+    private float AngleProgress(float progress)
+    {
+        return 90 + 180 * progress;
+    }
 
     /**
      * Called on phase start, init the active travelling light.
