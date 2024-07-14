@@ -32,10 +32,12 @@ public class DayNightCycleManager : MonoBehaviour
     [Header("Lights")]
     [SerializeField] private Light2D globalLight;
     [SerializeField] private SerializableDictionary<DayNightCyclePhases, Light2D> travellingLights;
-    [Header("Travelling light positions")]
-    [SerializeField] private Vector3 easternPoint;
-    [SerializeField] private Vector3 westernPoint;
+    [Header("Travelling path values")]
+    [SerializeField] private int radius;
     [SerializeField] private float transitionDuration;
+    [SerializeField] private Vector2Int centerTilePosition;
+    private Vector3 easternPoint;
+    private Vector3 westernPoint;
     private Dictionary<DayNightCyclePhases, float> travellingLightCruseIntensity;
 
     public int day { get; private set; }
@@ -57,6 +59,9 @@ public class DayNightCycleManager : MonoBehaviour
 
     private void Start()
     {
+        Vector3 centerWorldPosition = TilemapManager.Instance.groundTilemap.layoutGrid.CellToWorld((Vector3Int) centerTilePosition);
+        easternPoint = new Vector3(centerWorldPosition.x + radius, centerWorldPosition.y);
+        westernPoint = new Vector3(centerWorldPosition.x - radius, centerWorldPosition.y);
         foreach (DayNightCyclePhases phases in DayNightCyclePhases.GetValues(typeof(DayNightCyclePhases)))
         {
             travellingLightCruseIntensity[phases] = travellingLights[phases].intensity;
@@ -163,7 +168,14 @@ public class DayNightCycleManager : MonoBehaviour
     private void UpdateLightTravel(float phaseProgress)
     {
         Light2D light = travellingLights[phase];
-        light.transform.position = Vector3.Lerp(easternPoint, westernPoint, phaseProgress);
+        float x = Mathf.Lerp(easternPoint.x, westernPoint.x, SmoothLerpProgress(phaseProgress));
+        float y = easternPoint.y + Mathf.Sin(phaseProgress * Mathf.PI) * radius;
+        light.transform.position = new Vector3(x, y, 0);
+    }
+    
+    private float SmoothLerpProgress(float progress)
+    {
+        return (Mathf.Sin((progress * Mathf.PI) - (Mathf.PI / 2)) + 1) / 2;
     }
 
 
