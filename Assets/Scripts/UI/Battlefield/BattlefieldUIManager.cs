@@ -211,7 +211,14 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     private void OnDamaged(VisualElement troopContainer, int damageValue)
     {
+        string text = "-" + damageValue.ToString();
 
+        Vector2 min = RuntimePanelUtils.ScreenToPanel(root.panel, Vector2.zero);
+        Vector2 max = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(Screen.width, Screen.height));
+
+        float screenX = (troopContainer.transform.position.x - min.x) / (max.x - min.x) * Screen.width;
+        float screenY = (troopContainer.transform.position.y - min.y) / (max.y - min.y) * Screen.height;
+        PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUpIndicator, text, new Vector3(screenX, screenY, 0));
     }
 
     private void OnDeath(VisualElement troopContainer)

@@ -3693,13 +3693,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607d5e3788dfb1246baf7a1666d46cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPhase: 0
+  startingPhase: 1
   phasesDurations:
     elements:
     - key: 0
-      value: 10
+      value: 20
     - key: 1
-      value: 10
+      value: 20
   phaseColorGradients:
     elements:
     - key: 0
@@ -6553,7 +6553,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   document: {fileID: 1549682263}
   troopElement: {fileID: 9197481963319205126, guid: c544ef6705087204ca91fa856f09d25f, type: 3}
-  troopMarginStep: 5
 --- !u!114 &1549682263
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/StyleSheet.uss?fileID=7433441132597879392&amp;guid=eabd16b289558dc49a9a18bb58286d87&amp;type=3#StyleSheet" />
     <Style src="project://database/Assets/UI/Reset.uss?fileID=7433441132597879392&amp;guid=544cdb56d39be8147b2e624ed6d7fb42&amp;type=3#Reset" />
-    <ui:VisualElement name="TroopContainer" style="height: 8px; width: 100%; flex-direction: row; flex-shrink: 1; align-items: flex-start; flex-wrap: nowrap; justify-content: flex-start; padding-left: 10px;">
-        <ui:VisualElement name="Troop" style="width: 16px; height: 16px; background-image: url(&apos;project://database/Assets/Sprites/Tests/Characters_farmer.png?fileID=2800000&amp;guid=2273c4bd7788e5843a3b68b7f9db3de3&amp;type=3#Characters_farmer&apos;);" />
-    </ui:VisualElement>
+    <ui:VisualElement name="Troop" style="width: 16px; height: 16px; background-image: url(&apos;project://database/Assets/Sprites/Tests/Characters_farmer.png?fileID=2800000&amp;guid=2273c4bd7788e5843a3b68b7f9db3de3&amp;type=3#Characters_farmer&apos;); min-width: 16px; min-height: 16px;" />
 </ui:UXML>
