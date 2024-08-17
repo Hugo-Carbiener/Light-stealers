@@ -54,7 +54,6 @@ public class BookUIManager : UIManager, IActiveUI
         ResourceUIManager.Instance.UpdateUIComponent();
         HousingUIManager.Instance.UpdateUIComponent();
         MainMenuUIManager.Instance.UpdateUIComponent();
-        TileSelectionManager.Instance.UnselectCell();
         root.style.backgroundColor = openedMenuColor;
         SetVisibility(root, DisplayStyle.Flex);
     }
@@ -84,7 +83,8 @@ public class BookUIManager : UIManager, IActiveUI
     public bool CanBeOpened()
     {
         return !BuildingUIManager.Instance.IsVisible()
-            && !BattleReportUIManager.Instance.IsVisible();
+            && !BattleReportUIManager.Instance.IsVisible()
+            && !BattlefieldUIManager.Instance.IsVisible();
     }
     private void InitBookmarks()
     {

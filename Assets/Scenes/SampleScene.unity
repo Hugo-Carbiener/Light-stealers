@@ -3693,13 +3693,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607d5e3788dfb1246baf7a1666d46cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPhase: 1
+  startingPhase: 0
   phasesDurations:
     elements:
     - key: 0
-      value: 20
+      value: 10
     - key: 1
-      value: 20
+      value: 10
   phaseColorGradients:
     elements:
     - key: 0
@@ -3857,9 +3857,9 @@ MonoBehaviour:
       value: {fileID: 2122701881}
     - key: 1
       value: {fileID: 1282791802}
-  easternPoint: {x: 70, y: 18.5, z: 0}
-  westernPoint: {x: -20, y: 18.5, z: 0}
+  radius: 20
   transitionDuration: 0.8
+  centerTilePosition: {x: 25, y: 25}
 --- !u!114 &742458657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6506,6 +6506,70 @@ Sprite:
   m_PhysicsShape: []
   m_Bones: []
   m_SpriteID: 
+--- !u!1 &1549682260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1549682261}
+  - component: {fileID: 1549682263}
+  - component: {fileID: 1549682262}
+  m_Layer: 0
+  m_Name: BattlefieldUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1549682261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549682260}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1901719541}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549682262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549682260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5c5436718d68c419596b4b92d3515e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  document: {fileID: 1549682263}
+  troopElement: {fileID: 9197481963319205126, guid: c544ef6705087204ca91fa856f09d25f, type: 3}
+  troopMarginStep: 5
+--- !u!114 &1549682263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549682260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: fc375f5468f9fc444b0ac227278a53f8, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: cf4639e14105fe94f97b385e3fea3e5f, type: 3}
+  m_SortingOrder: 0
 --- !u!1 &1558373092
 GameObject:
   m_ObjectHideFlags: 0
@@ -7348,6 +7412,7 @@ Transform:
   - {fileID: 471871215}
   - {fileID: 96033862}
   - {fileID: 441368630}
+  - {fileID: 1549682261}
   m_Father: {fileID: 691929620}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

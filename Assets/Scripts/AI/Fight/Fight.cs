@@ -17,6 +17,7 @@ public class Fight
     public Task defenseTask { get; private set; }
     
     public UnityEvent OnFightEndEvent { get; private set; } = new UnityEvent();
+    public UnityEvent<FightModule> OnFighterAdded { get; private set; } = new UnityEvent<FightModule>();
 
     public Fight(List<Team> teams, CellData cell, Task attackTask, Task defenseTask)
     {
@@ -94,6 +95,7 @@ public class Fight
     public void AddFighter(FightModule fighter)
     {
         teams[fighter.GetFaction()].AddFighter(fighter);
+        this.OnFighterAdded.Invoke(fighter);
     }
 
     public void RemoveFighter(FightModule fighter)
@@ -102,6 +104,9 @@ public class Fight
         if (!fighter.IsAlive())
         {
             casualties.Add(fighter.GetActor());
+        } else
+        {
+            fighter.OnFlee.Invoke();
         }
     }
 

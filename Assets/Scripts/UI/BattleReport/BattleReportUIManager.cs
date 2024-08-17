@@ -77,8 +77,8 @@ public class BattleReportUIManager : UIManager, IActiveUI
 
     public void CloseUIComponent()
     {
-        ResetUIComponent();
         SetVisibility(root, DisplayStyle.None);
+        ResetUIComponent();
     }
 
     public void ToggleUIComponent()

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StyleSheet.uss?fileID=7433441132597879392&amp;guid=eabd16b289558dc49a9a18bb58286d87&amp;type=3#StyleSheet" />
+    <Style src="project://database/Assets/UI/Reset.uss?fileID=7433441132597879392&amp;guid=544cdb56d39be8147b2e624ed6d7fb42&amp;type=3#Reset" />
+    <ui:VisualElement name="BattleFieldContained" style="position: relative; flex-direction: column; flex-grow: 1; max-width: 100%; max-height: 100%; display: flex; align-items: center; justify-content: center; visibility: hidden;">
+        <ui:VisualElement name="Background" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_Battlefield-background.png?fileID=2800000&amp;guid=40dff3987efb03647a3740b081d25ca0&amp;type=3#UI_Battlefield-background&apos;); width: 320px; height: 96px; flex-direction: column; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 320px; min-height: 96px; visibility: visible;" />
+        <ui:VisualElement name="Battlefield" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/UI/UI_Battlefield.png?fileID=2800000&amp;guid=0bc9749a53769104e8816bb467a80175&amp;type=3#UI_Battlefield&apos;); width: 320px; height: 80px; flex-direction: row; left: auto; top: auto; right: auto; bottom: auto; position: relative; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; min-width: 320px; min-height: 80px; visibility: visible; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">
+            <ui:VisualElement name="AlliesContainer" style="flex-grow: 1; justify-content: flex-start; width: 30%; align-items: flex-start;">
+                <ui:VisualElement name="TroopContainer" style="height: 8px; width: 100%; flex-direction: row; flex-shrink: 1; align-items: flex-start; flex-wrap: nowrap; justify-content: flex-start; padding-left: 10px;">
+                    <ui:VisualElement name="Troop" style="width: 16px; height: 16px; background-image: url(&apos;project://database/Assets/Sprites/Tests/Characters_farmer.png?fileID=2800000&amp;guid=2273c4bd7788e5843a3b68b7f9db3de3&amp;type=3#Characters_farmer&apos;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="BuildingContainer" style="flex-grow: 1; width: 40%; justify-content: center; align-items: center; padding-bottom: 24px; flex-wrap: nowrap; flex-direction: column-reverse;">
+                <ui:VisualElement name="BuildingSpriteContainer" style="width: 64px; height: 64px; background-image: url(&apos;project://database/Assets/Sprites/Tests/Buildings/building_Mine_Diffuse.png?fileID=2800000&amp;guid=42dcea96ef2d1064f9d436ab7e887574&amp;type=3#building_Mine_Diffuse&apos;); min-width: 64px; min-height: 64px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="EnemiesContainer" style="flex-grow: 1; width: 30%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

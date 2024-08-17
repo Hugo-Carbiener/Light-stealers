@@ -48,6 +48,7 @@ public class Unit : MonoBehaviour, IFightable
             {
                 fight.RemoveFighter(fightModule);
             }
+            fightModule.OnDeath.Invoke();
         }
         UnitManager.Instance.DeactivateUnit(this);
     }
@@ -76,5 +77,15 @@ public class Unit : MonoBehaviour, IFightable
     {
         return fightModule.IsValidTarget()
             && attackerFaction != fightModule.GetFaction();
+    }
+
+    public bool IsBuilding()
+    {
+        return false;
+    }
+
+    public bool IsTroop()
+    {
+        return true;    
     }
 }

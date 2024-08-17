@@ -119,7 +119,7 @@ public class BuildingUIManager : UIManager, IActiveUI
         VisualElement icon = button.Q<VisualElement>(BUTTON_ICON_KEY);
         Label buildingName = button.Q<Label>(BUTTON_BUILDING_NAME_KEY);
         Label foodAmountLabel = button.Q<Label>(BUTTON_COST_FOOD_TEXT_KEY);
-        Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY);
+        Label woodAmountLabel = button.Q<Label>(BUTTON_COST_WOOD_TEXT_KEY); 
         Label stoneAmountLabel = button.Q<Label>(BUTTON_COST_STONE_TEXT_KEY);
 
         icon.style.backgroundImage = new StyleBackground(iconDictionnary[building.GetBuildingType()]);
@@ -226,7 +226,8 @@ public class BuildingUIManager : UIManager, IActiveUI
             && (selectedCell.fight == null || selectedCell.fight.status == Status.Done)
             && (selectedCell.building == null || (selectedCell.building != null && selectedCell.building.CanBeDeconstructed()))
             && !BookUIManager.Instance.IsVisible()
-            && !BattleReportUIManager.Instance.IsVisible();
+            && !BattleReportUIManager.Instance.IsVisible()
+            && !BattlefieldUIManager.Instance.IsVisible();
     }
 
     public void UpdateWorldPosition()

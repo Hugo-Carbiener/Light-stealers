@@ -165,4 +165,14 @@ public class Building : MonoBehaviour, IFightable
         return status != BuildingStatus.Destroyed 
             && fightModule.GetFaction() != attackerFaction;
     }
+
+    public bool IsBuilding()
+    {
+        return true;
+    }
+
+    public bool IsTroop()
+    {
+        return false;
+    }
 }

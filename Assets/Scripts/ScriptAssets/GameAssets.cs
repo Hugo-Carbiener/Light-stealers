@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 
 public class GameAssets : MonoBehaviour
@@ -17,6 +18,11 @@ public class GameAssets : MonoBehaviour
             } 
             return instance;
         }
+    }
+
+    private void Awake()
+    {
+        Assert.AreEqual(buildingSprites.Count(), System.Enum.GetNames(typeof(BuildingTypes)).Length);
     }
 
     [Header("Tiles")]
@@ -41,8 +47,7 @@ public class GameAssets : MonoBehaviour
     public Sprite stoneIcon;
 
     [Header("Building Sprites")]
-    public Sprite sawmill;
-    public Sprite farm;
+    public SerializableDictionary<BuildingTypes, Sprite> buildingSprites;
 
 }
 
