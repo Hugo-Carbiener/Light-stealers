@@ -34,6 +34,11 @@ public class FightModule : MonoBehaviour
         health.OnMinValueReachedOrExceeded.AddListener(actor.OnDeath);
     }
 
+    private void Start()
+    {
+        turnDuration = Math.Max(FightManager.Instance.getMinFightTurnDuration(), turnDuration);
+    }
+
     /**
      * Starts a fight on a tile if there is an attackable opponent or joins an existing fight.
      */

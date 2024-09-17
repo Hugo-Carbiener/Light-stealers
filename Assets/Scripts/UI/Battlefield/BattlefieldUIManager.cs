@@ -219,6 +219,8 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         troopContainer.parent.Remove(troopContainer);
     }
 
+
+
     private void OnAttack(VisualElement troopContainer)
     {
 
@@ -228,7 +230,8 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     {
         string text = "-" + damageValue.ToString();
         Vector3 anchor = Camera.main.ScreenToWorldPoint(troopContainer.worldTransform.GetPosition());
-        PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUpIndicator, text, anchor);
+        anchor = new Vector3(anchor.x, anchor.y, 0);
+        PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUp, text, anchor);
     }
 
     private void OnDeath(VisualElement troopContainer)

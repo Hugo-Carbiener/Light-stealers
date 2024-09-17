@@ -151,6 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faction: 1
   attackable: 1
-  turnDuration: 0.5
+  turnDuration: 2
   maxHealth: 3
   attack: 1

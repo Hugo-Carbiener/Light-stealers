@@ -21,6 +21,7 @@ public class FightManager : MonoBehaviour
 
     [Header("Fight cooldowns")]
     [SerializeField] private float setupDuration;
+    [SerializeField] private int minFightTurnDuration;
 
     public List<Fight> fights { get; private set; }
 
@@ -62,4 +63,6 @@ public class FightManager : MonoBehaviour
     {
         return fights.FirstOrDefault(fight => fight.ContainsFighter(fighter));
     }
+
+    public int getMinFightTurnDuration() { return this.minFightTurnDuration; }
 }

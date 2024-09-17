@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class PopUpLauncher : MonoBehaviour
 {
-    public static void LaunchPopUp(MonoBehaviour monoInstance, PopUpIndicator popup, string text, Vector3 anchor)
+    private static Dictionary<PopUpBlueprint, List<GameObject>> instantiatedPopUps = new Dictionary<PopUpBlueprint, List<GameObject>>();
+
+    public static void LaunchPopUp(MonoBehaviour monoInstance, PopUpBlueprint blueprint, string text, Vector3 anchor)
     {
-        popup.Init(text, anchor);
-        GameObject prefab = popup.getPrefab();
-        GameObject popupInstance = Instantiate(prefab);
-        monoInstance.StartCoroutine(popup.LaunchPopUp(popupInstance, anchor));
+        if (!instantiatedPopUps.ContainsKey(blueprint))
+        {
+            instantiatedPopUps.Add(blueprint, new List<GameObject>());
+        }
+
+        GameObject popUpInstance = instantiatedPopUps[blueprint].Find(instance => !instance.activeInHierarchy);
+        if (popUpInstance == null)
+        {
+            popUpInstance = Instantiate(blueprint.popupPrefab);
+            instantiatedPopUps[blueprint].Add(popUpInstance);
+        }
+
+        blueprint.Init(popUpInstance, text, anchor);
+        monoInstance.StartCoroutine(blueprint.LaunchPopUp(popUpInstance, anchor));
     }
 }

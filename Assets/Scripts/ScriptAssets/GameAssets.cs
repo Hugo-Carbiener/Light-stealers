@@ -50,6 +50,6 @@ public class GameAssets : MonoBehaviour
     public SerializableDictionary<BuildingTypes, Sprite> buildingSprites;
 
     [Header("Pop ups")]
-    public PopUpIndicator battleFieldPopUpIndicator;
+    public PopUpBlueprint battleFieldPopUp;
 }
 
