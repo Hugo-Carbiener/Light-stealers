@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UIElements;
+using UnityEngine.Assertions;
 
 public class BattlefieldUIManager : UIManager, IActiveUI
 {
@@ -26,16 +29,26 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     [Header("Troop template")]
     [SerializeField] private VisualTreeAsset troopElement;
+    [Header("Rendering")]
+    [SerializeField] private int width;
+    [SerializeField] private int groundHeight;
+    [SerializeField] private int backgroundHeight;
+    [SerializeField] private UnityEngine.UI.Image renderSupport;
     public Fight currentFight { get; set; }
 
     private void Awake()
     {
         root = document.rootVisualElement;
+        Assert.IsNotNull(renderSupport);
     }
 
     void Start()
     {
         SetVisibility(DisplayStyle.None);
+        renderSupport.gameObject.SetActive(false);
+        
+        PixelPerfectCamera pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
+        renderSupport.rectTransform.sizeDelta = new Vector2(pixelPerfectCamera.refResolutionX, pixelPerfectCamera.refResolutionY);
     }
 
     public bool CanBeOpened()
@@ -49,14 +62,17 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     public void CloseUIComponent()
     {
+        renderSupport.gameObject.SetActive(false);
         SetVisibility(root, DisplayStyle.None);
         ResetUIComponent();
     }
 
     public void OpenUIComponent()
     {
-        InitUIComponent();
         SetVisibility(DisplayStyle.Flex);
+        InitUIComponent();
+        renderSupport.gameObject.SetActive(true);
+
     }
 
     public void ResetUIComponent()
@@ -104,7 +120,6 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         InitTroops(fight, Factions.Monsters, enemyTroopContainer);
         InitBuilding(selectedCell);
         fight.OnFighterAdded.AddListener(AddTroop);
-        SetVisibility(root, DisplayStyle.Flex);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
@@ -212,13 +227,8 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     private void OnDamaged(VisualElement troopContainer, int damageValue)
     {
         string text = "-" + damageValue.ToString();
-
-        Vector2 min = RuntimePanelUtils.ScreenToPanel(root.panel, Vector2.zero);
-        Vector2 max = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(Screen.width, Screen.height));
-
-        float screenX = (troopContainer.transform.position.x - min.x) / (max.x - min.x) * Screen.width;
-        float screenY = (troopContainer.transform.position.y - min.y) / (max.y - min.y) * Screen.height;
-        PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUpIndicator, text, new Vector3(screenX, screenY, 0));
+        Vector3 anchor = Camera.main.ScreenToWorldPoint(troopContainer.worldTransform.GetPosition());
+        PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUpIndicator, text, anchor);
     }
 
     private void OnDeath(VisualElement troopContainer)
