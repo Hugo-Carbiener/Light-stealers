@@ -6734,6 +6734,7 @@ MonoBehaviour:
   width: 320
   groundHeight: 80
   backgroundHeight: 96
+  renderCanvas: {fileID: 307956315}
   renderSupport: {fileID: 427494673}
 --- !u!114 &1549682263
 MonoBehaviour:

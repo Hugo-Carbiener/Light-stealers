@@ -17,7 +17,7 @@ MonoBehaviour:
   fadeOutDuration: 0.7
   lifeDuration: 1
   relativeStartPosition: {x: 0, y: 0, z: 0}
-  relateiveEndPosition: {x: 1, y: 1, z: 0}
+  relateiveEndPosition: {x: 0, y: 0, z: 0}
   startColor: {r: 1, g: 1, b: 1, a: 1}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   startFontSize: 5

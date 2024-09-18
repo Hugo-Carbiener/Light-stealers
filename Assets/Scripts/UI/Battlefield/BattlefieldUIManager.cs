@@ -10,6 +10,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 {
     private static readonly string ALLY_TROOP_CONTAINER = "AlliesContainer";
     private static readonly string ENEMY_TROOP_CONTAINER = "EnemiesContainer";
+    private static readonly string BACKGROUND_CONTAINER = "Background";
     private static readonly string BUILDING_SPRITE_CONTAINER = "BuildingSpriteContainer";
     private static readonly string TROOP_SPRITE_CONTAINER = "Troop";
 
@@ -33,12 +34,14 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     [SerializeField] private int width;
     [SerializeField] private int groundHeight;
     [SerializeField] private int backgroundHeight;
+    [SerializeField] private Canvas renderCanvas; 
     [SerializeField] private UnityEngine.UI.Image renderSupport;
     public Fight currentFight { get; set; }
 
     private void Awake()
     {
         root = document.rootVisualElement;
+        Assert.IsNotNull(renderCanvas);
         Assert.IsNotNull(renderSupport);
     }
 
@@ -229,8 +232,12 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     private void OnDamaged(VisualElement troopContainer, int damageValue)
     {
         string text = "-" + damageValue.ToString();
-        Vector3 anchor = Camera.main.ScreenToWorldPoint(troopContainer.worldTransform.GetPosition());
-        anchor = new Vector3(anchor.x, anchor.y, 0);
+        VisualElement background = root.Q<VisualElement>(BACKGROUND_CONTAINER);
+
+        Vector3 centerOffset = troopContainer.layout.center - troopContainer.layout.position;
+        centerOffset = new Vector3(Mathf.Abs(centerOffset.x), Mathf.Abs(centerOffset.y), Mathf.Abs(centerOffset.z));
+        Vector3 anchor = troopContainer.worldTransform.GetPosition() + centerOffset;
+        anchor = new Vector3(anchor.x, anchor.y - background.layout.height, 0);
         PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUp, text, anchor);
     }
 

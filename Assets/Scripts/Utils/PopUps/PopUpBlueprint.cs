@@ -31,7 +31,7 @@ public class PopUpBlueprint : ScriptableObject
         text.text = textContent;
         text.color = new Color(startColor.r, startColor.g, startColor.b, 0);
         text.fontSize = startFontSize;
-        popUpInstance.transform.position = anchor + relativeStartPosition;
+        popUpInstance.transform.position = Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor)), new Vector3(1,1,0)) + relativeStartPosition;
         popUpInstance.SetActive(true);
     }
 
@@ -66,7 +66,7 @@ public class PopUpBlueprint : ScriptableObject
 
             text.fontSize = fontSize;
             text.color = newColor;
-            popUpInstance.transform.position = anchor + relativePosition;
+            popUpInstance.transform.position = Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor)), new Vector3(1, 1, 0) + relativeStartPosition);
             timer += Time.deltaTime;
             yield return null;
         }
