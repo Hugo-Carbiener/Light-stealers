@@ -6736,6 +6736,12 @@ MonoBehaviour:
   backgroundHeight: 96
   renderCanvas: {fileID: 307956315}
   renderSupport: {fileID: 427494673}
+  troopApparitionFadeInDuration: 0.3
+  troopApparitionFadeOutDuration: 0.3
+  troopWidthFractionDisplacement: 0.5
+  attackDuration: 0.5
+  attackWindUpDuration: 0.2
+  attackSequenceDelay: 0.2
 --- !u!114 &1549682263
 MonoBehaviour:
   m_ObjectHideFlags: 0
