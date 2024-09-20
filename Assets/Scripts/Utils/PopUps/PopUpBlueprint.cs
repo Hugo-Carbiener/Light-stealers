@@ -10,6 +10,7 @@ public class PopUpBlueprint : ScriptableObject
     [Header("Commponents")]
     public GameObject popupPrefab;
     [Header("Durations")]
+    [SerializeField] private float delayDuration;
     [SerializeField] private float fadeInDuration;
     [SerializeField] private float fadeOutDuration;
     [SerializeField] private float lifeDuration;
@@ -42,15 +43,18 @@ public class PopUpBlueprint : ScriptableObject
         Assert.IsTrue(popUpInstance.gameObject.TryGetComponent(out text));
 
         float timer = 0;
-        float fadeOutTime = fadeInDuration + lifeDuration;
-        float totalTime = fadeInDuration + lifeDuration + fadeOutDuration;
+        float fadeInTime = fadeInDuration + delayDuration;
+        float fadeOutTime = fadeInDuration + lifeDuration + delayDuration;
+        float totalTime = fadeInDuration + lifeDuration + fadeOutDuration +  delayDuration;
 
         while (timer < totalTime)
         {
+            if (timer < delayDuration) yield return null;
+
             Color newColor = Color.Lerp(startColor, endColor, timer / totalTime);
             float fontSize = Mathf.Lerp(startFontSize, endFontSize, timer / totalTime);
             Vector3 relativePosition = Vector3.Lerp(relativeStartPosition, relateiveEndPosition, timer / totalTime);
-            if (timer < fadeInDuration)
+            if (timer < fadeInTime)
             {
                 float progress = timer / fadeInDuration;
                 float alpha = Mathf.Lerp(0, 255, progress);

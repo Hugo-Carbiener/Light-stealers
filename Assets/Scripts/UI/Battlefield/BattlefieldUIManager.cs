@@ -13,7 +13,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     private static readonly string ENEMY_TROOP_CONTAINER = "EnemiesContainer";
     private static readonly string BACKGROUND_CONTAINER = "Background";
     private static readonly string BUILDING_SPRITE_CONTAINER = "BuildingSpriteContainer";
-    private static readonly string TROOP_SPRITE_CONTAINER = "Troop";
+    private static readonly string TROOP_SPRITE_CONTAINER = "SpriteContainer";
 
     private static BattlefieldUIManager _instance;
     public static BattlefieldUIManager Instance
@@ -43,11 +43,11 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     [SerializeField] private float troopWidthFractionDisplacement;
     [SerializeField] private float attackDuration;
     [SerializeField] private float attackWindUpDuration;
-    [SerializeField] private float attackSequenceDelay;
+    [SerializeField] private float damageIndicatorDelay;
+    [SerializeField] private Color damageIndicatorColor;
     public Fight currentFight { get; set; }
 
     Sequence attackSequence;
-    Tween attackTween;
 
     private void Awake()
     {
@@ -86,7 +86,6 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         SetVisibility(DisplayStyle.Flex);
         InitUIComponent();
         renderSupport.gameObject.SetActive(true);
-
     }
 
     public void ResetUIComponent()
@@ -135,6 +134,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         InitTroops(fight, Factions.Monsters, enemyTroopContainer);
         InitBuilding(selectedCell);
         fight.OnFighterAdded.AddListener(AddTroop);
+        currentFight.OnFightEndEvent.AddListener(CloseUIComponent);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
@@ -147,7 +147,8 @@ public class BattlefieldUIManager : UIManager, IActiveUI
             if (troopElementToAdd == null) continue;
 
             troopContainer.Add(troopElementToAdd);
-            AddEventListeners(fighter, troopElementToAdd, false);
+            VisualElement spriteContainer = troopElementToAdd.Q<VisualElement>(TROOP_SPRITE_CONTAINER);
+            AddEventListeners(fighter, spriteContainer, false);
             troopCounter++;
         }
     }
@@ -179,7 +180,11 @@ public class BattlefieldUIManager : UIManager, IActiveUI
             return null;
         }
 
-        spriteContainer.style.backgroundImage = new StyleBackground(fighter.GetComponent<SpriteRenderer>().sprite);
+        Sprite sprite = fighter.GetComponent<SpriteRenderer>().sprite;
+        Vector2 spriteSize = sprite.rect.size;
+        spriteContainer.style.backgroundImage = new StyleBackground(sprite);
+        spriteContainer.style.width = spriteSize.x;
+        spriteContainer.style.height = spriteSize.y;
         if (isFacingRight)
         {
             spriteContainer.transform.scale = spriteContainer.transform.scale + new Vector3(-2, 0, 0);
@@ -236,9 +241,9 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         {
             timer += Time.deltaTime;
             float alpha = Mathf.Lerp(255, 0, timer / troopApparitionFadeOutDuration);
-            Color color = troopContainer.style.backgroundColor.value;
+            Color color = troopContainer.style.unityBackgroundImageTintColor.value;
             color.a = alpha;
-            troopContainer.style.backgroundColor = color;
+            troopContainer.style.unityBackgroundImageTintColor = color;
 
             yield return null;
         }
@@ -247,56 +252,66 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     private void OnAttack(VisualElement troopContainer, FightModule target)
     {
-        float windUpStartPos = troopContainer.transform.position.x;
-        float windUpEndPos = troopContainer.transform.position.x;
         float startPos = troopContainer.transform.position.x;
-        float endPos = troopContainer.transform.position.x;
-        float pos = windUpStartPos;
+        float windUpEndPos = troopContainer.transform.position.x;
+        float attackEndPos = troopContainer.transform.position.x;
+        float pos = startPos;
 
         if (target.GetFaction() != Factions.Villagers)
         {
-            endPos += troopWidthFractionDisplacement * troopContainer.layout.width;
+            attackEndPos += troopWidthFractionDisplacement * troopContainer.layout.width;
             windUpEndPos -= troopWidthFractionDisplacement * troopContainer.layout.width / 2;
         } else
         {
-            endPos -= troopWidthFractionDisplacement * troopContainer.layout.width;
+            attackEndPos -= troopWidthFractionDisplacement * troopContainer.layout.width;
             windUpEndPos += troopWidthFractionDisplacement * troopContainer.layout.width / 2;
         }
+
        
         attackSequence = DOTween.Sequence();
-        attackSequence.AppendInterval(attackSequenceDelay);
         // wind up
-        attackTween = DOTween.To(() => windUpStartPos, x => pos = x, windUpEndPos, attackWindUpDuration)
+        attackSequence.Append(DOTween.To(() => startPos, x => pos = x, windUpEndPos, attackWindUpDuration / 2)
             .OnUpdate(() =>
             {
                 troopContainer.transform.position = new Vector2(pos, transform.position.y);
             })
-            .SetLoops(1, LoopType.Yoyo)
-            .SetEase(Ease.InExpo)
-            .OnComplete(() =>
-            {
-                // forward step
-                attackSequence.Append(DOTween.To(() => startPos, x => pos = x, endPos, attackDuration)
+            .SetEase(Ease.Linear));
+        // forward step
+        attackSequence.Append(DOTween.To(() => pos, x => pos = x, attackEndPos, attackDuration / 2)
                 .OnUpdate(() =>
                 {
                     troopContainer.transform.position = new Vector2(pos, troopContainer.transform.position.y);
                 })
-                .SetLoops(1, LoopType.Yoyo)
-                .SetEase(Ease.OutElastic));
-            });
-        attackSequence.Append(attackTween);
+                .SetEase(Ease.InQuad));            
+        // return 
+        attackSequence.Append(DOTween.To(() => pos, x => pos = x, startPos, attackDuration / 2)
+            .OnUpdate(() =>
+            {
+                troopContainer.transform.position = new Vector2(pos, troopContainer.transform.position.y);
+            })
+            .SetEase(Ease.OutQuad));
     }
 
     private void OnDamaged(VisualElement troopContainer, int damageValue)
     {
+        StartCoroutine(damageFlashIndicator(30, troopContainer));
+
         string text = "-" + damageValue.ToString();
         VisualElement background = root.Q<VisualElement>(BACKGROUND_CONTAINER);
-
         Vector3 centerOffset = troopContainer.layout.center - troopContainer.layout.position;
         centerOffset = new Vector3(Mathf.Abs(centerOffset.x), Mathf.Abs(centerOffset.y));
         Vector3 anchor = troopContainer.worldTransform.GetPosition() + centerOffset;
         anchor = new Vector3(anchor.x, anchor.y - background.layout.height, 0);
+
         PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUp, text, anchor);
+    }
+
+    private IEnumerator damageFlashIndicator(int frameDuration, VisualElement spriteContainer)
+    {
+        yield return new WaitForSeconds(damageIndicatorDelay);
+        spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(damageIndicatorColor);
+        yield return frameDuration;
+        spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(Color.white);
     }
 
     private void OnDeath(VisualElement troopContainer)

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Battlefield Popup
   m_EditorClassIdentifier: 
   popupPrefab: {fileID: 4967264290274748065, guid: 4cc52cbe66468854fac2b762a40a8bf4, type: 3}
+  delayDuration: 0.4
   fadeInDuration: 0.3
-  fadeOutDuration: 0.7
-  lifeDuration: 1
+  fadeOutDuration: 0.5
+  lifeDuration: 0.8
   relativeStartPosition: {x: 0, y: 0, z: 0}
   relateiveEndPosition: {x: 0, y: 0, z: 0}
   startColor: {r: 1, g: 1, b: 1, a: 1}
