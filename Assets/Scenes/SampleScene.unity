@@ -6742,7 +6742,7 @@ MonoBehaviour:
   attackDuration: 0.3
   attackWindUpDuration: 0.1
   damageIndicatorDelay: 0.4
-  damageIndicatorColor: {r: 0.74509805, g: 0.23529412, b: 0.23529412, a: 0}
+  damageIndicatorColor: {r: 0.74509805, g: 0.23529412, b: 0.23529412, a: 1}
 --- !u!114 &1549682263
 MonoBehaviour:
   m_ObjectHideFlags: 0

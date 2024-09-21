@@ -11,7 +11,6 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 {
     private static readonly string ALLY_TROOP_CONTAINER = "AlliesContainer";
     private static readonly string ENEMY_TROOP_CONTAINER = "EnemiesContainer";
-    private static readonly string BACKGROUND_CONTAINER = "Background";
     private static readonly string BUILDING_SPRITE_CONTAINER = "BuildingSpriteContainer";
     private static readonly string TROOP_SPRITE_CONTAINER = "SpriteContainer";
 
@@ -45,6 +44,8 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     [SerializeField] private float attackWindUpDuration;
     [SerializeField] private float damageIndicatorDelay;
     [SerializeField] private Color damageIndicatorColor;
+
+    PixelPerfectCamera pixelPerfectCamera;
     public Fight currentFight { get; set; }
 
     Sequence attackSequence;
@@ -61,7 +62,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         SetVisibility(DisplayStyle.None);
         renderSupport.gameObject.SetActive(false);
         
-        PixelPerfectCamera pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
+        pixelPerfectCamera = Camera.main.GetComponent<PixelPerfectCamera>();
         renderSupport.rectTransform.sizeDelta = new Vector2(pixelPerfectCamera.refResolutionX, pixelPerfectCamera.refResolutionY);
     }
 
@@ -140,16 +141,13 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     private void InitTroops(Fight fight, Factions faction, VisualElement troopContainer)
     {
-        int troopCounter = 0;
         foreach (FightModule fighter in fight.teams[faction].fighters)
         {
-            TemplateContainer troopElementToAdd = InitTroopElement(fighter, faction == Factions.Villagers, troopCounter);
+            TemplateContainer troopElementToAdd = InitTroopElement(fighter, faction == Factions.Villagers);
             if (troopElementToAdd == null) continue;
 
             troopContainer.Add(troopElementToAdd);
-            VisualElement spriteContainer = troopElementToAdd.Q<VisualElement>(TROOP_SPRITE_CONTAINER);
-            AddEventListeners(fighter, spriteContainer, false);
-            troopCounter++;
+            AddEventListeners(fighter, troopElementToAdd, false);
         }
     }
     private void InitBuilding(CellData cell)
@@ -168,7 +166,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         }
     }
 
-    private TemplateContainer InitTroopElement(FightModule fighter, bool isFacingRight, int troopCounter)
+    private TemplateContainer InitTroopElement(FightModule fighter, bool isFacingRight)
     {
         if (fighter.GetActor().IsBuilding()) return null; 
         
@@ -224,26 +222,28 @@ public class BattlefieldUIManager : UIManager, IActiveUI
             case Factions.Villagers:
                 troopContainer = root.Q<VisualElement>(ALLY_TROOP_CONTAINER);
                 break;
-            case Factions.Monsters:
+            default:
                 troopContainer = root.Q<VisualElement>(ENEMY_TROOP_CONTAINER);
                 break;
         }
-        TemplateContainer troopElementToAdd = InitTroopElement(fighter, faction == Factions.Villagers, troopContainer.childCount);
+        TemplateContainer troopElementToAdd = InitTroopElement(fighter, faction == Factions.Villagers);
         if (troopElementToAdd == null) return;
+
         AddEventListeners(fighter, troopElementToAdd, false);
         troopContainer.Add(troopElementToAdd);
     }
 
     private IEnumerator RemoveTroop(VisualElement troopContainer)
     {
+        VisualElement spriteContainer = troopContainer.Q<VisualElement>(TROOP_SPRITE_CONTAINER);
         float timer = 0;
         while (timer < troopApparitionFadeOutDuration)
         {
             timer += Time.deltaTime;
             float alpha = Mathf.Lerp(255, 0, timer / troopApparitionFadeOutDuration);
-            Color color = troopContainer.style.unityBackgroundImageTintColor.value;
+            Color color = spriteContainer.style.unityBackgroundImageTintColor.value;
             color.a = alpha;
-            troopContainer.style.unityBackgroundImageTintColor = color;
+            spriteContainer.style.unityBackgroundImageTintColor = color;
 
             yield return null;
         }
@@ -294,26 +294,34 @@ public class BattlefieldUIManager : UIManager, IActiveUI
 
     private void OnDamaged(VisualElement troopContainer, int damageValue)
     {
-        StartCoroutine(damageFlashIndicator(30, troopContainer));
-
+        // damage pop up
         string text = "-" + damageValue.ToString();
-        VisualElement background = root.Q<VisualElement>(BACKGROUND_CONTAINER);
+
         Vector3 centerOffset = troopContainer.layout.center - troopContainer.layout.position;
         centerOffset = new Vector3(Mathf.Abs(centerOffset.x), Mathf.Abs(centerOffset.y));
         Vector3 anchor = troopContainer.worldTransform.GetPosition() + centerOffset;
-        anchor = new Vector3(anchor.x, anchor.y - background.layout.height, 0);
+        anchor = new Vector3(anchor.x, pixelPerfectCamera.refResolutionY - anchor.y, 0);
 
         PopUpLauncher.LaunchPopUp(this, GameAssets.i.battleFieldPopUp, text, anchor);
+
+        // damage flash
+        StartCoroutine(damageFlashIndicator(5, troopContainer));
     }
 
-    private IEnumerator damageFlashIndicator(int frameDuration, VisualElement spriteContainer)
+    private IEnumerator damageFlashIndicator(int frameDuration, VisualElement troopContainer)
     {
+        VisualElement spriteContainer = troopContainer.Q<VisualElement>(TROOP_SPRITE_CONTAINER);
         yield return new WaitForSeconds(damageIndicatorDelay);
         spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(damageIndicatorColor);
-        yield return frameDuration;
+        int frameCounter = frameDuration;
+        while (frameCounter > 0)
+        {
+            frameCounter--;
+            yield return 0;
+        }
         spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(Color.white);
     }
-
+     
     private void OnDeath(VisualElement troopContainer)
     {
         StartCoroutine(RemoveTroop(troopContainer));
