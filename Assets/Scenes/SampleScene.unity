@@ -331,7 +331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_OverlapOperation
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_ShadowIntensityEnabled
@@ -6501,7 +6501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_OverlapOperation
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_ShadowIntensityEnabled
