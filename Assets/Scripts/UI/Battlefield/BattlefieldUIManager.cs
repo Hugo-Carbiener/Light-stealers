@@ -238,14 +238,16 @@ public class BattlefieldUIManager : UIManager, IActiveUI
     {
         VisualElement spriteContainer = troopContainer.Q<VisualElement>(TROOP_SPRITE_CONTAINER);
         float timer = 0;
+        Color initialColor = spriteContainer.resolvedStyle.unityBackgroundImageTintColor;
+        Color endColor = initialColor;
+        endColor.a = 0;
+
         while (timer < troopApparitionFadeOutDuration)
         {
             timer += Time.deltaTime;
-            float alpha = Mathf.Lerp(255, 0, timer / troopApparitionFadeOutDuration);
-            Color color = new Color(255, 255, 255, alpha);
-            spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(color);
-
-            yield return 0;
+            spriteContainer.style.unityBackgroundImageTintColor = Color.Lerp(initialColor, endColor, timer / troopApparitionFadeOutDuration);
+            Debug.Log("alpha " + spriteContainer.style.unityBackgroundImageTintColor);
+            yield return null;
         }
     }
 

@@ -106,6 +106,7 @@ public class Fight
             casualties.Add(fighter.GetActor());
         } else
         {
+            Debug.Log(fighter.gameObject.name + " flee");
             fighter.OnFlee.Invoke();
         }
     }
