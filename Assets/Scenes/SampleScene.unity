@@ -325,6 +325,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
+      propertyPath: m_BlendStyleIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
+      propertyPath: m_OverlapOperation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
+      propertyPath: m_ShadowIntensityEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5017839356547295909, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_Name
       value: Moon
@@ -3503,6 +3515,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 4, y: 4, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 5
+      m_TileSpriteIndex: 3
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 6
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -4, y: 5, z: 0}
     second:
       serializedVersion: 2
@@ -3568,6 +3590,16 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 7
       m_TileSpriteIndex: 6
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 6
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 3, y: 5, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 5
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 6
       m_TileObjectToInstantiateIndex: 65535
@@ -3695,8 +3727,8 @@ Tilemap:
     m_Data: {fileID: 1791741735}
   - m_RefCount: 1
     m_Data: {fileID: 737889039}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: 7361fe102934b224784e4ce96340245e, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 4757a9da8594c6b4eb0e84b4defd2fcd, type: 2}
   - m_RefCount: 32
@@ -3712,8 +3744,8 @@ Tilemap:
     m_Data: {fileID: 1330963555}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: fbcb01a0e1172864098faf2854195243, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 21300000, guid: 2bb1624fceca0354fbc325b1380aaf11, type: 3}
   - m_RefCount: 3
@@ -3729,7 +3761,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 2015335722}
   m_TileMatrixArray:
-  - m_RefCount: 155
+  - m_RefCount: 157
     m_Data:
       e00: 1
       e01: 0
@@ -3760,7 +3792,7 @@ Tilemap:
     m_Data: {r: 4.9925e-41, g: 4.9925e-41, b: 4.9925e-41, a: 4.9925e-41}
   - m_RefCount: 0
     m_Data: {r: 3.4797e-41, g: 3.4797e-41, b: 3.4797e-41, a: 3.4797e-41}
-  - m_RefCount: 99
+  - m_RefCount: 101
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 1
     m_Data: {r: 0.9389612, g: 0.39125273, b: 0.41985893, a: 1}
@@ -5997,7 +6029,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455758086}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6152,7 +6184,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -6, z: 0}
   m_Size: {x: 354, y: 69, z: 1}
-  m_TileAnchor: {x: 0, y: -0.25, z: 0}
+  m_TileAnchor: {x: 0, y: 0.1, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -6466,6 +6498,14 @@ PrefabInstance:
     - target: {fileID: 699736546639199958, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
+      propertyPath: m_OverlapOperation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
+      propertyPath: m_ShadowIntensityEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5017839356547295909, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_Name

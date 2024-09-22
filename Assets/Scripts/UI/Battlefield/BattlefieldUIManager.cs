@@ -135,7 +135,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         InitTroops(fight, Factions.Monsters, enemyTroopContainer);
         InitBuilding(selectedCell);
         fight.OnFighterAdded.AddListener(AddTroop);
-        //currentFight.OnFightEndEvent.AddListener(CloseUIComponent);
+        currentFight.OnFightEndEvent.AddListener(CloseUIComponent);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
