@@ -99,6 +99,7 @@ Shader "Hidden/Light2D-Point"
                 // Spotlight
                 half  spotAttenuation = saturate((_OuterAngle - lookupValue.g + _IsFullSpotlight) * _InnerAngleMult);
                 attenuation = attenuation * spotAttenuation;
+                half attenuationOverride = attenuation * _ShadowRadius * _ShadowIntensityMultiplier;
 
                 half2 mappedUV;
                 mappedUV.x = attenuation;
@@ -119,6 +120,9 @@ Shader "Hidden/Light2D-Point"
 #endif
 
                 APPLY_NORMALS_LIGHTING(input, lightColor);
+
+                // shadow tweak
+                _ShadowIntensity = saturate(_ShadowIntensity - ((_ShadowFalloffRate - (attenuationOverride * _ShadowFalloffIntensity )) * -_FalloffIntensity));
                 APPLY_SHADOWS(input, lightColor, _ShadowIntensity);
 
                 return lightColor * _InverseHDREmulationScale;

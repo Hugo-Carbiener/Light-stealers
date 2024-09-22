@@ -20,6 +20,11 @@ namespace UnityEngine.Rendering.Universal
         private static readonly int k_ShadowModelInvMatrixID = Shader.PropertyToID("_ShadowModelInvMatrix");
         private static readonly int k_ShadowModelScaleID = Shader.PropertyToID("_ShadowModelScale");
 
+        // shadow tweak
+        private static readonly int k_ShadowFalloffRateID = Shader.PropertyToID("_ShadowFalloffRate");
+        private static readonly int k_ShadowFalloffIntensityID = Shader.PropertyToID("_ShadowFalloffIntensity");
+        private static readonly int k_ShadowIntensityMultiplierID = Shader.PropertyToID("_ShadowIntensityMultiplier");
+
         private static readonly ProfilingSampler m_ProfilingSamplerShadows = new ProfilingSampler("Draw 2D Shadow Texture");
         private static readonly ProfilingSampler m_ProfilingSamplerShadowsA = new ProfilingSampler("Draw 2D Shadows (A)");
         private static readonly ProfilingSampler m_ProfilingSamplerShadowsR = new ProfilingSampler("Draw 2D Shadows (R)");
@@ -149,6 +154,12 @@ namespace UnityEngine.Rendering.Universal
         {
             var colorChannel = shadowIndex % 4;
             var textureIndex = shadowIndex / 4;
+
+            // shadow tweak
+            cmdBuffer.SetGlobalFloat(k_ShadowRadiusID, light.shadowRadius);
+            cmdBuffer.SetGlobalFloat(k_ShadowFalloffRateID, light.shadowFalloffRate);
+            cmdBuffer.SetGlobalFloat(k_ShadowFalloffIntensityID, light.shadowFalloffIntensity);
+            cmdBuffer.SetGlobalFloat(k_ShadowIntensityMultiplierID, light.shadowIntensityMultiplier);
 
             cmdBuffer.SetGlobalTexture("_ShadowTex", m_LightInputTextures[textureIndex]);
             cmdBuffer.SetGlobalColor(k_ShadowColorMaskID, k_ColorLookup[colorChannel]);

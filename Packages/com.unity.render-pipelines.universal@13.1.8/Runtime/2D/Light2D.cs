@@ -153,6 +153,12 @@ namespace UnityEngine.Rendering.Universal
         // shadow tweak
         [Range(0, 1.42f)]
         [SerializeField] float m_ShadowRadius = 1.42f;
+        [Range(0, 10f)]
+        [SerializeField] float m_shadowFalloffRate = 1;
+        [Range(0, 10f)]
+        [SerializeField] float m_shadowFalloffIntensity = 1;
+        [Range(0, 1f)]
+        [SerializeField] float m_shadowIntensityMultiplier = 1;
 
         Mesh m_Mesh;
 
@@ -210,6 +216,9 @@ namespace UnityEngine.Rendering.Universal
 
         // shadow tweak
         public float shadowRadius { get => m_ShadowRadius; set => m_ShadowRadius = value; }
+        public float shadowFalloffRate { get => m_shadowFalloffRate; set => m_shadowFalloffRate = value; }
+        public float shadowFalloffIntensity { get => m_shadowFalloffIntensity; set => m_shadowFalloffIntensity = value; }
+        public float shadowIntensityMultiplier { get => m_shadowIntensityMultiplier; set => m_shadowIntensityMultiplier = value; }
 
         /// <summary>
         /// The lights current operation index

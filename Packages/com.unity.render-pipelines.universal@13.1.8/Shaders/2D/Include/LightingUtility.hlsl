@@ -52,6 +52,12 @@
     float  _ShadowIntensity;\
     float  _ShadowVolumeIntensity;\
     half4  _ShadowColorMask = 1;\
+
+    // shadow tweak
+    float _ShadowFalloffRate;\
+    float _ShadowFalloffIntensity;\
+    float _ShadowRadius;\
+    float _ShadowIntensityMultiplier;\
     TEXTURE2D(_ShadowTex);\
     SAMPLER(sampler_ShadowTex);
 
