@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StyleSheet.uss?fileID=7433441132597879392&amp;guid=eabd16b289558dc49a9a18bb58286d87&amp;type=3#StyleSheet" />
+    <Style src="project://database/Assets/UI/Reset.uss?fileID=7433441132597879392&amp;guid=544cdb56d39be8147b2e624ed6d7fb42&amp;type=3#Reset" />
+    <ui:VisualElement name="Troop" style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; justify-content: center; align-items: stretch; background-image: none;">
+        <ui:VisualElement name="SpriteContainer" style="background-image: url(&apos;project://database/Assets/Sprites/Tests/Characters_farmer.png?fileID=21300000&amp;guid=2273c4bd7788e5843a3b68b7f9db3de3&amp;type=3#Characters_farmer&apos;); width: auto; height: auto; min-width: 16px; min-height: 16px; -unity-background-image-tint-color: rgb(255, 255, 255);" />
+    </ui:VisualElement>
+</ui:UXML>

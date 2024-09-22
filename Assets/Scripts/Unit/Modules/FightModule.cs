@@ -1,8 +1,9 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Linq;
+using UnityEngine.Events;
 
 /**
  * IFightable module watching over everything related to the fight.
@@ -20,11 +21,22 @@ public class FightModule : MonoBehaviour
     [SerializeField] private int maxHealth;
     [SerializeField] private int attack;
 
+    public UnityEvent<FightModule> OnAttack {get; private set; } = new UnityEvent<FightModule>();
+    public UnityEvent<int> OnDamaged { get; private set; } = new UnityEvent<int>();
+    public UnityEvent OnDeath { get; private set; } = new UnityEvent();
+    public UnityEvent OnFlee { get; private set; } = new UnityEvent();
+
+
     private void Awake()
     {
         if (actor == null) actor = (IFightable) gameObject.GetComponent(typeof(IFightable));
         health = new BoundCounter(maxHealth, maxHealth);
         health.OnMinValueReachedOrExceeded.AddListener(actor.OnDeath);
+    }
+
+    private void Start()
+    {
+        turnDuration = Math.Max(FightManager.Instance.getMinFightTurnDuration(), turnDuration);
     }
 
     /**
@@ -67,10 +79,15 @@ public class FightModule : MonoBehaviour
         return true;
     }
     
-    private void Attack(FightModule ennemyFighter)
+    private void Attack(FightModule enemyFighter)
     {
-        Debug.Log("FIGHT : " + this.gameObject.name + " attacks " + ennemyFighter.gameObject.name + " for " + attack + "hp");
-        ennemyFighter.health -= attack;
+        // execute attack
+        enemyFighter.health -= attack;
+        // events
+        this.OnAttack.Invoke(enemyFighter);
+        enemyFighter.OnDamaged.Invoke(attack);
+
+        Debug.Log("FIGHT : " + this.gameObject.name + " attacks " + enemyFighter.gameObject.name + " for " + attack + "hp");
     }
 
     /**

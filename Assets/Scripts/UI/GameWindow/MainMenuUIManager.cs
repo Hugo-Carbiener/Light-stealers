@@ -9,10 +9,10 @@ public class MainMenuUIManager : UIManager, IPassiveUI
 {
     private static readonly string BOOK_BUTTON_KEY = "BookButton";
     private static readonly string BUILDING_BUTTON_KEY = "BuildingButton";
-    private static readonly string BATTLE_REPORT_BUTTON_KEY = "BattleReportButton";
+    private static readonly string BATTLEFIELD_BUTTON_KEY = "BattlefieldButton";
     public Button bookButton { get; private set; }
     public Button buildingButton { get; private set; }
-    public Button battleReportButton { get; private set; }
+    public Button battlefieldtButton { get; private set; }
 
     private Dictionary<IActiveUI, Button> buttons;
 
@@ -35,12 +35,12 @@ public class MainMenuUIManager : UIManager, IPassiveUI
         root = document.rootVisualElement;
         bookButton = root.Q<Button>(BOOK_BUTTON_KEY);
         buildingButton = root.Q<Button>(BUILDING_BUTTON_KEY);
-        battleReportButton = root.Q<Button>(BATTLE_REPORT_BUTTON_KEY);
+        battlefieldtButton = root.Q<Button>(BATTLEFIELD_BUTTON_KEY);
         buttons = new Dictionary<IActiveUI, Button>
         {
             { BookUIManager.Instance, bookButton },
             { BuildingUIManager.Instance, buildingButton },
-            { BattleReportUIManager.Instance, battleReportButton }
+            { BattlefieldUIManager.Instance, battlefieldtButton }
         };
     }
 

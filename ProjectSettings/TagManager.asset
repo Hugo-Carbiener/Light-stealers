@@ -44,3 +44,6 @@ TagManager:
   - name: Buildings
     uniqueID: 2126170419
     locked: 0
+  - name: Battlefield UI
+    uniqueID: 2657433611
+    locked: 0

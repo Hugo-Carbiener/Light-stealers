@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class DayNightCycleManager : MonoBehaviour
 {
     private static DayNightCycleManager instance;
-
     public static DayNightCycleManager Instance
     {
         get

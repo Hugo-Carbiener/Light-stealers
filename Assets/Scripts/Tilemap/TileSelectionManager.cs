@@ -33,6 +33,8 @@ public class TileSelectionManager : MonoBehaviour
 
     private void SelectCell(Vector2 mousePosition)
     {
+        if (IsOverlappingUIOpen()) return;
+
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
         SetSelectCell(tilePos);
@@ -86,5 +88,12 @@ public class TileSelectionManager : MonoBehaviour
         }
 
         return validBuildings;
+    }
+
+    private bool IsOverlappingUIOpen()
+    {
+        return BookUIManager.Instance.IsVisible()
+            || BattlefieldUIManager.Instance.IsVisible()
+            || BattleReportUIManager.Instance.IsVisible();
     }
 }
