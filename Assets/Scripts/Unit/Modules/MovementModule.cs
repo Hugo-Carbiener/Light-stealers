@@ -59,7 +59,7 @@ public class MovementModule : MonoBehaviour
         status = Status.InProgress;
         path = Pathfinder.GetPath(currentCell, destination);
         if (path == null) return;
-        Debug.Log(string.Join(";", path));
+
         StartCoroutine("MovementLoop");
     }
 
@@ -104,6 +104,16 @@ public class MovementModule : MonoBehaviour
                 timer += Time.deltaTime;
                 Vector3 currentCellPosition = TilemapManager.Instance.grid.CellToWorld((Vector3Int) currentCell);
                 Vector3 targetCellPosition = TilemapManager.Instance.grid.CellToWorld((Vector3Int) targetCell);
+
+                // orient sprite according to movement
+                if ((targetCellPosition - currentCellPosition).x > 0)
+                {
+                    transform.localScale = new Vector3(-1, 1, 0);
+                } else
+                {
+                    transform.localScale = new Vector3(1, 1, 0);
+                }
+
                 transform.position = Vector3.Lerp(currentCellPosition, targetCellPosition, timer / timeToCrossCell);
                 yield return null;
             }
