@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 [CreateAssetMenu]
 public class PopUpBlueprint : ScriptableObject
@@ -16,12 +17,11 @@ public class PopUpBlueprint : ScriptableObject
     [SerializeField] private float lifeDuration;
     [Header("Position")]
     [SerializeField] private Vector3 relativeStartPosition;
-    [SerializeField] private Vector3 relateiveEndPosition;
+    [SerializeField] private Vector3 relativeEndPosition;
     [Header("Text")]
     [SerializeField] private Color startColor;
     [SerializeField] private Color endColor;
-    [SerializeField] private int startFontSize;
-    [SerializeField] private int endFontSize;
+    [SerializeField] private float startFontSize;
 
     public void Init(GameObject popUpInstance, string textContent, Vector3 anchor)
     {
@@ -32,7 +32,7 @@ public class PopUpBlueprint : ScriptableObject
         text.text = textContent;
         text.color = new Color(startColor.r, startColor.g, startColor.b, 0);
         text.fontSize = startFontSize;
-        popUpInstance.transform.position = Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor)), new Vector3(1,1,0)) + relativeStartPosition;
+        popUpInstance.transform.position = Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor) + relativeStartPosition), new Vector3(1,1,0));
         popUpInstance.SetActive(true);
     }
 
@@ -42,38 +42,14 @@ public class PopUpBlueprint : ScriptableObject
         TextMeshPro text;
         Assert.IsTrue(popUpInstance.gameObject.TryGetComponent(out text));
 
-        float timer = 0;
-        float fadeInTime = fadeInDuration + delayDuration;
-        float fadeOutTime = fadeInDuration + lifeDuration + delayDuration;
         float totalTime = fadeInDuration + lifeDuration + fadeOutDuration +  delayDuration;
-
-        while (timer < totalTime)
-        {
-            if (timer < delayDuration) yield return null;
-
-            Color newColor = Color.Lerp(startColor, endColor, timer / totalTime);
-            float fontSize = Mathf.Lerp(startFontSize, endFontSize, timer / totalTime);
-            Vector3 relativePosition = Vector3.Lerp(relativeStartPosition, relateiveEndPosition, timer / totalTime);
-            if (timer < fadeInTime)
-            {
-                float progress = timer / fadeInDuration;
-                float alpha = Mathf.Lerp(0, 255, progress);
-                newColor.a = alpha;
-            }
-
-            if (timer > fadeOutTime && timer < totalTime)
-            {
-                float progress = (timer - fadeInDuration - lifeDuration) / fadeOutDuration;
-                float alpha = Mathf.Lerp(255, 0, progress);
-                newColor.a = alpha;
-            }
-
-            text.fontSize = fontSize;
-            text.color = newColor;
-            popUpInstance.transform.position = Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor)), new Vector3(1, 1, 0) + relativeStartPosition);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        popUpInstance.SetActive(false);
+        Sequence sequence = DOTween.Sequence();
+        sequence.PrependInterval(delayDuration);
+        sequence.Append(text.DOFade(255, fadeInDuration));
+        sequence.Insert(0, text.transform.DOMove(Vector3.Scale(Camera.main.ScreenToWorldPoint(PixelPerfectUtils.pixelPerfectToFullScreen(anchor) + relativeEndPosition), new Vector3(1, 1, 0)), totalTime));
+        sequence.Insert(0, text.DOColor(endColor, totalTime));
+        sequence.Append(text.DOFade(0, fadeOutDuration));
+        sequence.OnComplete(() => popUpInstance.SetActive(false));
+        yield return null;
     }
 }

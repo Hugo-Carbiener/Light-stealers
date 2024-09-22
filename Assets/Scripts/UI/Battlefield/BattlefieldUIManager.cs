@@ -135,7 +135,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         InitTroops(fight, Factions.Monsters, enemyTroopContainer);
         InitBuilding(selectedCell);
         fight.OnFighterAdded.AddListener(AddTroop);
-        currentFight.OnFightEndEvent.AddListener(CloseUIComponent);
+        //currentFight.OnFightEndEvent.AddListener(CloseUIComponent);
         MainMenuUIManager.Instance.UpdateUIComponent();
     }
 
@@ -150,6 +150,7 @@ public class BattlefieldUIManager : UIManager, IActiveUI
             AddEventListeners(fighter, troopElementToAdd, false);
         }
     }
+
     private void InitBuilding(CellData cell)
     {
         Building building = cell.building;
@@ -241,13 +242,11 @@ public class BattlefieldUIManager : UIManager, IActiveUI
         {
             timer += Time.deltaTime;
             float alpha = Mathf.Lerp(255, 0, timer / troopApparitionFadeOutDuration);
-            Color color = spriteContainer.style.unityBackgroundImageTintColor.value;
-            color.a = alpha;
-            spriteContainer.style.unityBackgroundImageTintColor = color;
+            Color color = new Color(255, 255, 255, alpha);
+            spriteContainer.style.unityBackgroundImageTintColor = new StyleColor(color);
 
-            yield return null;
+            yield return 0;
         }
-        troopContainer.parent.Remove(troopContainer);
     }
 
     private void OnAttack(VisualElement troopContainer, FightModule target)
