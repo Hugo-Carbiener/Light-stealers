@@ -35,12 +35,12 @@ public class TileSelectionManager : MonoBehaviour
     {
         if (IsOverlappingUIOpen()) return;
 
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition) + selectionTilemap.tileAnchor;
         Vector2Int tilePos = (Vector2Int) selectionTilemap.WorldToCell(worldPos);
         SetSelectCell(tilePos);
         tilemapManager.DispatchSelectionTilemap();
         MainMenuUIManager.Instance.UpdateUIComponent();
-        BuildingUIManager.Instance.CloseUIComponent();
+        BuildingUIManager.Instance.CloseUIComponent();  
     }
 
     /**
