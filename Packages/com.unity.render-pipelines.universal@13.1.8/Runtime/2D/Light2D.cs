@@ -150,6 +150,10 @@ namespace UnityEngine.Rendering.Universal
         [Range(0, 1)]
         [SerializeField] float m_ShadowVolumeIntensity = 0.75f;
 
+        // shadow tweak
+        [Range(0, 1.42f)]
+        [SerializeField] float m_ShadowRadius = 1.42f;
+
         Mesh m_Mesh;
 
         [SerializeField]
@@ -203,6 +207,9 @@ namespace UnityEngine.Rendering.Universal
                 Light2DManager.ErrorIfDuplicateGlobalLight(this);
             }
         }
+
+        // shadow tweak
+        public float shadowRadius { get => m_ShadowRadius; set => m_ShadowRadius = value; }
 
         /// <summary>
         /// The lights current operation index

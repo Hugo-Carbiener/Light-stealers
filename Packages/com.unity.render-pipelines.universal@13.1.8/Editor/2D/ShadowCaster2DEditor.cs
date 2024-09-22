@@ -53,12 +53,16 @@ namespace UnityEditor.Rendering.Universal
             public static GUIContent selfShadows = EditorGUIUtility.TrTextContent("Self Shadows", "When enabled, the Renderer casts shadows on itself.");
             public static GUIContent castsShadows = EditorGUIUtility.TrTextContent("Casts Shadows", "Specifies if this renderer will cast shadows");
             public static GUIContent sortingLayerPrefixLabel = EditorGUIUtility.TrTextContent("Target Sorting Layers", "Apply shadows to the specified sorting layers.");
+            // shadow tweak
+            public static GUIContent shadowLength = EditorGUIUtility.TrTextContent("Shadow Length");
         }
 
         SerializedProperty m_UseRendererSilhouette;
         SerializedProperty m_CastsShadows;
         SerializedProperty m_SelfShadows;
 
+        // shadow tweak
+        SerializedProperty m_ShadowLength;
 
         SortingLayerDropDown m_SortingLayerDropDown;
 
@@ -71,6 +75,10 @@ namespace UnityEditor.Rendering.Universal
 
             m_SortingLayerDropDown = new SortingLayerDropDown();
             m_SortingLayerDropDown.OnEnable(serializedObject, "m_ApplyToSortingLayers");
+
+
+            // shadow tweak
+            m_ShadowLength = serializedObject.FindProperty("m_ShadowLength");
         }
 
         public void ShadowCaster2DSceneGUI()
@@ -131,6 +139,8 @@ namespace UnityEditor.Rendering.Universal
             EditorGUILayout.PropertyField(m_CastsShadows, Styles.castsShadows);
             EditorGUILayout.PropertyField(m_SelfShadows, Styles.selfShadows);
 
+            // shadow tweak
+            EditorGUILayout.Slider(m_ShadowLength, 0, 1f, Styles.shadowLength);
             m_SortingLayerDropDown.OnTargetSortingLayers(serializedObject, targets, Styles.sortingLayerPrefixLabel, null);
 
             if (m_CastsShadows.boolValue)

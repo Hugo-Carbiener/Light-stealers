@@ -30,6 +30,9 @@ namespace UnityEngine.Rendering.Universal
         [SerializeField] Mesh m_Mesh;
         [SerializeField] int m_InstanceId;
 
+        // shadow tweak
+        [SerializeField][Range(0, 1f)] float m_ShadowLength = 1;
+
         internal ShadowCasterGroup2D m_ShadowCasterGroup = null;
         internal ShadowCasterGroup2D m_PreviousShadowCasterGroup = null;
 
@@ -88,6 +91,13 @@ namespace UnityEngine.Rendering.Universal
         {
             set { m_CastsShadows = value; }
             get { return m_CastsShadows; }
+        }
+
+        // shadow tweak
+        public float shadowLength
+        {
+            get => m_ShadowLength;
+            set => m_ShadowLength = value;
         }
 
         static int[] SetDefaultSortingLayers()

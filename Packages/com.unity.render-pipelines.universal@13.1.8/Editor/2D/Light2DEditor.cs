@@ -106,6 +106,9 @@ namespace UnityEditor.Rendering.Universal
             public static GUIContent renderPipelineUnassignedWarning = EditorGUIUtility.TrTextContentWithIcon("Universal scriptable renderpipeline asset must be assigned in Graphics Settings or Quality Settings.", MessageType.Warning);
             public static GUIContent asset2DUnassignedWarning = EditorGUIUtility.TrTextContentWithIcon("2D renderer data must be assigned to your universal render pipeline asset or camera.", MessageType.Warning);
 
+            // shadow tweak
+            public static GUIContent generalShadowRadius = EditorGUIUtility.TrTextContent("Shadow Radius");
+
             public static string deprecatedParametricLightDialogTextSingle = "The upgrade will convert the selected parametric light into a freeform light. You can't undo this operation.";
             public static string deprecatedParametricLightDialogTextMulti = "The upgrade will convert the selected parametric lights into freeform lights. You can't undo this operation.";
             public static string deprecatedParametricLightDialogTitle = "Parametric Light Upgrader";
@@ -150,6 +153,9 @@ namespace UnityEditor.Rendering.Universal
         SerializedProperty m_ShapeLightFalloffSize;
         SerializedProperty m_ShapeLightParametricSides;
         SerializedProperty m_ShapeLightSprite;
+
+        // shadow tweak
+        SerializedProperty m_ShadowRadius;
 
         SavedBool m_BlendingSettingsFoldout;
         SavedBool m_ShadowsSettingsFoldout;
@@ -222,6 +228,9 @@ namespace UnityEditor.Rendering.Universal
             m_ShapeLightFalloffSize = serializedObject.FindProperty("m_ShapeLightFalloffSize");
             m_ShapeLightParametricSides = serializedObject.FindProperty("m_ShapeLightParametricSides");
             m_ShapeLightSprite = serializedObject.FindProperty("m_LightCookieSprite");
+
+            // shadow tweak
+            m_ShadowRadius = serializedObject.FindProperty("m_ShadowRadius");
 
             m_AnyBlendStyleEnabled = false;
             var blendStyleIndices = new List<int>();
@@ -523,6 +532,9 @@ namespace UnityEditor.Rendering.Universal
             DrawRadiusProperties(Styles.pointLightRadius, m_PointInnerRadius, Styles.pointLightInner, m_PointOuterRadius, Styles.pointLightOuter);
             DrawInnerAndOuterSpotAngle(m_PointInnerAngle, m_PointOuterAngle, Styles.InnerOuterSpotAngle);
             EditorGUILayout.Slider(m_FalloffIntensity, 0, 1, Styles.generalFalloffIntensity);
+            
+            // shadow tweak 
+            EditorGUILayout.Slider(m_ShadowRadius, 0, 1.42f, Styles.generalShadowRadius);
 
             if (m_DeprecatedPointLightSprite.objectReferenceValue != null)
                 EditorGUILayout.PropertyField(m_DeprecatedPointLightSprite, Styles.pointLightSprite);
