@@ -110,7 +110,6 @@ namespace UnityEditor.Rendering.Universal
             public static GUIContent generalShadowRadius = EditorGUIUtility.TrTextContent("Shadow Radius");
             public static GUIContent generalshadowFalloffRate = EditorGUIUtility.TrTextContent("Shadow Falloff Rate");
             public static GUIContent generalshadowFalloffIntensity = EditorGUIUtility.TrTextContent("Shadow Falloff Intensity");
-            public static GUIContent generalshadowIntensityMultiplier = EditorGUIUtility.TrTextContent("Shadow Intensity Multiplier");
 
             public static string deprecatedParametricLightDialogTextSingle = "The upgrade will convert the selected parametric light into a freeform light. You can't undo this operation.";
             public static string deprecatedParametricLightDialogTextMulti = "The upgrade will convert the selected parametric lights into freeform lights. You can't undo this operation.";
@@ -161,7 +160,6 @@ namespace UnityEditor.Rendering.Universal
         SerializedProperty m_ShadowRadius;
         SerializedProperty m_shadowFalloffRate;
         SerializedProperty m_shadowFalloffIntensity;
-        SerializedProperty m_shadowIntensityMultiplier;
 
         SavedBool m_BlendingSettingsFoldout;
         SavedBool m_ShadowsSettingsFoldout;
@@ -239,7 +237,6 @@ namespace UnityEditor.Rendering.Universal
             m_ShadowRadius = serializedObject.FindProperty("m_ShadowRadius");
             m_shadowFalloffRate = serializedObject.FindProperty("m_shadowFalloffRate");
             m_shadowFalloffIntensity = serializedObject.FindProperty("m_shadowFalloffIntensity");
-            m_shadowIntensityMultiplier = serializedObject.FindProperty("m_shadowIntensityMultiplier");
 
             m_AnyBlendStyleEnabled = false;
             var blendStyleIndices = new List<int>();
@@ -546,7 +543,6 @@ namespace UnityEditor.Rendering.Universal
             EditorGUILayout.Slider(m_ShadowRadius, 0, 1.42f, Styles.generalShadowRadius);
             EditorGUILayout.Slider(m_shadowFalloffRate, 0, 10f, Styles.generalshadowFalloffRate);
             EditorGUILayout.Slider(m_shadowFalloffIntensity, 0, 10f, Styles.generalshadowFalloffIntensity);
-            EditorGUILayout.Slider(m_shadowIntensityMultiplier, 0, 1f, Styles.generalshadowIntensityMultiplier);
 
             if (m_DeprecatedPointLightSprite.objectReferenceValue != null)
                 EditorGUILayout.PropertyField(m_DeprecatedPointLightSprite, Styles.pointLightSprite);

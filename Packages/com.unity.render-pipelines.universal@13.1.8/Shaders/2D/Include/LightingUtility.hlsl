@@ -57,7 +57,6 @@
     float _ShadowFalloffRate;\
     float _ShadowFalloffIntensity;\
     float _ShadowRadius;\
-    float _ShadowIntensityMultiplier;\
     TEXTURE2D(_ShadowTex);\
     SAMPLER(sampler_ShadowTex);
 

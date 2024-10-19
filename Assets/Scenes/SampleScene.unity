@@ -327,7 +327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_ShadowRadius
-      value: 0.762
+      value: 0.226
       objectReference: {fileID: 0}
     - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_BlendStyleIndex
@@ -338,8 +338,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
+      propertyPath: m_shadowFalloffRate
+      value: 3.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_ShadowIntensityEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950915333969198641, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
+      propertyPath: m_shadowFalloffIntensity
+      value: 6.69
       objectReference: {fileID: 0}
     - target: {fileID: 5017839356547295909, guid: 37a44dad7dee86c4eb6071d773691929, type: 3}
       propertyPath: m_Name
@@ -3913,7 +3921,7 @@ MonoBehaviour:
     - key: 0
       value: 20
     - key: 1
-      value: 20
+      value: 200
   phaseColorGradients:
     elements:
     - key: 0
@@ -4110,7 +4118,6 @@ MonoBehaviour:
   m_ShadowRadius: 1.42
   m_shadowFalloffRate: 1
   m_shadowFalloffIntensity: 1
-  m_shadowIntensityMultiplier: 1
   m_Vertices:
   - position: {x: 0.9985302, y: 0.9985302, z: 0}
     color: {r: 0.70710677, g: 0.70710677, b: 0, a: 0}
@@ -6516,8 +6523,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
+      propertyPath: m_shadowFalloffRate
+      value: 3.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_ShadowIntensityEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030885934396697399, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
+      propertyPath: m_shadowFalloffIntensity
+      value: 6.69
       objectReference: {fileID: 0}
     - target: {fileID: 5017839356547295909, guid: f3065c4363fdc564f9dd89a6e1051d31, type: 3}
       propertyPath: m_Name
